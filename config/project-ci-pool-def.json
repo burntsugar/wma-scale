@@ -9,7 +9,7 @@
    "installAll": true,
     "fetchArtifacts": {
       "npm": {
-        "scope": "@wma-scale",
+        "scope": "@burntsugar",
         "npmtag": "main"
       }
     }
