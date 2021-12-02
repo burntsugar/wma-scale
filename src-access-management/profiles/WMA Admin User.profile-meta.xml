@@ -11,8 +11,21 @@
         <field>Account.AccountNumber__c</field>
         <readable>false</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>WMA_Domain_X_Object__c.WMA_Place__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>WMA_Place__c.WMA_Doman_X_Field__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>WMA_Campsite__c-Campsite Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>WMA_Domain_X_Object__c-Domain X Object Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>WMA_Facility__c-Facility Layout</layout>
@@ -49,6 +62,10 @@
     </objectPermissions>
     <tabVisibilities>
         <tab>WMA_Campsite__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>WMA_Domain_X_Object__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
