@@ -30,6 +30,12 @@
             "versionNumber": "1.0.0.0"
         },
         {
+            "path": "./src/domain-x",
+            "package": "domain-x",
+            "versionName": "Version 1.0.0",
+            "versionNumber": "1.0.0.0"
+        },
+        {
             "path": "./src-ui",
             "package": "src-ui",
             "versionNumber": "1.1.0.0",
