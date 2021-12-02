@@ -2,6 +2,7 @@
 artifacts
 .sfdx
 .npmrc
+.DS_Store
 
 # wma
 **/profileSessionSettings
