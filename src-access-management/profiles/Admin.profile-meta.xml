@@ -11,21 +11,8 @@
         <field>Account.AccountNumber__c</field>
         <readable>false</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>WMA_Domain_X_Object__c.WMA_Place__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>WMA_Place__c.WMA_Doman_X_Field__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
     <layoutAssignments>
         <layout>WMA_Campsite__c-Campsite Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>WMA_Domain_X_Object__c-Domain X Object Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>WMA_Facility__c-Facility Layout</layout>
@@ -48,15 +35,6 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>WMA_Domain_X_Object__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
         <object>WMA_Facility__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -71,10 +49,6 @@
     </objectPermissions>
     <tabVisibilities>
         <tab>WMA_Campsite__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>WMA_Domain_X_Object__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
