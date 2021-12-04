@@ -6,6 +6,7 @@
         <visible>true</visible>
     </applicationVisibilities>
     <custom>true</custom>
+    <description>WMA Admin User Description.</description>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.AccountNumber__c</field>
