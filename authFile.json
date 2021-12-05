@@ -1,4 +1,16 @@
 {
-
-    "sfdxAuthUrl": "force://PlatformCLI::5Aep861mdLLi91HqFf_PEZsJWR5eMMLYpln7aj0M6PhNU2GtGKp6MWPm78wAV_ErV1.guIyoxy1o2I2bxnMONyi@wise-unicorn-243yw4-dev-ed.my.salesforce.com"
+  "status": 0,
+  "result": {
+    "id": "00D5j00000336T5EAI",
+    "accessToken": "00D5j00000336T5!ARkAQOZPWLevSkPtzA6qR9xVff6v7djoelKYRDhZs6y8RSKcsGJ2lhUzr6kqBrt7C2pmy3jyLeFD93x3ZYt2PQU8NpooGB8z",
+    "instanceUrl": "https://wise-otter-tcq930-dev-ed.my.salesforce.com",
+    "username": "ci@serviceuser-wise-otter.com",
+    "clientId": "PlatformCLI",
+    "connectedStatus": "Connected",
+    "sfdxAuthUrl": "force://PlatformCLI::5Aep861mdLLi91HqFd3aqkJvB3nfXX37APkbjUPZ9TJBjJyV9UvnB7yycBGJV5D9FAuepmxgcEbr7hKl.9JKk6S@wise-otter-tcq930-dev-ed.my.salesforce.com",
+    "alias": "ci@serviceuser-wise-otter.com"
+  },
+  "warnings": [
+    "This command will expose sensitive information that allows for subsequent activity using your current authenticated session.\nSharing this information is equivalent to logging someone in under the current credential, resulting in unintended access and escalation of privilege.\nFor additional information, please review the authorization section of the https://developer.salesforce.com/docs/atlas.en-us.234.0.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_web_flow.htm"
+  ]
 }
