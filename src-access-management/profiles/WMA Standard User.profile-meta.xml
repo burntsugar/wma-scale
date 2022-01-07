@@ -12,11 +12,19 @@
         <field>Account.AccountNumber__c</field>
         <readable>false</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>WMA_Other_Name__c.WMA_Other_Place_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>WMA_Campsite__c-Campsite Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>WMA_Facility__c-Facility Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>WMA_Other_Name__c-Other Name Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>WMA_Place__c-Place Layout</layout>
