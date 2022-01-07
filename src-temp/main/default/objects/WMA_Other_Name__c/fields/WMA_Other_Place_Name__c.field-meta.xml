@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WMA_Other_Place_Name__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The place this other name belongs to.</description>
+    <externalId>false</externalId>
+    <label>Place</label>
+    <referenceTo>WMA_Place__c</referenceTo>
+    <relationshipLabel>Other Names</relationshipLabel>
+    <relationshipName>Other_Names</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
