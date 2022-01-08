@@ -13,7 +13,7 @@
     "fetchArtifacts": {
         "npm": {
           "scope": "@burntsugar",
-          "npmtag": "main"
+          "npmtag": "core"
         }
       }
    
