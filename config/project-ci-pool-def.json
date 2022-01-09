@@ -9,8 +9,7 @@
    "installAll": true,
     "fetchArtifacts": {
       "npm": {
-        "scope": "@burntsugar",
-        "npmtag": "main"
+        "scope": "@burntsugar"
       }
     }
  
