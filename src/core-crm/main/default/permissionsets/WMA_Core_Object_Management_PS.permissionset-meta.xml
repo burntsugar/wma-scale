@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Access to core objects for management.</description>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.AccountNumber__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>WMA_Facility__c.Place__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>WMA_Other_Name__c.WMA_Other_Place_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Core Object Management PS</label>
     <objectPermissions>

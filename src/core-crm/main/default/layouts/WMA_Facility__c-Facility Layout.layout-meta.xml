@@ -11,8 +11,8 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Facility_Type__c</field>
+                <behavior>Edit</behavior>
+                <field>Place__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

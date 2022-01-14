@@ -14,6 +14,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>WMA_Facility__c.Place__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>WMA_Other_Name__c.WMA_Other_Place_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -463,10 +468,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ManagePackageLicenses</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>ManagePasswordPolicies</name>
     </userPermissions>
     <userPermissions>
@@ -692,10 +693,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewEventLogFiles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ViewFlowUsageAndFlowEventData</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
