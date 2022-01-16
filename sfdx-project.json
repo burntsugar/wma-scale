@@ -28,7 +28,7 @@
             "package": "core",
             "versionName": "Version 1.0.0",
             "versionNumber": "1.0.0.0",
-            "destructiveChangePath": "./destructive/destructiveTestRequiredField.xml"
+            "destructiveChangePath": "./destructive/destructiveChangesCore.xml"
         },
         {
             "path": "./src-ui",
