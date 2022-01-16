@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Campsite</fullName>
+        <default>false</default>
+        <label>Campsite</label>
+    </customValue>
+    <customValue>
+        <fullName>Place</fullName>
+        <default>false</default>
+        <label>Place</label>
+    </customValue>
+    <description>The type of the location.</description>
+    <masterLabel>Location Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
