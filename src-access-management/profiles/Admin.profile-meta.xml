@@ -18,6 +18,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>WMA_Facility__c.WMA_Local_Identifier__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>WMA_Other_Name__c.WMA_Other_Place_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
