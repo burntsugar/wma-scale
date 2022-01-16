@@ -58,6 +58,11 @@
     </layoutSections>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>WMA_Number_of_tent_pads__c</fields>
+        <relatedList>WMA_Campsite__c.WMA_Place_of_campsite__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
         <fields>WMA_Facility_Identifier__c</fields>
         <fields>WMA_Local_Identifier__c</fields>
         <fields>RECORDTYPE</fields>

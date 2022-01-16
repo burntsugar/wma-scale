@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Campsite__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Applicable if this facility belongs to a campsite.</description>
+    <externalId>false</externalId>
+    <label>Campsite</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>$Source.Place__c</field>
+            <operation>equals</operation>
+            <valueField>WMA_Campsite__c.WMA_Place_of_campsite__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>WMA_Campsite__c</referenceTo>
+    <relationshipLabel>Facilities</relationshipLabel>
+    <relationshipName>Facilities</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

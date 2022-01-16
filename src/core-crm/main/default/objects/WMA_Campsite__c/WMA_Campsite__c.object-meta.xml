@@ -156,11 +156,14 @@
     <label>Campsite</label>
     <nameField>
         <displayFormat>campsite-{00000}</displayFormat>
-        <label>WMA_Campsite Name</label>
+        <label>Campsite Name</label>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Campsites</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <searchResultsAdditionalFields>WMA_Place_of_campsite__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>WMA_Number_of_tent_pads__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>

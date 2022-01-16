@@ -4,4 +4,15 @@
     <active>true</active>
     <description>A shower facility</description>
     <label>Shower Facility</label>
+    <picklistValues>
+        <picklist>WMA_Facility_Location_Type__c</picklist>
+        <values>
+            <fullName>Campsite</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Place</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
 </RecordType>
