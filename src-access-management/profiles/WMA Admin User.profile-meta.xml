@@ -13,8 +13,8 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>WMA_Facility__c.Place__c</field>
+        <editable>false</editable>
+        <field>WMA_Facility__c.WMA_Facility_Identifier__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -32,6 +32,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>WMA_Facility__c-Facility Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>WMA_Facility__c-Shower Facility Layout</layout>
+        <recordType>WMA_Facility__c.WMA_Shower_Facility</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>WMA_Other_Name__c-Other Name Layout</layout>
@@ -66,6 +70,11 @@
         <object>WMA_Place__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>WMA_Facility__c.WMA_Shower_Facility</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
     <tabVisibilities>
         <tab>WMA_Campsite__c</tab>
         <visibility>DefaultOn</visibility>
