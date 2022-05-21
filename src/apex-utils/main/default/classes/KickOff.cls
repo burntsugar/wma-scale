@@ -1,13 +1,16 @@
 public class KickOff {
-    
-    public void Go(String objectAPIName){
-        GetFieldInfo g = new GetFieldInfo();
-        List<ObjectInfoWrapper> returnVals = g.getObjectInfo(objectAPIName);
-        for (ObjectInfoWrapper s : returnVals) {
-            System.Debug(s.objectAPIName);
-            System.Debug(s.recordTypeDeveloperName);
-            System.Debug(s.recordTypeId);
-        }
+
+    public ObjectInfoExtract Go(String objectAPIName){
+        GetObjectInfo fieldInfo = new GetObjectInfo();
+        ObjectInfoExtract o = fieldInfo.getObjectInfo(objectAPIName);
+        List<ObjectInfoRecordType> returnVals = o.getObjectInfoRecordTypes();
+        return o;
+
+    }
+
+    public void extractObjectInfoToCSV(String objectAPIName){
+        GetObjectInfo fieldInfo = new GetObjectInfo();
+        fieldInfo.extractObjectInfoToCSV(objectAPIName);
     }
 
 }

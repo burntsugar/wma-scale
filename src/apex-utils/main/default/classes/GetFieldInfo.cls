@@ -1,26 +1,49 @@
 public class GetFieldInfo {
     
     String objectName;
-    
-    public List<ObjectInfoWrapper> getObjectInfo(String objectAPIName) {
+
+    public ObjectInfoExtract getObjectInfo(String objectAPIName) {
         
         Type customType = Type.forName(objectAPIName);
 		sObject instance = (sObject)customType.newInstance();
         
         Schema.DescribeSObjectResult R = instance.getSObjectType().getDescribe();
         List<Schema.RecordTypeInfo> RT = R.getRecordTypeInfos();
-        List<ObjectInfoWrapper> retvals = new List<ObjectInfoWrapper>();
+        //List<ObjectInfoWrapper> retvals = new List<ObjectInfoWrapper>();
+        ObjectInfoExtract o = new ObjectInfoExtract();
         for (RecordTypeInfo rti : RT) {
-            ObjectInfoWrapper o = new ObjectInfoWrapper();
-            o.setObjectAPIName(objectAPIName);
-            o.setRecordTypeDeveloperName(rti.getDeveloperName());
-            o.setRecordTypeId(rti.getRecordTypeId());
-            retvals.add(o);
+           // o.objectInfoRecordTpes.add()
+           ObjectInfoRecordType oirt = new ObjectInfoRecordType(objectAPIName,rti.getDeveloperName(),rti.getRecordTypeId());
+           o.addObjectInfoRecordType(oirt);
+            // o.setObjectAPIName(objectAPIName);
+            // o.setRecordTypeDeveloperName(rti.getDeveloperName());
+            // o.setRecordTypeId(rti.getRecordTypeId());
+            //retvals.add(o);
         }
         
         objectName = 'WMA_Facility__c';
-        return retvals;
+        return o;
     }
+    
+    // public List<ObjectInfoWrapper> getObjectInfo(String objectAPIName) {
+        
+    //     Type customType = Type.forName(objectAPIName);
+	// 	sObject instance = (sObject)customType.newInstance();
+        
+    //     Schema.DescribeSObjectResult R = instance.getSObjectType().getDescribe();
+    //     List<Schema.RecordTypeInfo> RT = R.getRecordTypeInfos();
+    //     List<ObjectInfoWrapper> retvals = new List<ObjectInfoWrapper>();
+    //     for (RecordTypeInfo rti : RT) {
+    //         ObjectInfoWrapper o = new ObjectInfoWrapper();
+    //         o.setObjectAPIName(objectAPIName);
+    //         o.setRecordTypeDeveloperName(rti.getDeveloperName());
+    //         o.setRecordTypeId(rti.getRecordTypeId());
+    //         retvals.add(o);
+    //     }
+        
+    //     objectName = 'WMA_Facility__c';
+    //     return retvals;
+    // }
     
     public List<String> getRecordTypesForObject(String objectAPIName) {
         
