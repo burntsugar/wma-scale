@@ -1,10 +1,6 @@
-public with sharing class CSVRows implements CSVRowsWrapping {
+public with sharing class CSVRows implements ICSVRows {
     
     public List<String> cSVRows;
-    
-    public CSVRows() {
-
-    }
 
     public List<String> getCSVRows(){
         return this.cSVRows;

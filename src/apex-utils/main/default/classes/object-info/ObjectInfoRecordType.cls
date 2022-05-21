@@ -10,8 +10,6 @@ public class ObjectInfoRecordType implements RecordTypeWrapping {
         this.recordTypeId = recordTypeId;
     }
     
-
-    // TODO:Remove
     public String getObjectAPIName(){
         return this.objectAPIName = recordTypeDeveloperName;
     }

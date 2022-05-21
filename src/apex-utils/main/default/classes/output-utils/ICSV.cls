@@ -1,5 +1,7 @@
-public interface CSVWrapping {
+public interface ICSV {
+
     CSVHeaders getCSVHeaders();
     CSVRows getCSVRows();
     String getCsvTitle();
+    
 }

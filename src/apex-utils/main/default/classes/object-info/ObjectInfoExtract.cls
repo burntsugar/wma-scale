@@ -1,7 +1,9 @@
-public class ObjectInfoExtract implements ObjectInfoExtractWrapping {
+public class ObjectInfoExtract implements IObjectInfoExtract {
     
     	private String objectAPIName;
         private List<ObjectInfoRecordType> objectInfoRecordTypes;
+        public final String[] CSV_HEADERS = new String[] {'Object API Name','RT Developer Name','RT Id'};
+
 
         public ObjectInfoExtract(){
             if (objectInfoRecordTypes == null) {
@@ -24,7 +26,5 @@ public class ObjectInfoExtract implements ObjectInfoExtractWrapping {
         public String setObjectAPIName(String objectAPIName){
             return this.objectAPIName = objectAPIName;
         }
-
-        
 
 }

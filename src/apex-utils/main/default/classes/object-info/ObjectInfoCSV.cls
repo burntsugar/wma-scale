@@ -12,28 +12,18 @@ public with sharing class ObjectInfoCSV implements CSVWrapping {
     }
 
     private void makecSVHeaders(){
+        // TODO replace with constants.
         cSVHeaders = new CSVHeaders();
         cSVHeaders.addCSVHeader('Object API Name');
         cSVHeaders.addCSVHeader('RT Developer Name');
         cSVHeaders.addCSVHeader('RT Id');
     }
 
-    // private void makecSVRows(){
-    //     cSVRows = new CSVRows();
-    //     cSVRows.addCSVRow(objectInfoExtract.getObjectAPIName());
-    //     List<ObjectInfoRecordType> rts = objectInfoExtract.getObjectInfoRecordTypes();
-    //     for (ObjectInfoRecordType rt: rts){
-    //         cSVRows.addCSVRow(rt.getRecordTypeDeveloperName());
-    //         cSVRows.addCSVRow(rt.getRecordTypeId());
-    //     }
-    // }
     private void makecSVRows(){
         cSVRows = new CSVRows();
-        //cSVRows.addCSVRow(objectInfoExtract.getObjectAPIName());
         List<ObjectInfoRecordType> rts = objectInfoExtract.getObjectInfoRecordTypes();
         for (ObjectInfoRecordType rt: rts){
             cSVRows.addCSVRow(objectInfoExtract.getObjectAPIName() + ',' + rt.getRecordTypeDeveloperName() + ',' + rt.getRecordTypeId());
-            //cSVRows.addCSVRow(rt.getRecordTypeId());
         }
     }
 

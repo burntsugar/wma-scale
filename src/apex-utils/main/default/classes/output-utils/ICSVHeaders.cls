@@ -1,5 +1,6 @@
-public interface CSVHeadersWrapping {
+public interface ICSVHeaders {
 
     List<String> getCSVHeaders();
     void addCSVHeader(String csvHeader);
+    
 }

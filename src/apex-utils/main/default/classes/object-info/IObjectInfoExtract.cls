@@ -1,6 +1,8 @@
-public interface ObjectInfoExtractWrapping {
+public interface IObjectInfoExtract {
+
     String getObjectAPIName();
     String setObjectAPIName(String objectAPIName);
     List<ObjectInfoRecordType> getObjectInfoRecordTypes();
     void addObjectInfoRecordType(ObjectInfoRecordType objectInfoRecordType);
+    
 }

@@ -1,10 +1,6 @@
-public with sharing class CSVHeaders implements CSVHeadersWrapping {
+public with sharing class CSVHeaders implements ICSVHeaders {
     
-    List<String> cSVHeaders;
-
-    public CSVHeaders() {
-
-    }
+    private List<String> cSVHeaders;
 
     public List<String> getCSVHeaders(){
         return this.cSVHeaders;
