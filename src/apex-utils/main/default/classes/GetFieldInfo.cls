@@ -13,7 +13,7 @@ public class GetFieldInfo {
         ObjectInfoExtract o = new ObjectInfoExtract();
         for (RecordTypeInfo rti : RT) {
            // o.objectInfoRecordTpes.add()
-           ObjectInfoRecordType oirt = new ObjectInfoRecordType(objectAPIName,rti.getDeveloperName(),rti.getRecordTypeId());
+           ObjectInfoRecordType oirt = new ObjectInfoRecordType(objectAPIName,rti.getDeveloperName(),rti.getRecordTypeId(),rti.isMaster());
            o.addObjectInfoRecordType(oirt);
             // o.setObjectAPIName(objectAPIName);
             // o.setRecordTypeDeveloperName(rti.getDeveloperName());
