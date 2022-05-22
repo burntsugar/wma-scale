@@ -11,13 +11,32 @@ public with sharing class ObjectInfoCSV implements CSVWrapping {
         this.csvTitle = csvTitle;
     }
 
+    // private void makecSVHeaders(){
+    //     cSVHeaders = new CSVHeaders();
+
+    //     for(String o: objectInfoExtract.getCSV_Headers()){
+    //         cSVHeaders.addCSVHeader(o);
+    //     }
+
+    //     for (String s: objectInfoExtract.getObjectInfoRecordTypes().get(0).getCSV_Headers()) {
+    //         cSVHeaders.addCSVHeader(s);
+    //     }
+
+    // }
+
+    // private void makecSVRows(){
+    //     cSVRows = new CSVRows();
+    //     List<ObjectInfoRecordType> rts = objectInfoExtract.getObjectInfoRecordTypes();
+    //     for (ObjectInfoRecordType rt: rts){
+    //         cSVRows.addCSVRow(objectInfoExtract.getObjectAPIName() + ',' + rt.getRecordTypeDeveloperName() + ',' + rt.getRecordTypeId());
+    //         for (String f: rt.getFields()){
+    //             cSVRows.addCSVRow(objectInfoExtract.getObjectAPIName() + ',' + rt.getRecordTypeDeveloperName() + ',' + rt.getRecordTypeId() + ',' + f);
+    //         }
+    //     }
+    // }
+
     private void makecSVHeaders(){
         cSVHeaders = new CSVHeaders();
-        // cSVHeaders.addCSVHeader('Object API Name');
-        // cSVHeaders.addCSVHeader('RT Developer Name');
-        // cSVHeaders.addCSVHeader('RT Id');
-
-        //String[] sss = new String[]{ObjectInfoExtract.getCSV_Headers()};
 
         for(String o: objectInfoExtract.getCSV_Headers()){
             cSVHeaders.addCSVHeader(o);
@@ -26,15 +45,7 @@ public with sharing class ObjectInfoCSV implements CSVWrapping {
         for (String s: objectInfoExtract.getObjectInfoRecordTypes().get(0).getCSV_Headers()) {
             cSVHeaders.addCSVHeader(s);
         }
-           
-        
 
-        // for(ObjectInfoRecordType rt: objectInfoExtract.getObjectInfoRecordTypes()){
-        //     for (String s: rt.CSV_HEADERS) {
-        //         cSVHeaders.addCSVHeader(s);
-        //     }
-           
-        // }
     }
 
     private void makecSVRows(){
@@ -42,8 +53,11 @@ public with sharing class ObjectInfoCSV implements CSVWrapping {
         List<ObjectInfoRecordType> rts = objectInfoExtract.getObjectInfoRecordTypes();
         for (ObjectInfoRecordType rt: rts){
             cSVRows.addCSVRow(objectInfoExtract.getObjectAPIName() + ',' + rt.getRecordTypeDeveloperName() + ',' + rt.getRecordTypeId());
-            for (String f: rt.getFields()){
-                cSVRows.addCSVRow(objectInfoExtract.getObjectAPIName() + ',' + rt.getRecordTypeDeveloperName() + ',' + rt.getRecordTypeId() + ',' + f);
+            // for (String f: rt.getFields()){
+            //     cSVRows.addCSVRow(objectInfoExtract.getObjectAPIName() + ',' + rt.getRecordTypeDeveloperName() + ',' + rt.getRecordTypeId() + ',' + f);
+            // }
+            for (ObjectInfoField f: rt.getObjectInfoFields()){
+                cSVRows.addCSVRow(objectInfoExtract.getObjectAPIName() + ',' + rt.getRecordTypeDeveloperName() + ',' + rt.getRecordTypeId() + ',' + f.getCsvStrings());
             }
         }
     }

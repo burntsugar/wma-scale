@@ -1,4 +1,4 @@
-public class ObjectInfoRecordType implements RecordTypeWrapping {
+public class ObjectInfoRecordType implements IObjectInfoRecordType {
     
     private String objectAPIName;
     private String recordTypeDeveloperName;
@@ -7,7 +7,8 @@ public class ObjectInfoRecordType implements RecordTypeWrapping {
     private boolean isMaster;
     private String layoutName;
     private String layoutId;
-    public final String[] CSV_HEADERS = new String[] {'RT Developer Name','RT Id','Feild API Name'};
+    private List<ObjectInfoField> objectInfoFields;
+    public final String[] CSV_HEADERS = new String[] {'RT Developer Name','RT Id','Feild API Name', 'label' , 'defaultValue' , 'isCustom' , 'isNameField' , 'isNillable' , 'fieldDataType' , 'fieldLength' , 'isAutoNumber' , 'isCalculated' , 'isDependentPicklist' , 'isExternalId' , 'isIdLookup' , 'isUnique' , 'scale' , 'precision' };
 
     
     public ObjectInfoRecordType(String objectAPIName, String recordTypeDeveloperName,String recordTypeId, boolean isMaster){
@@ -15,6 +16,17 @@ public class ObjectInfoRecordType implements RecordTypeWrapping {
         this.recordTypeDeveloperName = recordTypeDeveloperName;
         this.recordTypeId = recordTypeId;
         this.isMaster = isMaster;
+    }
+
+    public void addToObjectInfoFields(List<ObjectInfoField> objectInfoFields){
+        if (this.objectInfoFields == null) {
+            this.objectInfoFields = new List<ObjectInfoField>();
+        }
+        System.Debug('xxxxxyyyyy :::: ' + objectInfoFields);
+        this.objectInfoFields.addAll(objectInfoFields);
+    }
+    public List<ObjectInfoField> getObjectInfoFields(){
+        return this.objectInfoFields;
     }
 
     public String[] getCSV_Headers(){
@@ -33,8 +45,6 @@ public class ObjectInfoRecordType implements RecordTypeWrapping {
             this.fields = new List<String>();
         }
         this.fields.addAll(fields);
-        System.Debug('ADDFIELDSX' + ' ' + fields);
-
     }
     
     public String getObjectAPIName(){

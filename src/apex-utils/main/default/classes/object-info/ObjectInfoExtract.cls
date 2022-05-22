@@ -2,11 +2,7 @@ public class ObjectInfoExtract implements IObjectInfoExtract {
     
     	private String objectAPIName;
         private List<ObjectInfoRecordType> objectInfoRecordTypes;
-        // public static final String[] CSV_HEADERS = new String[] {'Object API Name'};
-
         public final String[] CSV_HEADERS = new String[] {'Object API Name'};
-
-
 
         public ObjectInfoExtract(){
             if (objectInfoRecordTypes == null) {

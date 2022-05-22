@@ -4,5 +4,6 @@ public interface IObjectInfoExtract {
     String setObjectAPIName(String objectAPIName);
     List<ObjectInfoRecordType> getObjectInfoRecordTypes();
     void addObjectInfoRecordType(ObjectInfoRecordType objectInfoRecordType);
+    String[] getCSV_Headers();
     
 }

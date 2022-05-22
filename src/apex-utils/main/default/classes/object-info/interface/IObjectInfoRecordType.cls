@@ -1,4 +1,4 @@
-public interface RecordTypeWrapping {
+public interface IObjectInfoRecordType {
     
         String getObjectAPIName();
         String getRecordTypeDeveloperName();
@@ -10,6 +10,9 @@ public interface RecordTypeWrapping {
         String getLayoutName();
         void setLayoutId(String layoutId);
         String getLayoutId();
+
+        void addToObjectInfoFields(List<ObjectInfoField> objectInfoFields);
+        List<ObjectInfoField> getObjectInfoFields();
 
 
 }
