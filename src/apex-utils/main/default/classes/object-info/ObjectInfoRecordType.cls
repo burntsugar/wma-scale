@@ -7,6 +7,8 @@ public class ObjectInfoRecordType implements RecordTypeWrapping {
     private boolean isMaster;
     private String layoutName;
     private String layoutId;
+    public final String[] CSV_HEADERS = new String[] {'RT Developer Name','RT Id','Feild API Name'};
+
     
     public ObjectInfoRecordType(String objectAPIName, String recordTypeDeveloperName,String recordTypeId, boolean isMaster){
         this.objectAPIName = objectAPIName;
@@ -15,7 +17,14 @@ public class ObjectInfoRecordType implements RecordTypeWrapping {
         this.isMaster = isMaster;
     }
 
+    public String[] getCSV_Headers(){
+        return this.CSV_HEADERS;
+    }
+
     public List<String> getFields(){
+        if (this.fields == null) {
+            this.fields = new List<String>();
+        }
         return this.fields;
     }
 
