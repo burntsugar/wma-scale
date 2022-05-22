@@ -111,6 +111,7 @@ public with sharing class ObjectInfoField {
         pickListValues.addAll(pickListValues);
     }
 
+    // TODO
     public List<String> getPicklistValues(){
         if (this.picklistValues == null){
             this.picklistValues = new list<String>();
@@ -121,8 +122,6 @@ public with sharing class ObjectInfoField {
     public String getCsvStrings() {
         String[] s = new String[] {String.valueOf(this.fieldAPIName),String.valueOf(this.label),String.valueOf(this.defaultValue),String.valueOf(this.isCustom),String.valueOf(this.isNameField),String.valueOf(this.isNillable),String.valueOf(this.fieldDataType),String.valueOf(this.fieldLength),String.valueOf(this.isAutoNumber),String.valueOf(this.isCalculated),String.valueOf(this.isDependentPicklist),String.valueOf(this.isExternalId),String.valueOf(this.isIdLookup),String.valueOf(this.isUnique),String.valueOf(this.scale),String.valueOf(this.precision)};
         String sss = String.join(s,',');
-        System.Debug('SSSSSSSSTTTRINGS :::: ' + sss);
-
         return sss;
     }
 }

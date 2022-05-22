@@ -22,7 +22,6 @@ public class ObjectInfoRecordType implements IObjectInfoRecordType {
         if (this.objectInfoFields == null) {
             this.objectInfoFields = new List<ObjectInfoField>();
         }
-        System.Debug('xxxxxyyyyy :::: ' + objectInfoFields);
         this.objectInfoFields.addAll(objectInfoFields);
     }
     public List<ObjectInfoField> getObjectInfoFields(){

@@ -16,11 +16,7 @@ public interface IObjectInfoField {
     boolean getIsUnique();
     String getScale();
     String getPrecision();
-    // void addToObjectInfoFields(List<IObjectInfoField> objectInfoFields);
-    // List<IObjectInfoField> getObjectInfoFields();
-
-
-
+ 
     void addToPicklistValues(List<String> pickListValues);
     List<String> getPicklistValues();
 
