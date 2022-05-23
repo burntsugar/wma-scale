@@ -8,16 +8,29 @@ public with sharing class GetInfo {
         // recorTypeName, attributeValues
         Map<String,List<String>> recordtypes = GetRecordTypesForObject.getRecordTypes(objectAPIName);
 
+        //rt,layoutName,layout
+        Map<String,Map<String,List<String>>> rtlayouts = new Map<String,Map<String,List<String>>>();
+
         // LayoutName, attribute values
         Map<String,List<String>> layouts = new Map<String,List<String>>();
         for(String rt:recordtypes.keySet()){
+            //Hack below
             Map<String,List<String>> m = GetLayoutsForRecordType.getLayouts(recordtypes.get(rt).get(1));
+            String recordTypeName = rt;
             for (String s: m.keySet()){
                 if(!layouts.containsKey(s)){
                     layouts.put(s,new List<String>());
                 }
                 layouts.get(s).AddAll(m.get(s));
+
+                if(!rtlayouts.containsKey(rt)){///
+                    rtlayouts.put(rt,new Map<String,List<String>>());///
+                }
+                rtlayouts.get(rt).put(s,m.get(s));///
+        
             }
+
+            
         }
 
         // layoutName, fields.
