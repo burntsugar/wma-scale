@@ -5,34 +5,48 @@ public with sharing class SaveToSalesforce {
     private static final String DATE_FORMAT = 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'';
     private static final String SHARE_TYPE = 'I';
 
+    private static ICRUD crud;
+
+    public static void initCrud(){
+        if (crud == null){
+            CRUD c = new CRUD();
+            crud = c;
+        }
+    }
+
+    public static void setCrud(ICrud crudRef){
+        crud = crudRef;
+    }
+
 
     public static void save(String workSpaceLibraryName, String contentFolderName, String title, String content) {
-        
+        initCrud();
+
         String documentTitle = makeDocumentTitle(title);
         String pathOnClient = makePathOnClient(documentTitle);
         ContentVersion contentVersion = saveContentVersion(pathOnClient, documentTitle, content);
 
-        ContentWorkspace ContentWorkspace = getContentWorkSpace(workSpaceLibraryName);
-        ContentFolder libraryContentFolder = getLibraryContentFolder(ContentWorkspace.Id);
-        ContentFolder contentFolder = getContentFolder(contentFolderName);
+        ContentWorkspace ContentWorkspace = crud.getContentWorkSpace(workSpaceLibraryName);
+        ContentFolder libraryContentFolder = crud.getLibraryContentFolder(ContentWorkspace.Id);
+        ContentFolder contentFolder = crud.getContentFolder(contentFolderName);
 
         linkContentVersionToContentFolder(ContentWorkspace, libraryContentFolder, contentFolder, contentVersion.Id);
     }
 
-    private static ContentWorkspace getContentWorkSpace(String workSpaceLibraryName){
-        ContentWorkspace libraryContentWorkSpace = [Select Id from ContentWorkspace where Name =: workSpaceLibraryName];
-        return libraryContentWorkSpace;
-    }
+    // private static ContentWorkspace getContentWorkSpace(String workSpaceLibraryName){
+    //     ContentWorkspace libraryContentWorkSpace = [Select Id from ContentWorkspace where Name =: workSpaceLibraryName];
+    //     return libraryContentWorkSpace;
+    // }
 
-    private static ContentFolder getLibraryContentFolder(String WorkSpaceId){
-        ContentFolder libraryContentFolder = [Select Id from ContentFolder where Name =: WorkSpaceId];
-        return libraryContentFolder;
-    }
+    // private static ContentFolder getLibraryContentFolder(String WorkSpaceId){
+    //     ContentFolder libraryContentFolder = [Select Id from ContentFolder where Name =: WorkSpaceId];
+    //     return libraryContentFolder;
+    // }
 
-    private static ContentFolder getContentFolder(String contentFolderName){
-        ContentFolder folder = [Select Id from ContentFolder where Name =: contentFolderName];
-        return folder;
-    }
+    // private static ContentFolder getContentFolder(String contentFolderName){
+    //     ContentFolder folder = [Select Id from ContentFolder where Name =: contentFolderName];
+    //     return folder;
+    // }
 
     private static String makeDocumentTitle(String title){
         String timestamp = Datetime.now().format(DATE_FORMAT);
@@ -51,24 +65,33 @@ public with sharing class SaveToSalesforce {
         cv.Title = documentTitle; 
         cv.PathOnClient = pathOnClient;
         cv.VersionData = Blob.valueOf(content);
-        insert cv;
+        
+        //insert cv;
+        crud.doInsert(cv);
 
         return cv;
     }
 
     private static void linkContentVersionToContentFolder(ContentWorkspace libraryContentWorkSpace, ContentFolder libraryContentFolder, ContentFolder contentFolder, String contentVersionId){
 
-        Id conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersionId].ContentDocumentId;
+        Id conDoc = Crud.getContentVersion(contentVersionId).ContentDocumentId;
+        //Id conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersionId].ContentDocumentId;
         
         ContentDocumentLink cDe = new ContentDocumentLink();
         cDe.ContentDocumentId = conDoc;
         cDe.LinkedEntityId = libraryContentWorkSpace.Id; 
         cDe.ShareType = SHARE_TYPE; 
-        insert cDe;
+
+        //insert cDe;
+        CRUD.doInsert(cDe);
     
-        ContentFolderMember cfm = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: libraryContentFolder.Id];
+        //ContentFolderMember cfm = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: libraryContentFolder.Id];
+        ContentFolderMember cfm = CRUD.getContentFolderMember(libraryContentFolder);
         cfm.ParentContentFolderId = contentFolder.Id;
-        update cfm;
+        
+        //update cfm;
+        CRUD.doUpdate(cfm);
+
 
     }
     

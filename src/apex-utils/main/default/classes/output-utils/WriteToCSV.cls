@@ -7,6 +7,13 @@ public with sharing class WriteToCSV {
 
     }
 
+    public static void createCSV(ObjectInfoCSV objectInfoCSV, String reportTitle) {
+        String content = createCSV(objectInfoCSV.getCSVHeaders().getCSVHeaders(),objectInfoCSV.getCSVRows().getCSVRows(),objectInfoCSV.getCsvTitle());
+        String title = reportTitle;
+        SaveToSalesforce.save('my-queries','general',title, content);
+
+    }
+
     private static void createFile(String versionData, String title) {
         ContentVersion cv = new ContentVersion();
         cv.ContentLocation = 'S'; // resides on Salesforce

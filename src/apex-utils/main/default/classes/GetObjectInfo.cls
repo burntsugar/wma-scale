@@ -3,6 +3,8 @@ public with sharing class GetObjectInfo {
     private final String BASE_URL_TOOLING_PROFILELAYOUT='callout:toolingapi?';
     private final string TOOLING_PROFILELAYOUT_SQL='select Layout.Name,LayoutId, ProfileId, Profile.Name, RecordTypeId, Layout.EntityDefinitionId from ProfileLayout where TableEnumOrId=\'01I5j000000BHZl\' and Profile.Name in (\'WMA Admin User\',\'WMA Standard User\',\'System Administrator\')';
 
+    private String reportTitle;
+
     public ObjectInfoExtract getObjectInfo(String objectAPIName) {
         
         Type customType = Type.forName(objectAPIName);
@@ -36,6 +38,28 @@ public with sharing class GetObjectInfo {
 
         ObjectInfoCSV objToCSV = new ObjectInfoCSV(o, 'second-csv');
         WriteToCSV.createCSV(objToCSV);
+
+    }
+
+    public void extractObjectInfoToCSV(String objectAPIName, String title) {
+
+        this.reportTitle = reportTitle;
+
+        ObjectInfoExtract o = getObjectInfo(objectAPIName);
+
+        getLayoutsForObject(o);
+
+        
+        for (ObjectInfoRecordType rt : o.getObjectInfoRecordTypes()){
+            List<ObjectInfoField> objectInfoFields = new List<ObjectInfoField>();
+            for (String fieldName : rt.getFields()) {
+                objectInfoFields.add(syncFields(o.getObjectAPIName(),fieldName));
+            }
+            rt.addToObjectInfoFields(objectInfoFields);
+        }
+
+        ObjectInfoCSV objToCSV = new ObjectInfoCSV(o, 'second-csv');
+        WriteToCSV.createCSV(objToCSV, reportTitle);
 
     }
 

@@ -5,4 +5,9 @@ public class KickOff {
         fieldInfo.extractObjectInfoToCSV(objectAPIName);
     }
 
+    public void extractObjectInfoToCSV(String objectAPIName, String reportTitle){
+        GetObjectInfo fieldInfo = new GetObjectInfo();
+        fieldInfo.extractObjectInfoToCSV(objectAPIName, reportTitle);
+    }
+
 }
