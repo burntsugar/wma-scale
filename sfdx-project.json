@@ -47,7 +47,7 @@
             "versionNumber": "1.0.0.0"
         },
         {
-            "path": "./apex-utils",
+            "path": "./src/apex-utils",
             "package": "apex-utils",
             "versionNumber": "1.0.0.0"
         },

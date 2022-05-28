@@ -27,6 +27,17 @@ System.Debug(s);
 KickOff k = new KickOff();
 k.extractObjectInfoToCSV('WMA_Facility__c');
 
+
+Type customType = Type.forName('WMA_Facility__c');
+sObject instance = (sObject)customType.newInstance();
+Schema.DescribeSObjectResult R = instance.getSObjectType().getDescribe();
+ObjectInfoExtract o = new ObjectInfoExtract();
+List<Schema.RecordTypeInfo> RT = R.getRecordTypeInfos();
+System.Debug(RT.get(0).getName() + ' ' + RT.get(0).isMaster() + ' ' + RT.get(0).getRecordTypeId());
+System.Debug(RT.get(1).getName() + ' ' + RT.get(1).isMaster() + ' ' + RT.get(1).getRecordTypeId());
+
+
+
 URL.getSalesforceBaseUrl().toExternalForm();
 
 https://wise-impala-ns4i14-dev-ed.my.salesforce.com
@@ -40,3 +51,38 @@ select Layout.Name,LayoutId, ProfileId, Profile.Name, Layout.EntityDefinitionId 
 select Layout.Name,LayoutId, ProfileId, Profile.Name, Layout.EntityDefinitionId from ProfileLayout where TableEnumOrId='01I5j000000BHZl' and Profile.Name = 'WMA Admin User'
 
 select Layout.Name,LayoutId, ProfileId, Profile.Name, Layout.EntityDefinitionId from ProfileLayout where TableEnumOrId='01I5j000000BHZl' and Profile.Name in ('WMA Admin User','WMA Standard User','System Administrator')
+
+
+List<SObjectField> allFields = SObjectType.WMA_Facility__c.fields.getMap().values();
+
+
+Schema.DescribeFieldResult F = WMA_Facility__c.fields.WMA_Facility_Location_Type__c.getDescribe();
+Schema.sObjectField T = F.getSObjectField();
+System.Debug(T);
+System.Debug(F.getLabel());
+System.Debug(F.getDefaultvalue());
+System.Debug(F.isCustom());
+System.Debug(F.isNameField());
+System.Debug(F.isNillable());
+System.Debug(F.getType());
+
+
+    String getLabel();
+     String getDefaultValue();
+     boolean getIsCustom();
+     boolean getIsNameField();
+     boolean getIsNillable();
+     String getFieldDataType();
+     String getFieldLength();
+     String getIsAutoNumber();
+     boolean getIsCalculated();
+     boolean getIsDependentPicklist();
+     boolean getIsExternalId();
+     boolean getIsIdLookup();
+     boolean getIsUnique();
+     String getScale();
+     String getPrecision();
+
+     List<String> addToPicklistValues();
+
+GetInfo.getObjectInfo('WMA_Facility__c');

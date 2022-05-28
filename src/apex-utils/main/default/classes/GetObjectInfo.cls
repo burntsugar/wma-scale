@@ -35,8 +35,8 @@ public with sharing class GetObjectInfo {
         }
 
         ObjectInfoCSV objToCSV = new ObjectInfoCSV(o, 'second-csv');
-
         WriteToCSV.createCSV(objToCSV);
+
     }
 
 
