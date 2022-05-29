@@ -17,6 +17,14 @@ public class CRUD implements ICrud {
         return conDoc;
     }
 
+    // public ContentVersion getContentVersionByTitle(String contentVersionTitle){
+    //     String contentVersionTitleStr = '%' + contentVersionTitle + '%';
+    //     // ContentVersion conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersionId].ContentDocumentId;
+    //     ContentVersion conDoc = [SELECT ContentDocumentId, Title FROM ContentVersion WHERE Title LIKE :contentVersionTitleStr];
+
+    //     return conDoc;
+    // }
+
     public ContentWorkspace getContentWorkSpace(String workSpaceLibraryName){
         ContentWorkspace libraryContentWorkSpace = [Select Id from ContentWorkspace where Name =: workSpaceLibraryName];
         return libraryContentWorkSpace;

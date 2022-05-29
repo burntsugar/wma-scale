@@ -19,7 +19,21 @@ public with sharing class SaveToSalesforce {
     }
 
 
-    public static void save(String workSpaceLibraryName, String contentFolderName, String title, String content) {
+    // public static void save(String workSpaceLibraryName, String contentFolderName, String title, String content) {
+    //     initCrud();
+
+    //     String documentTitle = makeDocumentTitle(title);
+    //     String pathOnClient = makePathOnClient(documentTitle);
+    //     ContentVersion contentVersion = saveContentVersion(pathOnClient, documentTitle, content);
+
+    //     ContentWorkspace ContentWorkspace = crud.getContentWorkSpace(workSpaceLibraryName);
+    //     ContentFolder libraryContentFolder = crud.getLibraryContentFolder(ContentWorkspace.Id);
+    //     ContentFolder contentFolder = crud.getContentFolder(contentFolderName);
+
+    //     linkContentVersionToContentFolder(ContentWorkspace, libraryContentFolder, contentFolder, contentVersion.Id);
+    // }
+
+    public static ContentVersion save(String workSpaceLibraryName, String contentFolderName, String title, String content) {
         initCrud();
 
         String documentTitle = makeDocumentTitle(title);
@@ -31,6 +45,8 @@ public with sharing class SaveToSalesforce {
         ContentFolder contentFolder = crud.getContentFolder(contentFolderName);
 
         linkContentVersionToContentFolder(ContentWorkspace, libraryContentFolder, contentFolder, contentVersion.Id);
+
+        return contentVersion;
     }
 
     // private static ContentWorkspace getContentWorkSpace(String workSpaceLibraryName){

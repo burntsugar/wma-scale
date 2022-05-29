@@ -22,7 +22,7 @@ for (ObjectInfoRecordType rt : rts) {
 }
 System.Debug(s);
 
-
+GoNow go = new GoNow();
 
 KickOff k = new KickOff();
 k.extractObjectInfoToCSV('WMA_Facility__c');
