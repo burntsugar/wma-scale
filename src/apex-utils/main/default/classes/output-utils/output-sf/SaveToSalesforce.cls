@@ -38,13 +38,22 @@ public with sharing class SaveToSalesforce {
 
         String documentTitle = makeDocumentTitle(title);
         String pathOnClient = makePathOnClient(documentTitle);
+        // ContentVersion contentVersion = saveContentVersion(pathOnClient, documentTitle, content);
         ContentVersion contentVersion = saveContentVersion(pathOnClient, documentTitle, content);
+
 
         ContentWorkspace ContentWorkspace = crud.getContentWorkSpace(workSpaceLibraryName);
         ContentFolder libraryContentFolder = crud.getLibraryContentFolder(ContentWorkspace.Id);
         ContentFolder contentFolder = crud.getContentFolder(contentFolderName);
 
-        linkContentVersionToContentFolder(ContentWorkspace, libraryContentFolder, contentFolder, contentVersion.Id);
+        //linkContentVersionToContentFolder(ContentWorkspace, libraryContentFolder, contentFolder, contentVersion.Id);
+
+        // String contentVersionId, ContentWorkspace libraryContentWorkSpace
+        ContentDocumentLink contentDocumentlink = saveContentDocumentlink(contentVersion.Id,ContentWorkspace);
+
+        // updateContentFolderMember(ContentFolder libraryContentFolder, ContentFolder contentFolder)
+
+        updateContentFolderMember(libraryContentFolder,contentFolder);
 
         return contentVersion;
     }
@@ -88,7 +97,7 @@ public with sharing class SaveToSalesforce {
         return cv;
     }
 
-    private static void linkContentVersionToContentFolder(ContentWorkspace libraryContentWorkSpace, ContentFolder libraryContentFolder, ContentFolder contentFolder, String contentVersionId){
+    private static ContentDocumentLink saveContentDocumentlink(String contentVersionId, ContentWorkspace libraryContentWorkSpace){
 
         Id conDoc = Crud.getContentVersion(contentVersionId).ContentDocumentId;
         //Id conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersionId].ContentDocumentId;
@@ -100,16 +109,40 @@ public with sharing class SaveToSalesforce {
 
         //insert cDe;
         CRUD.doInsert(cDe);
-    
-        //ContentFolderMember cfm = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: libraryContentFolder.Id];
+
+        return cde;
+    }
+
+    private static void updateContentFolderMember(ContentFolder libraryContentFolder, ContentFolder contentFolder){
         ContentFolderMember cfm = CRUD.getContentFolderMember(libraryContentFolder);
         cfm.ParentContentFolderId = contentFolder.Id;
         
         //update cfm;
         CRUD.doUpdate(cfm);
-
-
     }
+
+    // private static void linkContentVersionToContentFolder(ContentWorkspace libraryContentWorkSpace, ContentFolder libraryContentFolder, ContentFolder contentFolder, String contentVersionId){
+
+    //     // Id conDoc = Crud.getContentVersion(contentVersionId).ContentDocumentId;
+    //     // //Id conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersionId].ContentDocumentId;
+        
+    //     // ContentDocumentLink cDe = new ContentDocumentLink();
+    //     // cDe.ContentDocumentId = conDoc;
+    //     // cDe.LinkedEntityId = libraryContentWorkSpace.Id; 
+    //     // cDe.ShareType = SHARE_TYPE; 
+
+    //     // //insert cDe;
+    //     // CRUD.doInsert(cDe);
+    
+    //     //ContentFolderMember cfm = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: libraryContentFolder.Id];
+    //     ContentFolderMember cfm = CRUD.getContentFolderMember(libraryContentFolder);
+    //     cfm.ParentContentFolderId = contentFolder.Id;
+        
+    //     //update cfm;
+    //     CRUD.doUpdate(cfm);
+
+
+    // }
     
 
     // void saveFile(String workSpaceLibraryName, String contentFolderName, String title, String content) {

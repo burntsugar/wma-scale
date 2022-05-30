@@ -6,13 +6,13 @@ public class CRUSTest {
 
     private final static String CONTENT_FOLDER_NAME = 'Test Content Folder';
 
-     ContentWorkspace testWorkspace;
+    //ContentWorkspace testWorkspace;
 
 
     @testSetup static void createTestData() {
         // INSERT WORKSPACE
-        // ContentWorkspace testWorkspace = new ContentWorkspace(Name=WORKSPACE_NAME, DeveloperName=WORKSPACE_DEVELOPER_NAME);
-        testWorkspace = new ContentWorkspace(Name=WORKSPACE_NAME, DeveloperName=WORKSPACE_DEVELOPER_NAME);
+        ContentWorkspace testWorkspace = new ContentWorkspace(Name=WORKSPACE_NAME, DeveloperName=WORKSPACE_DEVELOPER_NAME);
+        //testWorkspace = new ContentWorkspace(Name=WORKSPACE_NAME, DeveloperName=WORKSPACE_DEVELOPER_NAME);
 
         insert testWorkspace;
 
@@ -50,6 +50,30 @@ public class CRUSTest {
         System.assert(!(cv.Id==null),'ContentVersion not created!');
     }
 
+    @isTest static void getContentVersion() {
+
+        CRUD crud = new Crud();
+
+        String headers = 'header-one, header-two';
+        String rows = 'col-one, col-two';
+        String content = headers +  + '\n';
+        content += rows;
+
+        String documentTitle = 'testContentVersion' + '-' + Datetime.now().format('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
+        
+        ContentVersion cv = new ContentVersion();
+        cv.ContentLocation = 'S'; 
+        cv.Title = documentTitle; 
+        cv.PathOnClient = documentTitle + '.csv';
+        cv.VersionData = Blob.valueOf(content);
+    
+        crud.doInsert(cv);
+
+        ContentVersion retrievedCv = crud.getContentVersion(cv.Id);
+
+        System.assert(!(retrievedCv.Id==null),'ContentVersion not found!');
+    }
+
     @isTest static void getContentWorkSpace() {
 
         CRUD crud = new Crud();
@@ -61,10 +85,7 @@ public class CRUSTest {
     @isTest static void getLibraryContentFolder() {
 
         CRUD crud = new Crud();
-        //sObject cwsp = crud.getContentWorkSpace(WORKSPACE_NAME);
-
         sObject cwsp = crud.getContentWorkSpace(WORKSPACE_NAME);
-
 
         sObject lcf = crud.getLibraryContentFolder(cwsp.Id);
         System.assert(!(lcf.Id==null),'LibraryContentFolder not found!');
