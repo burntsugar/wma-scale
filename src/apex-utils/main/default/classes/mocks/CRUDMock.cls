@@ -1,4 +1,4 @@
-public with sharing class CRUDMock implements ICrud {
+public with sharing class CRUDMock  {
 
     private static List<sObject> sObjects= new List<sObject>();
     
