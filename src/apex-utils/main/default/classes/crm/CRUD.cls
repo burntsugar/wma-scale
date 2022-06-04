@@ -11,66 +11,69 @@ public class CRUD implements ICrud {
     }
 
     public ContentVersion getContentVersion(String contentVersionId){
-        ContentVersion conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersionId];
+        ContentVersion contentVersion = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersionId];
 
-        return conDoc;
+        return contentVersion;
     }
 
-    public ContentWorkspace getContentWorkSpace(String contentWorkspaceName){
-        ContentWorkspace libraryContentWorkSpace = [Select Id from ContentWorkspace where Name =: contentWorkspaceName];
-        return libraryContentWorkSpace;
+    public ContentWorkspace getContentWorkSpace(String contentWorkSpaceName){
+        ContentWorkspace contentWorkSpace = [Select Id from ContentWorkspace where Name =: contentWorkSpaceName];
+
+        return contentWorkSpace;
     }
 
     public ContentFolder getContentFolder(String contentFolderName){
-        ContentFolder folder = [Select Id from ContentFolder where Name =: contentFolderName];
-        return folder;
-    }
+        ContentFolder contentFolder = [Select Id from ContentFolder where Name =: contentFolderName];
 
-    public ContentFolderMember getContentFolderMember(String parentContentFolderId){
-        ContentFolderMember cfm = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: parentContentFolderId];
-        return cfm;
+        return contentFolder;
     }
 
     public ContentWorkSpace makeContentWorkspace(String name, String developerName){
-        ContentWorkspace cw = new ContentWorkspace();
-        cw.Name = name;
-        cw.DeveloperName = developerName;
+        ContentWorkspace contentWorkSpace = new ContentWorkspace();
+        contentWorkSpace.Name = name;
+        contentWorkSpace.DeveloperName = developerName;
         
-        this.doInsert(cw);
-        return cw;
+        this.doInsert(contentWorkSpace);
+
+        return contentWorkSpace;
     }
 
     public ContentFolder makeContentFolder(String contentFolderName, String parentContentFolderId){
-       
         ContentFolder contentFolder = new ContentFolder(Name=contentFolderName);
         contentFolder.ParentContentFolderId = parentContentFolderId;
+
         doInsert(contentFolder);
 
         return contentFolder;
     }
 
-    public ContentFolderMember makeContentFolderMember(String parentContentFolderId, String contentFolderId){
+    public ContentDocumentLink makeContentDocumentLink(ContentVersion contentVersion, ContentWorkSpace contentWorkSpace) {
+        Id conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersion.Id].ContentDocumentId;
         
-        ContentFolderMember cfm = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: parentContentFolderId];
+        ContentDocumentLink contentDocumentLink = new ContentDocumentLink();
+        contentDocumentLink.ContentDocumentId = conDoc;
+        contentDocumentLink.LinkedEntityId = contentWorkSpace.Id; 
+        contentDocumentLink.ShareType = 'I'; 
 
+        doInsert(contentDocumentLink);
+
+        return contentDocumentLink;
+    }
+
+    public ContentFolderMember makeContentFolderMember(String parentContentFolderId, String contentFolderId){
+        ContentFolderMember cfm = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: parentContentFolderId];
         cfm.ParentContentFolderId = contentFolderId;
-        update cfm;
+
+        doUpdate(cfm);
 
         return cfm;
     }
-
-    public ContentDocumentLink makeContentDocumentLink(ContentVersion contentVersion,ContentWorkSpace contentWorkspace) {
-        Id conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersion.Id].ContentDocumentId;
-        
-        ContentDocumentLink cdl = new ContentDocumentLink();
-        cdl.ContentDocumentId = conDoc;
-        cdl.LinkedEntityId = contentWorkspace.Id; 
-        cdl.ShareType = 'I'; 
-        doInsert(cdl);
-
-        return cdl;
-    }
 }
+
+// public ContentFolderMember getContentFolderMember(String parentContentFolderId){
+//     ContentFolderMember cfm = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: parentContentFolderId];
+//     return cfm;
+// }
 
     // public List<sObject> doSelect(String id, String objectName) {
     //     String q = 'SELECT id FROM ' + objectName;

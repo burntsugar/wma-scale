@@ -5,7 +5,6 @@ public interface ICrud {
     ContentVersion getContentVersion(String contentVersionId);
     ContentWorkspace getContentWorkSpace(String contentWorkspaceName);
     ContentFolder getContentFolder(String contentFolderName);
-    ContentFolderMember getContentFolderMember(String parentContentFolderId);
     ContentWorkSpace makeContentWorkspace(String name, String developerName);
     ContentFolder makeContentFolder(String contentFolderName, String parentContentFolderId);
     ContentFolderMember makeContentFolderMember(String parentContentFolderId, String contentFolderId);

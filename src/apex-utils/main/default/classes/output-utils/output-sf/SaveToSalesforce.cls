@@ -89,9 +89,16 @@ public with sharing class SaveToSalesforce {
     }
 
     private static void updateContentFolderMember(ContentFolder libraryContentFolder, ContentFolder contentFolder){
-        ContentFolderMember cfm = CRUD.getContentFolderMember(libraryContentFolder.Id);
+        ContentFolderMember cfm = CRUD.makeContentFolderMember(libraryContentFolder.Id, contentFolder.Id);
         cfm.ParentContentFolderId = contentFolder.Id;
         
         CRUD.doUpdate(cfm);
     }
+
+    // private static void updateContentFolderMember(ContentFolder libraryContentFolder, ContentFolder contentFolder){
+    //     ContentFolderMember cfm = CRUD.getContentFolderMember(libraryContentFolder.Id);
+    //     cfm.ParentContentFolderId = contentFolder.Id;
+        
+    //     CRUD.doUpdate(cfm);
+    // }
 }
