@@ -25,7 +25,7 @@ public class CRUDTest {
         System.assert(!(actualCv.Id==null),'ContentVersion not created!');
     }
 
-    @isTest static void getContentVersion() {
+    @isTest static void getContentVersion_with_valid_contentversion_expect_new_record() {
         String headers = 'header-one, header-two';
         String rows = 'col-one, col-two';
         String content = headers +  + '\n';
