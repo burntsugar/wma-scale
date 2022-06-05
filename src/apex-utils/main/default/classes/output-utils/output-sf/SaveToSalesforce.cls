@@ -33,20 +33,23 @@ public with sharing class SaveToSalesforce {
     //     linkContentVersionToContentFolder(ContentWorkspace, libraryContentFolder, contentFolder, contentVersion.Id);
     // }
 
-    public static ContentVersion save(String workSpaceLibraryName, String contentFolderName, String title, String content) {
+    public static ContentVersion save(String contentWorkspaceName, String contentFolderName, String contentVersionTitle, String content) {
         initCrud();
 
-        String documentTitle = makeDocumentTitle(title);
-        String pathOnClient = makePathOnClient(documentTitle);
-        ContentVersion contentVersion = saveContentVersion(pathOnClient, documentTitle, content);
+        String title = makeDocumentTitle(contentVersionTitle);
+        String pathOnClient = makePathOnClient(title);
 
-        ContentWorkspace ContentWorkspace = crud.getContentWorkSpace(workSpaceLibraryName);
-        // ContentFolder libraryContentFolder = crud.getLibraryContentFolder(ContentWorkspace.Id);
-        ContentFolder libraryContentFolder = crud.getContentFolder(ContentWorkspace.Id);
+        ContentVersion contentVersion = saveContentVersion(pathOnClient, title, content);
 
-        ContentFolder contentFolder = crud.getContentFolder(contentFolderName);
-        ContentDocumentLink contentDocumentlink = saveContentDocumentlink(contentVersion.Id,ContentWorkspace);
-        updateContentFolderMember(libraryContentFolder,contentFolder);
+        ContentWorkspace contentWorkspace = crud.getContentWorkSpace(contentWorkspaceName);
+
+        ContentFolder contentWorkspaceContentFolder = crud.getContentFolder(contentWorkspace.Id);
+
+        ContentFolder childContentFolder = crud.getContentFolder(contentFolderName);
+
+        ContentDocumentLink contentDocumentlink = saveContentDocumentlink(contentVersion.Id, contentWorkspace);
+
+        updateContentFolderMember(contentWorkspaceContentFolder, childContentFolder);
 
         return contentVersion;
     }
@@ -54,11 +57,13 @@ public with sharing class SaveToSalesforce {
     private static String makeDocumentTitle(String title){
         String timestamp = Datetime.now().format(DATE_FORMAT);
         String documentTitle = title + '-' + timeStamp;
+
         return documentTitle;
     }
 
     private static String makePathOnClient(String documentTitle){
         String pathOnClient = documentTitle + FILE_EXTENSION;
+
         return pathOnClient;
     }
 
@@ -75,7 +80,6 @@ public with sharing class SaveToSalesforce {
     }
 
     private static ContentDocumentLink saveContentDocumentlink(String contentVersionId, ContentWorkspace libraryContentWorkSpace){
-
         Id conDoc = Crud.getContentVersion(contentVersionId).ContentDocumentId;
         
         ContentDocumentLink cDe = new ContentDocumentLink();
