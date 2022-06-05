@@ -54,30 +54,46 @@ public with sharing class SaveToSalesforce {
         return pathOnClient;
     }
 
+    // private static ContentVersion saveContentVersion(String pathOnClient, String documentTitle, String content) {
+    //     ContentVersion cv;
+
+    //     try {
+    //         cv = crud.saveContentVersion(pathOnClient, documentTitle, content);
+    //     } catch (DmlException dmle) {
+    //         throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_EX_MSG_CONTENTVERSION), dmle);
+    //     } catch (Exception e) {
+    //         throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTVERSION), e);
+    //     }
+
+    //     return cv;
+    // }
+
     private static ContentVersion saveContentVersion(String pathOnClient, String documentTitle, String content) {
         ContentVersion cv;
-
-        try {
-            cv = crud.saveContentVersion(pathOnClient, documentTitle, content);
-        } catch (DmlException dmle) {
-            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_EX_MSG_CONTENTVERSION), dmle);
-        } catch (Exception e) {
-            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTVERSION), e);
-        }
+        cv = crud.saveContentVersion(pathOnClient, documentTitle, content);
 
         return cv;
     }
 
+    // private static ContentWorkspace getContentWorkSpace(String contentWorkspaceName) {
+    //     ContentWorkspace contentWorkspace;
+
+    //     try {
+    //         contentWorkspace = crud.getContentWorkSpace(contentWorkspaceName);
+    //     } catch (DmlException dmle) {
+    //         throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_EX_MSG_CONTENTWORKSPACE), dmle);
+    //     } catch (Exception e) {
+    //         throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTWORKSPACE), e);
+    //     }
+
+    //     if(contentWorkspace==null) throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.NULL_MSG_CONTENTWORKSPACE));
+
+    //     return contentWorkspace;
+    // }
+
     private static ContentWorkspace getContentWorkSpace(String contentWorkspaceName) {
         ContentWorkspace contentWorkspace;
-
-        try {
-            contentWorkspace = crud.getContentWorkSpace(contentWorkspaceName);
-        } catch (DmlException dmle) {
-            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_EX_MSG_CONTENTWORKSPACE), dmle);
-        } catch (Exception e) {
-            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTWORKSPACE), e);
-        }
+        contentWorkspace = crud.getContentWorkSpace(contentWorkspaceName);
 
         if(contentWorkspace==null) throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.NULL_MSG_CONTENTWORKSPACE));
 

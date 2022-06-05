@@ -46,6 +46,12 @@ public class CRUDTest {
         System.assert(!(testContentVersion.Id==null),'ContentVersion not found!');
     }
 
+    @isTest static void getContentVersion_with_invalid_expect_null() {
+        CRUD crud = new Crud();
+        ContentVersion testContentVersion = crud.getContentVersion('xxx');
+        System.assert((testContentVersion==null),'ContentVersion not found!');
+    }
+
     @isTest static void saveContentWorkspace() {
         CRUD crud = new Crud();
         ContentWorkspace cwsp = crud.saveContentWorkspace(WORKSPACE_NAME, WORKSPACE_DEVELOPER_NAME);
