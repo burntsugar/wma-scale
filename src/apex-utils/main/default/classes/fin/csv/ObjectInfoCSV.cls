@@ -1,4 +1,5 @@
-public with sharing class ObjectInfoCSV implements CSVWrapping {
+// public with sharing class ObjectInfoCSV implements CSVWrapping {
+public with sharing class ObjectInfoCSV {
 
     private CSVHeaders cSVHeaders;
     private CSVRows cSVRows;
@@ -35,18 +36,31 @@ public with sharing class ObjectInfoCSV implements CSVWrapping {
         }
     }
 
-    public CSVHeaders getCSVHeaders() {
+    public List<String> getCSVHeaders() {
         if (cSVHeaders == null) {
             makecSVHeaders();
         }
-        return this.cSVHeaders;
+        return this.cSVHeaders.getCSVHeaders();
     }
-    public CSVRows getCSVRows(){
+    public List<String> getCSVRows(){
         if (cSVRows == null){
             makecSVRows();
         }
-        return this.cSVRows;
+        return this.cSVRows.getCSVRows();
     }
+
+    // public CSVHeaders getCSVHeaders() {
+    //     if (cSVHeaders == null) {
+    //         makecSVHeaders();
+    //     }
+    //     return this.cSVHeaders;
+    // }
+    // public CSVRows getCSVRows(){
+    //     if (cSVRows == null){
+    //         makecSVRows();
+    //     }
+    //     return this.cSVRows;
+    // }
 
     public String getCsvTitle(){
         return this.csvTitle;
