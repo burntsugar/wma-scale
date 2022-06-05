@@ -1,48 +1,18 @@
 @isTest
 private class SaveToSalesforceTest {
 
-    @isTest static void testone() {
+    @isTest static void save() {
 
-    //     //CRUDMock crud = new CRUDMock();
-    //     CRUD crud = new CRUD();
+        //    public static ContentVersion save(String contentWorkspaceName, String contentFolderName, String contentVersionTitle, String content) {
 
-    //     String title = 'xxx';
+        boolean expected = true;
+        boolean actual = false;
+        try {
+            SaveToSalesforce.save(' ',' ', ' ',' ');
+        } catch (ContentException ce) {
+            actual = true;
+        }
 
-    //     String headers = 'header-one, header-two';
-    //     String rows = 'col-one, col-two';
-    //     String content = headers +  + '\n';
-    //     content += rows;
-
-    //    // SaveToSalesforce.setCrud(crud);
-    //     SaveToSalesforce.save('my-queries','general', title, content);
-
-    //     ContentVersion cv = crud.getContentVersionByTitle(title);
-
-    //     System.assertEquals(title, cv.Title);
+        System.assert(expected == actual, 'Expected is ' + String.valueOf(expected) + ' but actual was ' + String.valueOf(actual));
     }
 }
-
-
-
-// @isTest
-// private class SaveToSalesforceTest {
-
-//     @isTest static void testone() {
-
-//         CRUDMock crud = new CRUDMock();
-
-//         String title = 'xxx';
-
-//         String headers = 'header-one, header-two';
-//         String rows = 'col-one, col-two';
-//         String content = headers +  + '\n';
-//         content += rows;
-
-//        // SaveToSalesforce.setCrud(crud);
-//         SaveToSalesforce.save('my-queries','general', title, content);
-
-//         ContentVersion cv = CRUDMock.getContentVersionForName(title);
-
-//         System.assertEquals(title, cv.Title);
-//     }
-// }

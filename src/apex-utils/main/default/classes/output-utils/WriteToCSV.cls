@@ -23,19 +23,41 @@ public with sharing class WriteToCSV {
         insert cv;
     }
 
+    // private static String createCSV(List<String> csvHeaders, List<String> csvRowList, String title){
+    //     String headerRow = String.join(csvHeaders,',') + '\n';
+    //     String concantenatedStr = headerRow;
+    //     Integer i = 0;
+    //     Integer rowListSize = csvRowList.size();
+    //     for(String row :csvRowList){
+           
+    //         i++;
+    //         List<String> res = row.split(',');
+    //         String str = String.join(res,',');
+    //         concantenatedStr += (String)str + ((i != rowListSize) ? '\n' : '');//add new line
+    //     }
+    //     title += '.csv';
+    //     //createFile(concantenatedStr, title);
+    //     return concantenatedStr;
+    // }
+
     private static String createCSV(List<String> csvHeaders, List<String> csvRowList, String title){
         String headerRow = String.join(csvHeaders,',') + '\n';
         String concantenatedStr = headerRow;
         Integer i = 0;
         Integer rowListSize = csvRowList.size();
-        for(String row :csvRowList){
-           
-            i++;
-            List<String> res = row.split(',');
-            String str = String.join(res,',');
-            concantenatedStr += (String)str + ((i != rowListSize) ? '\n' : '');//add new line
+
+        try {
+            for(String row :csvRowList){
+            
+                i++;
+                List<String> res = row.split(',');
+                String str = String.join(res,',');
+                concantenatedStr += (String)str + ((i != rowListSize) ? '\n' : '');//add new line
+            }
+            title += '.csv';
+        } catch (StringException stre) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.BLOB_SIZE_MSG_CONTENTVERSION), stre);
         }
-        title += '.csv';
         //createFile(concantenatedStr, title);
         return concantenatedStr;
     }

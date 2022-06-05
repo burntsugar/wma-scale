@@ -1,11 +1,14 @@
 public class CRUD implements ICrud {
 
-    public SObject doInsert(SObject record) {
+    private static final String CONTENT_LOCATION = 'S';
+    private static final String SHARE_TYPE = 'I';
+
+    private SObject doInsert(SObject record) {
         insert(record);
         return record;
     }
 
-    public SObject doUpdate(SObject record) {
+    private SObject doUpdate(SObject record) {
         update(record);
         return record;
     }
@@ -28,7 +31,19 @@ public class CRUD implements ICrud {
         return contentFolder;
     }
 
-    public ContentWorkSpace makeContentWorkspace(String name, String developerName){
+    public ContentVersion saveContentVersion(String pathOnClient, String documentTitle, String content){
+        ContentVersion cv = new ContentVersion();
+        cv.ContentLocation = CONTENT_LOCATION; 
+        cv.Title = documentTitle; 
+        cv.PathOnClient = pathOnClient;
+        cv.VersionData = Blob.valueOf(content);
+
+        this.doInsert(cv);
+
+        return cv;
+    }
+
+    public ContentWorkSpace saveContentWorkspace(String name, String developerName){
         ContentWorkspace contentWorkSpace = new ContentWorkspace();
         contentWorkSpace.Name = name;
         contentWorkSpace.DeveloperName = developerName;
@@ -38,7 +53,7 @@ public class CRUD implements ICrud {
         return contentWorkSpace;
     }
 
-    public ContentFolder makeContentFolder(String contentFolderName, String parentContentFolderId){
+    public ContentFolder saveContentFolder(String contentFolderName, String parentContentFolderId){
         ContentFolder contentFolder = new ContentFolder(Name=contentFolderName);
         contentFolder.ParentContentFolderId = parentContentFolderId;
 
@@ -47,20 +62,20 @@ public class CRUD implements ICrud {
         return contentFolder;
     }
 
-    public ContentDocumentLink makeContentDocumentLink(ContentVersion contentVersion, ContentWorkSpace contentWorkSpace) {
+    public ContentDocumentLink saveContentDocumentLink(ContentVersion contentVersion, ContentWorkSpace contentWorkSpace) {
         Id conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersion.Id].ContentDocumentId;
         
         ContentDocumentLink contentDocumentLink = new ContentDocumentLink();
         contentDocumentLink.ContentDocumentId = conDoc;
         contentDocumentLink.LinkedEntityId = contentWorkSpace.Id; 
-        contentDocumentLink.ShareType = 'I'; 
+        contentDocumentLink.ShareType = SHARE_TYPE; 
 
         doInsert(contentDocumentLink);
 
         return contentDocumentLink;
     }
 
-    public ContentFolderMember makeContentFolderMember(String parentContentFolderId, String contentFolderId){
+    public ContentFolderMember saveContentFolderMember(String parentContentFolderId, String contentFolderId){
         ContentFolderMember cfm = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: parentContentFolderId];
         cfm.ParentContentFolderId = contentFolderId;
 

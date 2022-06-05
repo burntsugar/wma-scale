@@ -27,6 +27,8 @@ GoNow go = new GoNow();
 KickOff k = new KickOff();
 k.extractObjectInfoToCSV('WMA_Facility__c');
 
+GetInfo.getObjectInfo('WMA_Facility__c');
+
 
 Type customType = Type.forName('WMA_Facility__c');
 sObject instance = (sObject)customType.newInstance();
@@ -85,4 +87,3 @@ System.Debug(F.getType());
 
      List<String> addToPicklistValues();
 
-GetInfo.getObjectInfo('WMA_Facility__c');

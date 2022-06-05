@@ -17,22 +17,22 @@ public with sharing class GoNow {
 
     //     System.Debug(cv);
 
-    String headers = 'header-one, header-two';
-    String rows = 'col-one, col-two';
-    String content = headers +  + '\n';
-    content += rows;
+    // String headers = 'header-one, header-two';
+    // String rows = 'col-one, col-two';
+    // String content = headers +  + '\n';
+    // content += rows;
 
-    CRUD crud = new Crud();
+    // CRUD crud = new Crud();
 
-    ContentVersion cv = new ContentVersion();
-    cv.ContentLocation = 'S'; 
-    cv.Title = 'radical'; 
-    cv.PathOnClient = 'radical.csv';
-    cv.VersionData = Blob.valueOf(content);
+    // ContentVersion cv = new ContentVersion();
+    // cv.ContentLocation = 'S'; 
+    // cv.Title = 'radical'; 
+    // cv.PathOnClient = 'radical.csv';
+    // cv.VersionData = Blob.valueOf(content);
 
-    crud.doInsert(cv);
+    // crud.doInsert(cv);
 
-    System.Debug('AFTER:::'+cv);
+    // System.Debug('AFTER:::'+cv);
 
     }
 }

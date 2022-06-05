@@ -1,9 +1,7 @@
 public with sharing class SaveToSalesforce {
 
-    private static final String CONTENT_LOCATION = 'S';
     private static final String FILE_EXTENSION = '.csv';
     private static final String DATE_FORMAT = 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'';
-    private static final String SHARE_TYPE = 'I';
 
     private static ICRUD crud;
 
@@ -18,38 +16,27 @@ public with sharing class SaveToSalesforce {
         crud = crudRef;
     }
 
-
-    // public static void save(String workSpaceLibraryName, String contentFolderName, String title, String content) {
-    //     initCrud();
-
-    //     String documentTitle = makeDocumentTitle(title);
-    //     String pathOnClient = makePathOnClient(documentTitle);
-    //     ContentVersion contentVersion = saveContentVersion(pathOnClient, documentTitle, content);
-
-    //     ContentWorkspace ContentWorkspace = crud.getContentWorkSpace(workSpaceLibraryName);
-    //     ContentFolder libraryContentFolder = crud.getLibraryContentFolder(ContentWorkspace.Id);
-    //     ContentFolder contentFolder = crud.getContentFolder(contentFolderName);
-
-    //     linkContentVersionToContentFolder(ContentWorkspace, libraryContentFolder, contentFolder, contentVersion.Id);
-    // }
-
     public static ContentVersion save(String contentWorkspaceName, String contentFolderName, String contentVersionTitle, String content) {
+        
         initCrud();
+
+        List<String> stringParams = new List<String>{contentWorkspaceName, contentFolderName, contentVersionTitle, content};
+        if (StringUtils.stringIsBlank(stringParams)) throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_EX_MSG_CONTENTVERSION));
 
         String title = makeDocumentTitle(contentVersionTitle);
         String pathOnClient = makePathOnClient(title);
 
         ContentVersion contentVersion = saveContentVersion(pathOnClient, title, content);
 
-        ContentWorkspace contentWorkspace = crud.getContentWorkSpace(contentWorkspaceName);
+        ContentWorkspace contentWorkspace = getContentWorkSpace(contentWorkspaceName);
 
-        ContentFolder contentWorkspaceContentFolder = crud.getContentFolder(contentWorkspace.Id);
+        ContentFolder contentWorkspaceContentFolder = getContentFolder(contentWorkspace.Id);
 
-        ContentFolder childContentFolder = crud.getContentFolder(contentFolderName);
+        ContentFolder childContentFolder = getContentFolder(contentFolderName);
 
-        ContentDocumentLink contentDocumentlink = saveContentDocumentlink(contentVersion.Id, contentWorkspace);
+        ContentDocumentLink contentDocumentlink = saveContentDocumentlink(contentVersion, contentWorkspace);
 
-        updateContentFolderMember(contentWorkspaceContentFolder, childContentFolder);
+        saveContentFolderMember(contentWorkspaceContentFolder, childContentFolder);
 
         return contentVersion;
     }
@@ -68,41 +55,68 @@ public with sharing class SaveToSalesforce {
     }
 
     private static ContentVersion saveContentVersion(String pathOnClient, String documentTitle, String content) {
-        ContentVersion cv = new ContentVersion();
-        cv.ContentLocation = CONTENT_LOCATION; 
-        cv.Title = documentTitle; 
-        cv.PathOnClient = pathOnClient;
-        cv.VersionData = Blob.valueOf(content);
-        
-        crud.doInsert(cv);
+        ContentVersion cv;
+
+        try {
+            cv = crud.saveContentVersion(pathOnClient, documentTitle, content);
+        } catch (DmlException dmle) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_EX_MSG_CONTENTVERSION), dmle);
+        } catch (Exception e) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTVERSION), e);
+        }
 
         return cv;
     }
 
-    private static ContentDocumentLink saveContentDocumentlink(String contentVersionId, ContentWorkspace libraryContentWorkSpace){
-        Id conDoc = Crud.getContentVersion(contentVersionId).ContentDocumentId;
-        
-        ContentDocumentLink cDe = new ContentDocumentLink();
-        cDe.ContentDocumentId = conDoc;
-        cDe.LinkedEntityId = libraryContentWorkSpace.Id; 
-        cDe.ShareType = SHARE_TYPE; 
+    private static ContentWorkspace getContentWorkSpace(String contentWorkspaceName) {
+        ContentWorkspace contentWorkspace;
 
-        CRUD.doInsert(cDe);
+        try {
+            contentWorkspace = crud.getContentWorkSpace(contentWorkspaceName);
+        } catch (DmlException dmle) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_EX_MSG_CONTENTWORKSPACE), dmle);
+        } catch (Exception e) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTWORKSPACE), e);
+        }
 
-        return cde;
+        return contentWorkspace;
     }
 
-    private static void updateContentFolderMember(ContentFolder libraryContentFolder, ContentFolder contentFolder){
-        ContentFolderMember cfm = CRUD.makeContentFolderMember(libraryContentFolder.Id, contentFolder.Id);
-        cfm.ParentContentFolderId = contentFolder.Id;
-        
-        CRUD.doUpdate(cfm);
+    private static ContentFolder getContentFolder(String contentFolderName) {
+        ContentFolder contentFolder;
+
+        try {
+            contentFolder = crud.getContentFolder(contentFolderName);
+        } catch (DmlException dmle) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_EX_MSG_CONTENTFOLDER), dmle);
+        } catch (Exception e) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTFOLDER), e);
+        }
+
+        return contentFolder;
     }
 
-    // private static void updateContentFolderMember(ContentFolder libraryContentFolder, ContentFolder contentFolder){
-    //     ContentFolderMember cfm = CRUD.getContentFolderMember(libraryContentFolder.Id);
-    //     cfm.ParentContentFolderId = contentFolder.Id;
-        
-    //     CRUD.doUpdate(cfm);
-    // }
+    private static ContentDocumentLink saveContentDocumentlink(ContentVersion contentVersion, ContentWorkspace contentWorkSpace){
+        ContentDocumentLink contentDocumentLink;
+
+        try {
+            contentDocumentLink = crud.saveContentDocumentLink(contentVersion, contentWorkspace);
+        } catch (DmlException dmle) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_EX_MSG_CONTENTDOCUMENTLINK), dmle);
+        } catch (Exception e) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTDOCUMENTLINK), e);
+        }
+
+        return contentDocumentLink;
+    }
+
+    private static void saveContentFolderMember(ContentFolder parentContentFolder, ContentFolder childContentFolder){
+        try {
+            CRUD.saveContentFolderMember(parentContentFolder.Id, childContentFolder.Id);
+        } catch (DmlException dmle) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_EX_MSG_CONTENTFOLDERMEMBER), dmle);
+        } catch (Exception e) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTFOLDERMEMBER), e);
+        }
+    }
 }
