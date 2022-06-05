@@ -21,7 +21,7 @@ public with sharing class SaveToSalesforce {
         initCrud();
 
         List<String> stringParams = new List<String>{contentWorkspaceName, contentFolderName, contentVersionTitle, content};
-        if (StringUtils.stringIsBlank(stringParams)) throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_EX_MSG_CONTENTVERSION));
+        if (StringUtils.stringIsBlank(stringParams)) throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.PARAMETERS_MSG_CONTENTVERSION));
 
         String title = makeDocumentTitle(contentVersionTitle);
         String pathOnClient = makePathOnClient(title);
@@ -79,6 +79,8 @@ public with sharing class SaveToSalesforce {
             throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTWORKSPACE), e);
         }
 
+        if(contentWorkspace==null) throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.NULL_MSG_CONTENTWORKSPACE));
+
         return contentWorkspace;
     }
 
@@ -92,6 +94,8 @@ public with sharing class SaveToSalesforce {
         } catch (Exception e) {
             throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTFOLDER), e);
         }
+
+        if(contentFolder==null) throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.NULL_MSG_CONTENTFOLDER));
 
         return contentFolder;
     }
@@ -107,16 +111,22 @@ public with sharing class SaveToSalesforce {
             throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTDOCUMENTLINK), e);
         }
 
+        if(contentDocumentLink==null) throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.NULL_MSG_CONTENTDOCUMENTLINK));
+
         return contentDocumentLink;
     }
 
     private static void saveContentFolderMember(ContentFolder parentContentFolder, ContentFolder childContentFolder){
+    
+        ContentFolderMember contentFolderMember;
         try {
-            CRUD.saveContentFolderMember(parentContentFolder.Id, childContentFolder.Id);
+            contentFolderMember = CRUD.saveContentFolderMember(parentContentFolder.Id, childContentFolder.Id);
         } catch (DmlException dmle) {
             throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_EX_MSG_CONTENTFOLDERMEMBER), dmle);
         } catch (Exception e) {
             throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.EX_MSG_CONTENTFOLDERMEMBER), e);
         }
+
+        if(contentFolderMember==null) throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.NULL_MSG_CONTENTFOLDERMEMBER));
     }
 }

@@ -12,7 +12,11 @@ public class ContentException extends Exception {
         DML_EX_MSG_CONTENTWORKSPACE,
         DML_EX_MSG_CONTENTFOLDER,
         DML_EX_MSG_CONTENTDOCUMENTLINK,
-        DML_EX_MSG_CONTENTFOLDERMEMBER
+        DML_EX_MSG_CONTENTFOLDERMEMBER,
+        NULL_MSG_CONTENTWORKSPACE,
+        NULL_MSG_CONTENTFOLDER,
+        NULL_MSG_CONTENTDOCUMENTLINK,
+        NULL_MSG_CONTENTFOLDERMEMBER
     }
 
     private static String elseString = 'An error occured.';
@@ -55,6 +59,18 @@ public class ContentException extends Exception {
             }
             when DML_EX_MSG_CONTENTFOLDERMEMBER {
                 errMsg = 'An Error occured during ContentFolderMember DML operation.';
+            }
+            when NULL_MSG_CONTENTWORKSPACE {
+                errMsg = 'ContentWorkspace does not exist.';
+            }
+            when NULL_MSG_CONTENTFOLDER {
+                errMsg = 'ContentFolder does not exist.';
+            }
+            when NULL_MSG_CONTENTDOCUMENTLINK {
+                errMsg = 'ContentDocumentLink could not be created - non existent ContentVersion.';
+            }
+            when NULL_MSG_CONTENTFOLDERMEMBER {
+                errMsg = 'ContentFolderMember could not be created.';
             }
             when else {
                 errMsg = elseString;

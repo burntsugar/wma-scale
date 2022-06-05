@@ -5,24 +5,7 @@ public with sharing class GetObjectInfo {
 
     private String reportTitle;
 
-    public ObjectInfoExtract getObjectInfo(String objectAPIName) {
-        
-        Type customType = Type.forName(objectAPIName);
-		sObject instance = (sObject)customType.newInstance();
-        Schema.DescribeSObjectResult R = instance.getSObjectType().getDescribe();
-        ObjectInfoExtract o = new ObjectInfoExtract();
-        o.setObjectAPIName(objectAPIName);
-        List<Schema.RecordTypeInfo> RT = R.getRecordTypeInfos();
-        for (RecordTypeInfo rti : RT) {
-           ObjectInfoRecordType oirt = new ObjectInfoRecordType(objectAPIName,rti.getDeveloperName(),rti.getRecordTypeId(),rti.isMaster());
-           o.addObjectInfoRecordType(oirt);
-        }
-        
-        return o;
-    }
-
     public void extractObjectInfoToCSV(String objectAPIName) {
-
         ObjectInfoExtract o = getObjectInfo(objectAPIName);
 
         getLayoutsForObject(o);
@@ -63,6 +46,20 @@ public with sharing class GetObjectInfo {
 
     }
 
+    private ObjectInfoExtract getObjectInfo(String objectAPIName) {
+        Type customType = Type.forName(objectAPIName);
+		sObject instance = (sObject)customType.newInstance();
+        Schema.DescribeSObjectResult R = instance.getSObjectType().getDescribe();
+        ObjectInfoExtract o = new ObjectInfoExtract();
+        o.setObjectAPIName(objectAPIName);
+        List<Schema.RecordTypeInfo> RT = R.getRecordTypeInfos();
+        for (RecordTypeInfo rti : RT) {
+           ObjectInfoRecordType oirt = new ObjectInfoRecordType(objectAPIName,rti.getDeveloperName(),rti.getRecordTypeId(),rti.isMaster());
+           o.addObjectInfoRecordType(oirt);
+        }
+        
+        return o;
+    }
 
     private ObjectInfoField syncFields(String oName, String fName){
         String objectName = oName;
@@ -99,7 +96,7 @@ public with sharing class GetObjectInfo {
     }
 
 
-    public void getLayoutsForObject(ObjectInfoExtract o){
+    private void getLayoutsForObject(ObjectInfoExtract o){
 
         Map<String,LayoutRecord.Record> layoutRecords = calloutToProfileToolingAPI();
 
@@ -143,7 +140,7 @@ public with sharing class GetObjectInfo {
 
     }
 
-    static List<string> getFields( string objectName,string layout ) {
+    private static List<string> getFields( string objectName,string layout ) {
         string layoutName=String.format('{0}-{1}', new String[]{objectName, layout}); 
         List<Metadata.Metadata> layouts = Metadata.Operations.retrieve(Metadata.MetadataType.Layout, new List<String> {layoutName});
         //get only layout name
