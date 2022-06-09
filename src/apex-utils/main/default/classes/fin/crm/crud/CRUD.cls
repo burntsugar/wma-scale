@@ -52,12 +52,26 @@ public class CRUD implements ICrud {
         return cv;
     }
 
+    // public ContentWorkSpace saveContentWorkspace(String name, String developerName){
+    //     ContentWorkspace contentWorkSpace = new ContentWorkspace();
+    //     contentWorkSpace.Name = name;
+    //     contentWorkSpace.DeveloperName = developerName;
+        
+    //     this.doInsert(contentWorkSpace);
+
+    //     return contentWorkSpace;
+    // }
+
     public ContentWorkSpace saveContentWorkspace(String name, String developerName){
         ContentWorkspace contentWorkSpace = new ContentWorkspace();
         contentWorkSpace.Name = name;
         contentWorkSpace.DeveloperName = developerName;
         
-        this.doInsert(contentWorkSpace);
+        try {
+            this.doInsert(contentWorkSpace);
+        } catch (DmlException dmle) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_DUPLICATE_MSG_CONTENTWORKSPACE));
+        }
 
         return contentWorkSpace;
     }

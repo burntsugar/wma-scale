@@ -16,7 +16,8 @@ public class ContentException extends Exception {
         NULL_MSG_CONTENTWORKSPACE,
         NULL_MSG_CONTENTFOLDER,
         NULL_MSG_CONTENTDOCUMENTLINK,
-        NULL_MSG_CONTENTFOLDERMEMBER
+        NULL_MSG_CONTENTFOLDERMEMBER,
+        DML_DUPLICATE_MSG_CONTENTWORKSPACE
     }
 
     private static String elseString = 'An error occured.';
@@ -72,6 +73,9 @@ public class ContentException extends Exception {
             when NULL_MSG_CONTENTFOLDERMEMBER {
                 errMsg = 'ContentFolderMember could not be created.';
             }
+            when DML_DUPLICATE_MSG_CONTENTWORKSPACE {
+                errMsg = 'Cannot create duplicate workspace.';
+            }
             when else {
                 errMsg = elseString;
             }
@@ -79,5 +83,4 @@ public class ContentException extends Exception {
 
         return errMsg;
     }
-
 }

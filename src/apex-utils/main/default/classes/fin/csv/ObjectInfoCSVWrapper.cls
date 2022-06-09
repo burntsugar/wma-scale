@@ -1,5 +1,4 @@
-// public with sharing class ObjectInfoCSV implements CSVWrapping {
-public with sharing class ObjectInfoCSV {
+public class ObjectInfoCSVWrapper {
 
     private CSVHeaders cSVHeaders;
     private CSVRows cSVRows;
@@ -7,7 +6,7 @@ public with sharing class ObjectInfoCSV {
     private ObjectInfoExtract objectInfoExtract;
     private String csvTitle;
 
-    public ObjectInfoCSV(ObjectInfoExtract objectInfoExtract, String csvTitle) {
+    public ObjectInfoCSVWrapper(ObjectInfoExtract objectInfoExtract, String csvTitle) {
         this.objectInfoExtract = objectInfoExtract;
         this.csvTitle = csvTitle;
     }
@@ -22,7 +21,6 @@ public with sharing class ObjectInfoCSV {
         for (String s: objectInfoExtract.getObjectInfoRecordTypes().get(0).getCSV_Headers()) {
             cSVHeaders.addCSVHeader(s);
         }
-
     }
 
     private void makecSVRows(){
@@ -36,33 +34,44 @@ public with sharing class ObjectInfoCSV {
         }
     }
 
-    public List<String> getCSVHeaders() {
-        if (cSVHeaders == null) {
-            makecSVHeaders();
-        }
-        return this.cSVHeaders.getCSVHeaders();
-    }
-    public List<String> getCSVRows(){
-        if (cSVRows == null){
-            makecSVRows();
-        }
-        return this.cSVRows.getCSVRows();
-    }
-
-    // public CSVHeaders getCSVHeaders() {
+    // public List<String> getCSVHeaders() {
     //     if (cSVHeaders == null) {
     //         makecSVHeaders();
     //     }
-    //     return this.cSVHeaders;
+    //     return this.cSVHeaders.getCSVHeaders();
     // }
-    // public CSVRows getCSVRows(){
+
+    // public List<String> getCSVRows(){
     //     if (cSVRows == null){
     //         makecSVRows();
     //     }
-    //     return this.cSVRows;
+    //     return this.cSVRows.getCSVRows();
     // }
 
     public String getCsvTitle(){
         return this.csvTitle;
+    }
+
+    public String createCSVContent(){
+        makecSVHeaders();
+        makecSVRows();
+        String headerRow = String.join(cSVHeaders.getCSVHeaders(),',') + '\n';
+        String concantenatedStr = headerRow;
+        Integer i = 0;
+        Integer rowListSize = cSVRows.getCSVRows().size();
+
+        try {
+            for(String row :cSVRows.getCSVRows()){
+            
+                i++;
+                List<String> res = row.split(',');
+                String str = String.join(res,',');
+                concantenatedStr += (String)str + ((i != rowListSize) ? '\n' : '');//add new line
+            }
+            csvTitle += '.csv';
+        } catch (StringException stre) {
+            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.BLOB_SIZE_MSG_CONTENTVERSION), stre);
+        }
+        return concantenatedStr;
     }
 }

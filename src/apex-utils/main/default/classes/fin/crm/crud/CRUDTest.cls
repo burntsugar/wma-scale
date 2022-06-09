@@ -1,164 +1,147 @@
 @isTest
 public class CRUDTest {
 
-    private final static String WORKSPACE_NAME = 'Test Workspace Friday';
-    private final static String WORKSPACE_DEVELOPER_NAME = 'Test_Workspace_Friday';
-    private final static String CONTENT_FOLDER_NAME = 'Test Content Folder';
+    private final static String WORKSPACE_NAME = 'Testing Workspace';
+    private final static String WORKSPACE_DEVELOPER_NAME = 'Testing_Workspace';
+
+    private final static String SETUP_WORKSPACE_NAME = 'Setup Workspace';
+    private final static String SETUP_WORKSPACE_DEVELOPER_NAME = 'Setup_Workspace';
+    private static String SETUP_WORKSPACE_ID;
 
     @testSetup static void createTestData() {
-        ContentWorkspace testWorkspace = new ContentWorkspace(Name='cde', DeveloperName='cde');
+        ContentWorkspace testWorkspace = new ContentWorkspace(Name=SETUP_WORKSPACE_NAME, DeveloperName=SETUP_WORKSPACE_DEVELOPER_NAME);
         insert testWorkspace;
     }
 
     @isTest static void saveContentVersion(){
-        String headers = 'header-one, header-two';
-        String rows = 'col-one, col-two';
-        String content = headers +  + '\n';
-        content += rows;
+        String title = 'testContentVersion' + '-' + Datetime.now().format('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
+        String pathOnClient = title + '.csv';
+        String content = 'content content content';
 
-        String documentTitle = 'testContentVersion' + '-' + Datetime.now().format('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
-
-        String pathOnClient = documentTitle + '.csv';
-        
+        Test.startTest();
         CRUD crud = new CRUD();
-        ContentVersion actualCv = crud.saveContentVersion(pathOnClient, documentTitle, content);
-        System.assert(!(actualCv.Id==null),'ContentVersion not created!');
+        ContentVersion contentVersion = crud.saveContentVersion(pathOnClient, title, content);
+        Test.stopTest();
+
+        System.assert(!(contentVersion.Id==null), 'ContentVersion not created!');
     }
 
     @isTest static void getContentVersion_with_valid_contentversion_expect_new_record() {
-        String headers = 'header-one, header-two';
-        String rows = 'col-one, col-two';
-        String content = headers +  + '\n';
-        content += rows;
+        ContentVersion cv = TestUtils.insertContentVersion('S', 'testContentVersion', 'content content content', '.csv');
 
-        String documentTitle = 'testContentVersion' + '-' + Datetime.now().format('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
-        
-        ContentVersion cv = new ContentVersion();
-        cv.ContentLocation = 'S'; 
-        cv.Title = documentTitle; 
-        cv.PathOnClient = documentTitle + '.csv';
-        cv.VersionData = Blob.valueOf(content);
-
-        insert cv;
-    
+        Test.startTest();
         CRUD crud = new Crud();
-        ContentVersion testContentVersion = crud.getContentVersion(cv.Id);
-        System.assert(!(testContentVersion.Id==null),'ContentVersion not found!');
+        ContentVersion contentVersion = crud.getContentVersion(cv.Id);
+        Test.stopTest();
+
+        System.assert((contentVersion.Id!=null), 'ContentVersion not found!');
     }
 
     @isTest static void getContentVersion_with_invalid_expect_null() {
+        Test.startTest();
         CRUD crud = new Crud();
-        ContentVersion testContentVersion = crud.getContentVersion('xxx');
-        System.assert((testContentVersion==null),'ContentVersion not found!');
+        ContentVersion contentVersion = crud.getContentVersion('invalid');
+        Test.stopTest();
+
+        System.assert((contentVersion==null));
     }
 
-    @isTest static void saveContentWorkspace() {
+    @isTest static void saveContentWorkspace_valid_params_expect_new_record() {
+        Test.startTest();
         CRUD crud = new Crud();
-        ContentWorkspace cwsp = crud.saveContentWorkspace(WORKSPACE_NAME, WORKSPACE_DEVELOPER_NAME);
-        System.assert(!(cwsp.Id==null),'ContentWorkspace not created!');
+        ContentWorkspace contentWorkspace = crud.saveContentWorkspace(WORKSPACE_NAME, WORKSPACE_DEVELOPER_NAME);
+        Test.stopTest();
+
+        System.assert((contentWorkspace.Id!=null),'ContentWorkspace not created!');
+    }
+
+    @isTest static void saveContentWorkspace_already_exists_expect_ContentException() {
+        Type expectedType = ContentException.class;
+        Type actualtype;
+        String expectedErrorMessage = ContentException.getErrorMessage(ContentException.errorMsg.DML_DUPLICATE_MSG_CONTENTWORKSPACE);
+        String actualErrorMessage;
+
+        Test.startTest();
+        CRUD crud = new Crud();
+        try {
+            ContentWorkspace contentWorkspace = crud.saveContentWorkspace(SETUP_WORKSPACE_NAME, SETUP_WORKSPACE_DEVELOPER_NAME);
+        } catch (ContentException ce) {
+            actualErrorMessage = ce.getMessage();
+            actualtype = ContentException.class;
+        } catch (Exception e) {
+            actualErrorMessage = e.getMessage();
+            actualtype = Exception.class;
+
+        }
+        Test.stopTest();
+
+        System.assert((actualType==expectedType), TestUtils.makeTestErrorMessage(expectedType.getName(), actualType != null? actualType.getName() : 'other'));
+        System.assert((actualErrorMessage==expectedErrorMessage), TestUtils.makeTestErrorMessage(expectedErrorMessage, actualErrorMessage));
     }
 
     @isTest static void getContentWorkSpace() {
-        ContentWorkspace cwsp = new ContentWorkspace();
-        cwsp.Name = WORKSPACE_NAME;
-        cwsp.DeveloperName = WORKSPACE_DEVELOPER_NAME;
-        insert cwsp;
-
+        Test.startTest();
         CRUD crud = new Crud();
-        sObject actualCwsp = crud.getContentWorkSpace(WORKSPACE_NAME);
+        sObject contentWorkspace = crud.getContentWorkSpace(SETUP_WORKSPACE_NAME);
+        Test.stopTest();
 
-        System.assert(!(actualCwsp.Id==null),'ContentWorkspace not found!');
+        System.assert((contentWorkspace.Id!=null),'ContentWorkspace not found!');
     }
 
     @isTest static void getContentFolderForContentWorkspace() {
+        ContentWorkSpace setupContentWorkspace = [select Id from ContentWorkSpace where Name =:SETUP_WORKSPACE_NAME];
 
-        ContentWorkspace cwsp = new ContentWorkspace();
-        cwsp.Name = WORKSPACE_NAME;
-        cwsp.DeveloperName = WORKSPACE_DEVELOPER_NAME;
-        insert cwsp;
-
+        Test.startTest();
         CRUD crud = new Crud();
-        ContentFolder actualLcf = crud.getContentFolder(cwsp.Id);
-        System.assert(!(actualLcf.Id==null), 'LibraryContentFolder not found!');
+        ContentFolder actualContentFolder = crud.getContentFolder(setupContentWorkspace.Id);
+        Test.stopTest();
+
+        System.assert(!(actualContentFolder.Id==null), 'LibraryContentFolder not found!');
     }
 
     @isTest static void saveContentDocumentLink(){
-
-        String headers = 'header-one, header-two';
-        String rows = 'col-one, col-two';
-        String content = headers +  + '\n';
-        content += rows;
-
         String documentTitle = 'testContentVersion' + '-' + Datetime.now().format('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
+        String pathOnClient = documentTitle + '.csv';
+        ContentVersion cv = TestUtils.insertContentVersion('S', documentTitle, pathOnClient, 'content content content');
+        ContentWorkspace setupContentWorkspace = [SELECT Id FROM ContentWorkspace WHERE Name =:SETUP_WORKSPACE_NAME];
 
-        ContentVersion cv = new ContentVersion();
-        cv.ContentLocation = 'S'; 
-        cv.Title = documentTitle; 
-        cv.PathOnClient = documentTitle + '.csv';
-        cv.VersionData = Blob.valueOf(content);
-        insert cv;
-
-        String workspaceName = 'cde';
-        ContentWorkspace cwsp = [SELECT Id FROM ContentWorkspace WHERE Name =: workspaceName];
-
+        Test.startTest();
         CRUD crud = new CRUD();
-        ContentDocumentLink actualCdl = crud.saveContentDocumentLink(cv,cwsp);
-        System.assert(!(actualCdl.Id==null),'ContentDocumentLink not created!');
+        ContentDocumentLink contentDocumentLink = crud.saveContentDocumentLink(cv, setupContentWorkspace);
+        Test.stopTest();
+
+        System.assert((contentDocumentLink.Id!=null),'ContentDocumentLink not created!');
     }
 
     @isTest static void saveContentFolder(){
-        // get library
-        String workspaceName = 'cde';
-        ContentWorkspace cwsp = [SELECT Id FROM ContentWorkspace WHERE Name =: workspaceName];
+        ContentWorkspace setupContentWorkspace = [SELECT Id FROM ContentWorkspace WHERE Name =:SETUP_WORKSPACE_NAME];
+        ContentFolder workspaceContentFolder = [SELECT Id FROM ContentFolder WHERE Name =: setupContentWorkspace.Id];
 
-        // get library content folder
-        ContentFolder workspaceFolder = [Select Id from ContentFolder where Name =: cwsp.Id];
-
+        Test.startTest();
         CRUD crud = new CRUD();
-        ContentFolder actualFolder = CRUD.saveContentFolder('TEST FOLDER',workspaceFolder.Id);
-        System.assert(!(actualFolder.Id==null), 'ContentFolder not created!');
+        ContentFolder contentFolder = CRUD.saveContentFolder('TEST FOLDER', workspaceContentFolder.Id);
+        Test.stopTest();
+
+        System.assert((contentFolder.Id!=null), 'ContentFolder not created!');
     }
 
     @isTest static void saveContentFolderMember(){
-
-        // get library
-        String workspaceName = 'cde';
-        ContentWorkspace cwsp = [SELECT Id FROM ContentWorkspace WHERE Name =: workspaceName];
-
-        // get library content folder
-        ContentFolder workspaceFolder = [Select Id from ContentFolder where Name =: cwsp.Id];
-
-        // insert folder
-        ContentFolder testFolderRecord = new ContentFolder(Name='TEST FOLDER', ParentContentFolderId=workspaceFolder.Id);
+        ContentWorkspace setupContentWorkspace = [SELECT Id FROM ContentWorkspace WHERE Name =:SETUP_WORKSPACE_NAME];
+        ContentFolder workspaceContentFolder = [SELECT Id FROM ContentFolder WHERE Name =:setupContentWorkspace.Id];
+        ContentFolder testFolderRecord = new ContentFolder(Name='TEST FOLDER', ParentContentFolderId=workspaceContentFolder.Id);
         insert testFolderRecord;
 
-        // insert ContentVersion
-        String headers = 'header-one, header-two';
-        String rows = 'col-one, col-two';
-        String content = headers +  + '\n';
-        content += rows;
+        ContentVersion cv = TestUtils.insertContentVersion('S', 'testContentVersion', 'content content content', '.csv');
 
-        String documentTitle = 'testContentVersion' + '-' + Datetime.now().format('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
-
-        ContentVersion cv = new ContentVersion();
-        cv.ContentLocation = 'S'; 
-        cv.Title = documentTitle; 
-        cv.PathOnClient = documentTitle + '.csv';
-        cv.VersionData = Blob.valueOf(content);
-        insert cv;
-
-        // Insert ContentDocumentLink
         Id conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:cv.Id].ContentDocumentId;
-        
-        ContentDocumentLink cdl = new ContentDocumentLink();
-        cdl.ContentDocumentId = conDoc;
-        cdl.LinkedEntityId = cwsp.Id; 
-        cdl.ShareType = 'I'; 
-        insert cdl;
+        ContentDocumentLink cdl = TestUtils.insertContentDocumentLink(conDoc, setupContentWorkspace.Id,'I');
 
+        Test.startTest();
         CRUD crud = new CRUD();
-        ContentFolderMember actualCfm = crud.saveContentFolderMember(workspaceFolder.Id, testFolderRecord.Id);
-        System.assert(!(actualCfm.Id==null),'ContentFolder not created!');
+        ContentFolderMember contentFolderMember = crud.saveContentFolderMember(workspaceContentFolder.Id, testFolderRecord.Id);
+        Test.stopTest();
+
+        System.assert(!(contentFolderMember.Id==null),'ContentFolder not created!');
     }
 
 }

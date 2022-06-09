@@ -3,48 +3,65 @@ public class WriteToCSV {
     // public static void createCSV(ObjectInfoCSV objectInfoCSV) {
     //     String content = createCSV(objectInfoCSV.getCSVHeaders().getCSVHeaders(),objectInfoCSV.getCSVRows().getCSVRows(),objectInfoCSV.getCsvTitle());
     //     String title = 'object-record-type-fields';
-    //     SaveToSalesforce.save('my-queries','general',title, content);
+    //     ContentVersionCreator.save('my-queries','general',title, content);
     // }
 
     // public static void createCSV(ObjectInfoCSV objectInfoCSV, String reportTitle) {
     //     String content = createCSV(objectInfoCSV.getCSVHeaders().getCSVHeaders(),objectInfoCSV.getCSVRows().getCSVRows(),objectInfoCSV.getCsvTitle());
     //     String title = reportTitle;
-    //     SaveToSalesforce.save('my-queries','general',title, content);
+    //     ContentVersionCreator.save('my-queries','general',title, content);
     // }
 
-    public static void createCSV(ObjectInfoCSV objectInfoCSV) {
-        String content = createCSV(objectInfoCSV.getCSVHeaders(),objectInfoCSV.getCSVRows(),objectInfoCSV.getCsvTitle());
-        String title = 'object-record-type-fields';
-        SaveToSalesforce.save('my-queries','general',title, content);
-    }
+    // public static void createCSV(ObjectInfoCSV objectInfoCSV) {
+    //     String content = createCSV(objectInfoCSV.getCSVHeaders(),objectInfoCSV.getCSVRows(),objectInfoCSV.getCsvTitle());
+    //     String title = 'object-record-type-fields';
+    //     ContentVersionCreator.saveContentVersion('my-queries','general',title, content);
+    // }
 
-    public static void createCSV(ObjectInfoCSV objectInfoCSV, String reportTitle) {
-        String content = createCSV(objectInfoCSV.getCSVHeaders(),objectInfoCSV.getCSVRows(),objectInfoCSV.getCsvTitle());
-        String title = reportTitle;
-        SaveToSalesforce.save('my-queries','general',title, content);
-    }
+    // public static void createCSV(ObjectInfoCSV objectInfoCSV, String reportTitle) {
+    //     String content = createCSV(objectInfoCSV.getCSVHeaders(),objectInfoCSV.getCSVRows(),objectInfoCSV.getCsvTitle());
+    //     String title = reportTitle;
+    //     ContentVersionCreator.saveContentVersion('my-queries','general',title, content);
+    // }
 
-    private static String createCSV(List<String> csvHeaders, List<String> csvRowList, String title){
-        String headerRow = String.join(csvHeaders,',') + '\n';
-        String concantenatedStr = headerRow;
-        Integer i = 0;
-        Integer rowListSize = csvRowList.size();
+    // public static void createCSV(ObjectInfoCSV objectInfoCSV) {
+    //     create(objectInfoCSV, null);
+    // }
 
-        try {
-            for(String row :csvRowList){
+    // public static void createCSV(ObjectInfoCSV objectInfoCSV, String reportTitle) {
+    //     create(objectInfoCSV, reportTitle);
+    // }
+
+    // private static void create(ObjectInfoCSV objectInfoCSV, String reportTitle) {
+    //     String title = 'object-record-type-fields';
+    //     if (reportTitle!=null){
+    //         title = reportTitle;
+    //     }
+    //     String content = createCSV(objectInfoCSV.getCSVHeaders(),objectInfoCSV.getCSVRows(),objectInfoCSV.getCsvTitle());
+    //     ContentVersionCreator.saveContentVersion('my-queries', 'general', title, content);
+    // }
+
+    // private static String createCSV(List<String> csvHeaders, List<String> csvRowList, String title){
+    //     String headerRow = String.join(csvHeaders,',') + '\n';
+    //     String concantenatedStr = headerRow;
+    //     Integer i = 0;
+    //     Integer rowListSize = csvRowList.size();
+
+    //     try {
+    //         for(String row :csvRowList){
             
-                i++;
-                List<String> res = row.split(',');
-                String str = String.join(res,',');
-                concantenatedStr += (String)str + ((i != rowListSize) ? '\n' : '');//add new line
-            }
-            title += '.csv';
-        } catch (StringException stre) {
-            throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.BLOB_SIZE_MSG_CONTENTVERSION), stre);
-        }
-        //createFile(concantenatedStr, title);
-        return concantenatedStr;
-    }
+    //             i++;
+    //             List<String> res = row.split(',');
+    //             String str = String.join(res,',');
+    //             concantenatedStr += (String)str + ((i != rowListSize) ? '\n' : '');//add new line
+    //         }
+    //         title += '.csv';
+    //     } catch (StringException stre) {
+    //         throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.BLOB_SIZE_MSG_CONTENTVERSION), stre);
+    //     }
+    //     //createFile(concantenatedStr, title);
+    //     return concantenatedStr;
+    // }
 
 }
 
