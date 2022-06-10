@@ -1,4 +1,4 @@
-public class TestLog {
+@isTest public class TestLog {
     
     public static String makeTestErrorMessage(String expected, Integer actual){ 
         return makeTestErrorMessage(expected, String.valueOf(actual));

@@ -100,4 +100,98 @@
         
         System.Assert(cv.Id != null, TestLog.makeTestErrorMessage('ContentVersion record Id', 'null'));
     }
+
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * When Id passed, record is retrieved.
+    * ────────────────────────────────────────────────────────────────────────────────────────────────
+    */
+    @isTest static void getContentVersion_ValidId_RecordId() {
+
+        String title = 'Take me down to the paradise city';
+        String pathOnClient = title + '.csv';
+        String versionData = 'where the grass is green and the girls are pretty';
+        ContentVersion cv = new ContentVersion(Title=title, PathOnClient=pathOnClient, VersionData=Blob.valueOf(versionData));
+        insert cv;
+
+        Test.startTest();
+        List<ContentVersion> actualCvs = ContentVersionCrud.getContentVersion(ContentVersionCrud.selectors.ID, cv.Id);
+        Test.stopTest();
+
+        Integer expectedSize = 1;
+        System.Assert( actualCvs.size() == 1, TestLog.makeTestErrorMessage(expectedSize, actualCvs.size()));
+        System.Assert( actualCvs.get(0).Id != null, TestLog.makeTestErrorMessage('ContentVersion record Id', 'null'));
+        System.Assert( actualCvs.get(0).Title == title, TestLog.makeTestErrorMessage(title, actualCvs.get(0).Title));
+    }
+
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * When Title is passed, record is retrieved.
+    * ────────────────────────────────────────────────────────────────────────────────────────────────
+    */
+    @isTest static void getContentVersion_ValidTitle_RecordId() {
+
+        String title = 'Take me down to the paradise city';
+        String pathOnClient = title + '.csv';
+        String versionData = 'where the grass is green and the girls are pretty';
+        ContentVersion cv = new ContentVersion(Title=title, PathOnClient=pathOnClient, VersionData=Blob.valueOf(versionData));
+        insert cv;
+
+        Test.startTest();
+        List<ContentVersion> results = ContentVersionCrud.getContentVersion(ContentVersionCrud.selectors.TITLE, cv.Title);
+        Test.stopTest();
+
+        ContentVersion actualContentVersion = null;
+        for (ContentVersion c : results) {
+            if (c.Id == cv.Id) {
+                actualContentVersion = c;
+                break;
+            }
+        }
+
+        System.Assert( actualContentVersion != null, TestLog.makeTestErrorMessage('ContentVersion record Id', 'null'));
+    }
+
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * When null Id is passed, QueryException is thrown.
+    * ────────────────────────────────────────────────────────────────────────────────────────────────
+    */
+    @isTest static void getContentVersion_NullId_QueryException() {
+
+        String nullId = null;
+        boolean doesThrowExc = false;
+
+        Test.startTest();
+        try {
+            ContentVersionCrud.getContentVersion(ContentVersionCrud.selectors.ID, nullId);
+        } catch (QueryException qe) {
+            doesThrowExc = true;
+        }
+        Test.stopTest();
+
+        boolean expected = true;
+        System.Assert( doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
+    }
+
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * When invalid Id is passed, QueryException is thrown.
+    * ────────────────────────────────────────────────────────────────────────────────────────────────
+    */
+    @isTest static void getContentVersion_InvalidId_QueryException() {
+
+        boolean doesThrowExc = false;
+
+        Test.startTest();
+        try {
+            ContentVersionCrud.getContentVersion(ContentVersionCrud.selectors.ID, 'invalidId');
+        } catch (QueryException qe) {
+            doesThrowExc = true;
+        }
+        Test.stopTest();
+
+        boolean expected = true;
+        System.Assert( doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
+    }
 }
