@@ -1,63 +1,57 @@
-public class ContentWorkSpaceCrud {
-
-    private final static String CONTENTWORKSPACE_NAME = 'ContentWorkspace';
+public class ContentFolderCrud {
+    
+    private final static String CONTENTFOLDER_NAME = 'ContentFolder';
 
     public enum Selectors {
         ID,
-        NAME,
-        DEVELOPERNAME
+        NAME
     }
 
     /**
      * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * Creates a ContentWorkspace record.
+    * Creates a ContentFolder record.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
-    * @param    contentWorkspace    ContentWorkspace instance from which to create the record.
+    * @param    contentFolder    ContentFolder instance from which to create the record.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static void insertContentWorkspace(ContentWorkspace contentWorkspace){
-
-        DBCrud.doInsert(contentWorkspace);
+    public static void insertContentFolder(ContentFolder contentFolder){
+        DBCrud.doInsert(contentFolder);
     }
 
     /**
      * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * Creates a ContentWorkspace record.
+    * Creates a ContentFolder record.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
-    * @param    name    String. Name of the workspace.
-    * @param    developerName    String. Developer name of the workspace.
-    * @return    ContentWorkspace sObject record.
+    * @param    name    String. Name of the ContentFolder.
+    * @param    parentContentFolderId    String. Id of the parent ContentFolder - which may be a workspace.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static ContentWorkspace insertContentWorkspace(String name, String developerName){
-        ContentWorkspace cw = new ContentWorkspace();
-        cw.Name = name;
-        cw.DeveloperName = developerName;
+    public static ContentFolder insertContentFolder(String contentFolderName, String parentContentFolderId){
+        ContentFolder contentFolder = new ContentFolder(Name=contentFolderName, ParentContentFolderId=parentContentFolderId);
+        DBCrud.doInsert(contentFolder);
 
-        DBCrud.doInsert(cw);
-
-        return cw;
+        return contentFolder;
     }
 
     /**
      * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * Retrieve ContentWorkspace records.
+    * Retrieve ContentFolder records.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     * @param    fieldName    Selectors. Field name selector.
     * @param    fieldValue    String. Field value.
     * @return    List<ContentVersion> matching records.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static List<ContentWorkspace> getContentWorkspace(Selectors fieldName, String fieldValue) {
-        String sObjectName = CONTENTWORKSPACE_NAME;
-        String fields = 'Id, Name, Developername';
+    public static List<ContentFolder> getContentFolder(Selectors fieldName, String fieldValue) {
+        String sObjectName = CONTENTFOLDER_NAME;
+        String fields = 'Id, Name';
         String whereCriteria = makeExpression(fieldName, fieldValue);
-        List<ContentWorkspace> results = DBCrud.doSelect(sObjectName, fields, whereCriteria, null);
+        List<ContentFolder> results = DBCrud.doSelect(sObjectName, fields, whereCriteria, null);
 
         return results;
     }
 
-     /**
+    /**
      * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * Get string value for a given selector.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
@@ -74,12 +68,6 @@ public class ContentWorkSpaceCrud {
             when NAME {
                 slctor = 'Name';
             }
-            when DEVELOPERNAME {
-                slctor = 'DeveloperName';
-            }
-            when else {
-                slctor = null;
-            }
         }
         return slctor;
     }
@@ -93,11 +81,7 @@ public class ContentWorkSpaceCrud {
             when NAME{
                 expression = getSelector(selector) + '=' + '\'' + value + '\'';
             }
-            when DEVELOPERNAME{
-                expression = getSelector(selector) + '=' + '\'' + value + '\'';
-            }
         }
         return expression;
     }
-    
 }

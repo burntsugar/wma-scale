@@ -1,8 +1,12 @@
-@isTest public class ContentWorkSpaceCrudTest {
-    
+@isTest public class ContentFolderCrudTest {
+
+    private final static String SETUP_WORKSPACE_NAME = 'Test Setup Workspace';
+    private final static String SETUP_WORKSPACE_DEVELOPER_NAME = 'Test_Setup_Workspace';
+
     @TestSetup
     static void makeData(){
-        
+        ContentWorkspace testWorkspace = new ContentWorkspace(Name=SETUP_WORKSPACE_NAME, DeveloperName=SETUP_WORKSPACE_DEVELOPER_NAME);
+        insert testWorkspace;        
     } 
 
     /**
@@ -10,14 +14,14 @@
     * When a null object is passed, a NullPointerException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void insertContentWorkspace_NullObject_NullPointerException() {
+    @isTest static void insertContentFolder_NullObject_NullPointerException() {
 
-        ContentWorkspace cw;
+        ContentFolder contentFolder;
         boolean doesThrowExc = false;
 
         Test.startTest();
         try {
-            ContentWorkSpaceCrud.insertContentWorkspace(cw);
+            ContentFolderCrud.insertContentFolder(contentFolder);
         } catch (NullPointerException npe) {
             doesThrowExc = true;
         }
@@ -27,19 +31,56 @@
         System.Assert(doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
     }
 
-    /**
+   /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * When required attributes are omitted in passed object, a DMLException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void insertContentWorkspace_SansRequiredAttributes_DMLexception(){
-
-        ContentWorkspace cw = new ContentWorkspace();
+    @istest static void insertContentFolder_InvalidObject_DMLException() {
+        ContentFolder contentFolder = new ContentFolder();
         boolean doesThrowExc = false;
 
         Test.startTest();
         try {
-            ContentWorkSpaceCrud.insertContentWorkspace(cw);
+            ContentFolderCrud.insertContentFolder(contentFolder);
+        } catch (DMLException dmle) {
+            doesThrowExc = true;
+        }
+        Test.stopTest();
+
+        boolean expected  = true;
+        System.Assert(doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
+    }
+
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * When a valid object is passed, a record is created.
+    * ────────────────────────────────────────────────────────────────────────────────────────────────
+    */
+    @istest static void insertContentFolder_ValidObject_RecordCreated() {
+        ContentWorkspace testWorkspace = [Select Id from ContentWorkspace WHERE Name =:SETUP_WORKSPACE_NAME];
+        ContentFolder workspaceContentFolder = [Select Id from ContentFolder WHERE Name =:testWorkspace.Id];
+        ContentFolder contentFolder = new ContentFolder(Name='Test insertContentFolder', ParentContentFolderId=workspaceContentFolder.Id);
+
+        Test.startTest();
+        ContentFolderCrud.insertContentFolder(contentFolder);
+        Test.stopTest();
+
+        System.Assert(contentFolder.Id != null, TestLog.makeTestErrorMessage('ContentFolder record Id', 'null'));
+    }
+
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * When null parameters are passed, a DMLException is thrown.
+    * ────────────────────────────────────────────────────────────────────────────────────────────────
+    */
+    @istest static void insertContentFolder_NullParams_DMLException() {
+        String nullString = null;
+        boolean doesThrowExc = false;
+
+        Test.startTest();
+        try {
+            ContentFolder contentFolder = ContentFolderCrud.insertContentFolder(nullString, nullString);
         } catch (DMLException dmle) {
             doesThrowExc = true;
         }
@@ -51,54 +92,18 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When a valid object is passed, a record is created.
-    * ────────────────────────────────────────────────────────────────────────────────────────────────
-    */
-    @isTest static void insertContentWorkspace_ValidObject_RecordCreated(){
-
-        ContentWorkspace cw = new ContentWorkspace(Name='Testing Workspace', DeveloperName='Testing_Workspace');
-
-        Test.startTest();
-        ContentWorkSpaceCrud.insertContentWorkspace(cw);
-        Test.stopTest();
-
-        System.Assert(cw.Id != null, TestLog.makeTestErrorMessage('ContentWorkspace record Id', 'null'));
-    }
-
-    /**
-    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When null parameters are passed, a DMLException is thrown.
-    * ────────────────────────────────────────────────────────────────────────────────────────────────
-    */
-    @isTest static void insertContentWorkspace_NullParameters_DMLException() {
-
-        String nullString = null;
-        boolean doesThrowExc = false;
-
-        Test.startTest();
-        try {
-            ContentWorkSpaceCrud.insertContentWorkspace(nullString, nullString);
-        } catch (DMLException dmle) {
-            doesThrowExc = true;
-        }
-        Test.stopTest();
-
-        boolean expected = true;
-        System.Assert(doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, expected));
-    }
-
-    /**
-    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * When valid parameters are passed, a record is created.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void insertContentWorkspace_ValidParameters_RecordCreated() {
+    @istest static void insertContentFolder_ValidParams_RecordCreated() {
+        ContentWorkspace testWorkspace = [Select Id from ContentWorkspace WHERE Name =:SETUP_WORKSPACE_NAME];
+        ContentFolder workspaceContentFolder = [Select Id from ContentFolder WHERE Name =:testWorkspace.Id];
 
         Test.startTest();
-        ContentWorkspace cw = ContentWorkSpaceCrud.insertContentWorkspace('Testing Workspace', 'Testing_Workspace');
+        ContentFolder contentFolder = ContentFolderCrud.insertContentFolder('Test insertContentFolder', workspaceContentFolder.Id);
         Test.stopTest();
 
-        System.Assert(cw.Id != null, TestLog.makeTestErrorMessage('ContentWorkspace record Id', 'null'));
+        System.Assert(contentFolder.Id != null, TestLog.makeTestErrorMessage('ContentFolder record Id', 'null'));
     }
 
     /**
@@ -106,47 +111,49 @@
     * When Id passed, record is retrieved.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void getContentWorkspace_ValidId_RecordId() {
+    @isTest static void getContentFolder_ValidId_RecordId() {
 
-        String name = 'Synchronicity';
-        String developerName = 'Synchronicity';
-        ContentWorkspace cw = new ContentWorkspace(Name=name, DeveloperName=developerName);
-        insert cw;
+        ContentWorkspace testWorkspace = [Select Id from ContentWorkspace WHERE Name =:SETUP_WORKSPACE_NAME];
+        ContentFolder workspaceContentFolder = [Select Id from ContentFolder WHERE Name =:testWorkspace.Id];
+        ContentFolder contentFolder = new ContentFolder(Name='Test insertContentFolder', parentContentFolderId=workspaceContentFolder.Id);
+        insert contentFolder;
 
         Test.startTest();
-        List<ContentWorkspace> results = ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceCrud.selectors.ID, cw.Id);
+        List<ContentFolder> results = ContentFolderCrud.getContentFolder(ContentFolderCrud.Selectors.ID, contentFolder.Id);
         Test.stopTest();
 
         Integer expectedSize = 1;
-        System.Assert( results.size() == 1, TestLog.makeTestErrorMessage(expectedSize, results.size()));
-        System.Assert( results.get(0).Id != null, TestLog.makeTestErrorMessage('ContentWorkspace record Id', 'null'));
-        System.Assert( results.get(0).Name == name, TestLog.makeTestErrorMessage(name, results.get(0).Name));
+        System.Assert(results.size() == expectedSize, TestLog.makeTestErrorMessage(expectedSize, results.size()));
+        System.Assert(results.get(0) != null, TestLog.makeTestErrorMessage('ContentFolder record', 'null'));
+        System.Assert(results.get(0).Id == contentFolder.Id, TestLog.makeTestErrorMessage('ContentFolder record Id', 'null'));
     }
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When Name is passed, record is retrieved.
+    * When Name passed, record is retrieved.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void getContentWorkspace_ValidName_RecordId() {
+    @isTest static void getContentFolder_ValidName_RecordId() {
 
-        String name = 'Synchronicity';
-        String developerName = 'Synchronicity';
-        ContentWorkspace cw = new ContentWorkspace(Name=name, DeveloperName=developerName);
-        insert cw;
+        ContentWorkspace testWorkspace = [Select Id from ContentWorkspace WHERE Name =:SETUP_WORKSPACE_NAME];
+        ContentFolder workspaceContentFolder = [Select Id from ContentFolder WHERE Name =:testWorkspace.Id];
+        ContentFolder contentFolder = new ContentFolder(Name='Test insertContentFolder', parentContentFolderId=workspaceContentFolder.Id);
+        insert contentFolder;
 
         Test.startTest();
-        List<ContentWorkspace> results = ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceCrud.selectors.NAME, cw.Name);
+        List<ContentFolder> results = ContentFolderCrud.getContentFolder(ContentFolderCrud.Selectors.Name, contentFolder.Name);
         Test.stopTest();
 
-        ContentWorkspace actualCw = null;
-        for(ContentWorkspace c : results){
-            if (c.Id == cw.Id) {
-                actualCw = c;
+        ContentFolder actual = null;
+        for (ContentFolder c : results) {
+            if (c.Id == contentFolder.Id) {
+                actual = c;
                 break;
             }
         }
-        System.Assert( actualCw != null, TestLog.makeTestErrorMessage('ContentWorkspace record Id', 'null'));
+
+        System.Assert(actual != null, TestLog.makeTestErrorMessage('ContentFolder record', 'null'));
+        System.Assert(actual.Id == contentFolder.Id, TestLog.makeTestErrorMessage('ContentFolder record Id', 'null'));
     }
 
     /**
@@ -154,21 +161,20 @@
     * When null Id is passed, QueryException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void getContentWorkspace_NullId_QueryException() {
-
-        String nullId = null;
+    @istest static void getContentFolder_NullId_QueryException() {
+        String nullString = null;
         boolean doesThrowExc = false;
 
         Test.startTest();
         try {
-            ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceCrud.selectors.ID, nullId);
+            ContentFolderCrud.getContentFolder(ContentFolderCrud.Selectors.Id, nullString);
         } catch (QueryException qe) {
             doesThrowExc = true;
         }
         Test.stopTest();
 
         boolean expected = true;
-        System.Assert( doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
+        System.Assert(doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
     }
 
     /**
@@ -176,19 +182,18 @@
     * When invalid Id is passed, QueryException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void getContentWorkspace_InvalidId_QueryException() {
-
+    @istest static void getContentFolder_InvalidId_QueryException() {
         boolean doesThrowExc = false;
 
         Test.startTest();
         try {
-            ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceCrud.selectors.ID, 'invalid');
+            ContentFolderCrud.getContentFolder(ContentFolderCrud.Selectors.Id, 'invalidId');
         } catch (QueryException qe) {
             doesThrowExc = true;
         }
         Test.stopTest();
 
         boolean expected = true;
-        System.Assert( doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
+        System.Assert(doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
     }
 }

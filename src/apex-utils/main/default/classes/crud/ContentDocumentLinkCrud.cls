@@ -1,63 +1,66 @@
-public class ContentWorkSpaceCrud {
-
-    private final static String CONTENTWORKSPACE_NAME = 'ContentWorkspace';
+public class ContentDocumentLinkCrud {
+    
+    private final static String CONTENTDOCUMENTLINK_NAME = 'ContentDocumentLink';
 
     public enum Selectors {
-        ID,
-        NAME,
-        DEVELOPERNAME
+        ID
     }
 
     /**
-     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * Creates a ContentWorkspace record.
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * Creates a ContentDocumentLink record.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
-    * @param    contentWorkspace    ContentWorkspace instance from which to create the record.
+    * @param    contentFolder    ContentFolder instance from which to create the record.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static void insertContentWorkspace(ContentWorkspace contentWorkspace){
-
-        DBCrud.doInsert(contentWorkspace);
+    public static void insertContentDocumentLink(ContentDocumentLink contentDocumentLink){
+        DBCrud.doInsert(contentDocumentLink);
     }
 
     /**
-     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * Creates a ContentWorkspace record.
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * Creates a ContentDocumentLink record.
+    *
+    * See https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_contentdocumentlink.htm
     * ────────────────────────────────────────────────────────────────────────────────────────────────
-    * @param    name    String. Name of the workspace.
-    * @param    developerName    String. Developer name of the workspace.
-    * @return    ContentWorkspace sObject record.
+    * @param    contentDocumentId    String. contentDocumentId belonging to the related document - such as a ContentVersion.
+    * @param    linkedEntityId    String. Id of the linked record - such as a ContentWorkspace.
+    * @param    shareType    String. The permission granted to the user of the shared file in a 
+    * library. V (Viewer permission), C (Collaborator permission), I (Inferred Permission).
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static ContentWorkspace insertContentWorkspace(String name, String developerName){
-        ContentWorkspace cw = new ContentWorkspace();
-        cw.Name = name;
-        cw.DeveloperName = developerName;
+    public static ContentDocumentLink insertContentDocumentLink(String contentDocumentId, String linkedEntityId, String shareType){
+        ContentDocumentLink cdl = new ContentDocumentLink();
+        cdl.ContentDocumentId = contentDocumentId;
+        cdl.LinkedEntityId = linkedEntityId; 
+        cdl.ShareType = shareType; 
 
-        DBCrud.doInsert(cw);
+        DBCrud.doInsert(cdl);
 
-        return cw;
+        return cdl;
     }
 
-    /**
+        /**
      * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * Retrieve ContentWorkspace records.
+    * Retrieve ContentDocumentLink records.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     * @param    fieldName    Selectors. Field name selector.
     * @param    fieldValue    String. Field value.
     * @return    List<ContentVersion> matching records.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static List<ContentWorkspace> getContentWorkspace(Selectors fieldName, String fieldValue) {
-        String sObjectName = CONTENTWORKSPACE_NAME;
-        String fields = 'Id, Name, Developername';
+    public static List<ContentDocumentLink> getContentDocumentLink(Selectors fieldName, String fieldValue) {
+        String sObjectName = CONTENTDOCUMENTLINK_NAME;
+        // String fields = 'Id, ContentDocumentId, LinkedEntityId, ShareType';
+        String fields = 'Id';
         String whereCriteria = makeExpression(fieldName, fieldValue);
-        List<ContentWorkspace> results = DBCrud.doSelect(sObjectName, fields, whereCriteria, null);
+        List<ContentDocumentLink> results = DBCrud.doSelect(sObjectName, fields, whereCriteria, null);
 
         return results;
     }
 
-     /**
+
+    /**
      * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * Get string value for a given selector.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
@@ -71,15 +74,6 @@ public class ContentWorkSpaceCrud {
             when ID {
                 slctor = 'Id';
             }
-            when NAME {
-                slctor = 'Name';
-            }
-            when DEVELOPERNAME {
-                slctor = 'DeveloperName';
-            }
-            when else {
-                slctor = null;
-            }
         }
         return slctor;
     }
@@ -88,12 +82,6 @@ public class ContentWorkSpaceCrud {
         String expression;
         switch on selector {
             when ID {
-                expression = getSelector(selector) + '=' + '\'' + value + '\'';
-            }
-            when NAME{
-                expression = getSelector(selector) + '=' + '\'' + value + '\'';
-            }
-            when DEVELOPERNAME{
                 expression = getSelector(selector) + '=' + '\'' + value + '\'';
             }
         }

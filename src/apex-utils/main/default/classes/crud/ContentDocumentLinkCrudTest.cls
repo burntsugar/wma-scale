@@ -1,8 +1,12 @@
-@isTest public class ContentWorkSpaceCrudTest {
-    
+@isTest public class ContentDocumentLinkCrudTest {
+
+    private final static String SETUP_WORKSPACE_NAME = 'Test Setup Workspace';
+    private final static String SETUP_WORKSPACE_DEVELOPER_NAME = 'Test_Setup_Workspace';
+
     @TestSetup
     static void makeData(){
-        
+        ContentWorkspace testWorkspace = new ContentWorkspace(Name=SETUP_WORKSPACE_NAME, DeveloperName=SETUP_WORKSPACE_DEVELOPER_NAME);
+        insert testWorkspace;
     } 
 
     /**
@@ -10,14 +14,14 @@
     * When a null object is passed, a NullPointerException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void insertContentWorkspace_NullObject_NullPointerException() {
+    @isTest static void insertContentDocumentLink_NullObject_NullPointerException() {
 
-        ContentWorkspace cw;
+        ContentDocumentLink contentDocumentLink;
         boolean doesThrowExc = false;
 
         Test.startTest();
         try {
-            ContentWorkSpaceCrud.insertContentWorkspace(cw);
+            ContentDocumentLinkCrud.insertContentDocumentLink(contentDocumentLink);
         } catch (NullPointerException npe) {
             doesThrowExc = true;
         }
@@ -32,14 +36,14 @@
     * When required attributes are omitted in passed object, a DMLException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void insertContentWorkspace_SansRequiredAttributes_DMLexception(){
+    @isTest static void insertContentDocumentLink_InvalidObject_DMLException() {
 
-        ContentWorkspace cw = new ContentWorkspace();
+        ContentDocumentLink contentDocumentLink = new ContentDocumentLink();
         boolean doesThrowExc = false;
 
         Test.startTest();
         try {
-            ContentWorkSpaceCrud.insertContentWorkspace(cw);
+            ContentDocumentLinkCrud.insertContentDocumentLink(contentDocumentLink);
         } catch (DMLException dmle) {
             doesThrowExc = true;
         }
@@ -54,37 +58,14 @@
     * When a valid object is passed, a record is created.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void insertContentWorkspace_ValidObject_RecordCreated(){
-
-        ContentWorkspace cw = new ContentWorkspace(Name='Testing Workspace', DeveloperName='Testing_Workspace');
-
-        Test.startTest();
-        ContentWorkSpaceCrud.insertContentWorkspace(cw);
-        Test.stopTest();
-
-        System.Assert(cw.Id != null, TestLog.makeTestErrorMessage('ContentWorkspace record Id', 'null'));
-    }
-
-    /**
-    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When null parameters are passed, a DMLException is thrown.
-    * ────────────────────────────────────────────────────────────────────────────────────────────────
-    */
-    @isTest static void insertContentWorkspace_NullParameters_DMLException() {
-
-        String nullString = null;
-        boolean doesThrowExc = false;
+    @isTest static void insertContentDocumentLink_ValidObject_RecordCreated() {
+        ContentDocumentLink contentDocumentLink = CrudTestingUtils.setupForInsertContentDocumentLink(SETUP_WORKSPACE_NAME);
 
         Test.startTest();
-        try {
-            ContentWorkSpaceCrud.insertContentWorkspace(nullString, nullString);
-        } catch (DMLException dmle) {
-            doesThrowExc = true;
-        }
+        ContentDocumentLinkCrud.insertContentDocumentLink(contentDocumentLink);
         Test.stopTest();
 
-        boolean expected = true;
-        System.Assert(doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, expected));
+        System.Assert(contentDocumentLink.Id != null, TestLog.makeTestErrorMessage('ContentDocumentLink record Id', 'null'));
     }
 
     /**
@@ -92,13 +73,14 @@
     * When valid parameters are passed, a record is created.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void insertContentWorkspace_ValidParameters_RecordCreated() {
+    @isTest static void insertContentDocumentLink_ValidParams_RecordCreated() {
+        ContentDocumentLink contentDocumentLink = CrudTestingUtils.setupForInsertContentDocumentLink(SETUP_WORKSPACE_NAME);
 
         Test.startTest();
-        ContentWorkspace cw = ContentWorkSpaceCrud.insertContentWorkspace('Testing Workspace', 'Testing_Workspace');
+        ContentDocumentLink actualContentDocumentLink = ContentDocumentLinkCrud.insertContentDocumentLink(contentDocumentLink.ContentDocumentId, contentDocumentLink.LinkedEntityId, contentDocumentLink.ShareType);
         Test.stopTest();
 
-        System.Assert(cw.Id != null, TestLog.makeTestErrorMessage('ContentWorkspace record Id', 'null'));
+        System.Assert(actualContentDocumentLink.Id != null, TestLog.makeTestErrorMessage('ContentDocumentLink record Id', 'null'));
     }
 
     /**
@@ -106,47 +88,26 @@
     * When Id passed, record is retrieved.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void getContentWorkspace_ValidId_RecordId() {
-
-        String name = 'Synchronicity';
-        String developerName = 'Synchronicity';
-        ContentWorkspace cw = new ContentWorkspace(Name=name, DeveloperName=developerName);
-        insert cw;
+    @isTest static void getContentDocumentLink_ValidID_RecordId() {
+        ContentDocumentLink contentDocumentLink = CrudTestingUtils.setupForInsertContentDocumentLink(SETUP_WORKSPACE_NAME);
+        insert contentDocumentLink;
 
         Test.startTest();
-        List<ContentWorkspace> results = ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceCrud.selectors.ID, cw.Id);
+        List<ContentDocumentLink> results =  ContentDocumentLinkCrud.getContentDocumentLink(ContentDocumentLinkCrud.Selectors.ID, contentDocumentLink.Id);
         Test.stopTest();
 
-        Integer expectedSize = 1;
-        System.Assert( results.size() == 1, TestLog.makeTestErrorMessage(expectedSize, results.size()));
-        System.Assert( results.get(0).Id != null, TestLog.makeTestErrorMessage('ContentWorkspace record Id', 'null'));
-        System.Assert( results.get(0).Name == name, TestLog.makeTestErrorMessage(name, results.get(0).Name));
-    }
-
-    /**
-    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When Name is passed, record is retrieved.
-    * ────────────────────────────────────────────────────────────────────────────────────────────────
-    */
-    @isTest static void getContentWorkspace_ValidName_RecordId() {
-
-        String name = 'Synchronicity';
-        String developerName = 'Synchronicity';
-        ContentWorkspace cw = new ContentWorkspace(Name=name, DeveloperName=developerName);
-        insert cw;
-
-        Test.startTest();
-        List<ContentWorkspace> results = ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceCrud.selectors.NAME, cw.Name);
-        Test.stopTest();
-
-        ContentWorkspace actualCw = null;
-        for(ContentWorkspace c : results){
-            if (c.Id == cw.Id) {
-                actualCw = c;
+        ContentDocumentLink actualCdl = null;
+        for (ContentDocumentLink c :results){
+            if (c.Id == contentDocumentLink.Id){
+                actualCdl = c;
                 break;
             }
         }
-        System.Assert( actualCw != null, TestLog.makeTestErrorMessage('ContentWorkspace record Id', 'null'));
+
+        Integer expectedSize = 1;
+        System.Assert(results.size() == expectedSize, TestLog.makeTestErrorMessage(expectedSize, results.size()));
+        System.Assert(actualCdl != null, TestLog.makeTestErrorMessage('ContentDocumentLink record', 'null'));
+        System.Assert(actualCdl.Id != null, TestLog.makeTestErrorMessage('ContentDocumentLink record Id', 'null'));
     }
 
     /**
@@ -154,21 +115,20 @@
     * When null Id is passed, QueryException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void getContentWorkspace_NullId_QueryException() {
-
-        String nullId = null;
+    @istest static void getContentDocumentLink_NullId_QueryException() {
+        String nullString = null;
         boolean doesThrowExc = false;
 
         Test.startTest();
         try {
-            ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceCrud.selectors.ID, nullId);
+            ContentDocumentLinkCrud.getContentDocumentLink(ContentDocumentLinkCrud.Selectors.ID, nullString);
         } catch (QueryException qe) {
             doesThrowExc = true;
         }
         Test.stopTest();
 
         boolean expected = true;
-        System.Assert( doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
+        System.Assert(doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
     }
 
     /**
@@ -176,19 +136,18 @@
     * When invalid Id is passed, QueryException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void getContentWorkspace_InvalidId_QueryException() {
-
+    @istest static void getContentDocumentLink_InvalidId_QueryException() {
         boolean doesThrowExc = false;
 
         Test.startTest();
         try {
-            ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceCrud.selectors.ID, 'invalid');
+            ContentDocumentLinkCrud.getContentDocumentLink(ContentDocumentLinkCrud.Selectors.ID, 'invalidId');
         } catch (QueryException qe) {
             doesThrowExc = true;
         }
         Test.stopTest();
 
         boolean expected = true;
-        System.Assert( doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
+        System.Assert(doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
     }
 }
