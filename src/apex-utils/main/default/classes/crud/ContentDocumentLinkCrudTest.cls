@@ -90,6 +90,7 @@
     */
     @isTest static void getContentDocumentLink_ValidID_RecordId() {
         ContentDocumentLink contentDocumentLink = CrudTestingUtils.setupForInsertContentDocumentLink(SETUP_WORKSPACE_NAME);
+
         insert contentDocumentLink;
 
         Test.startTest();
@@ -108,46 +109,24 @@
         System.Assert(results.size() == expectedSize, TestLog.makeTestErrorMessage(expectedSize, results.size()));
         System.Assert(actualCdl != null, TestLog.makeTestErrorMessage('ContentDocumentLink record', 'null'));
         System.Assert(actualCdl.Id != null, TestLog.makeTestErrorMessage('ContentDocumentLink record Id', 'null'));
+        System.Assert(actualCdl.Id == contentDocumentLink.ID, TestLog.makeTestErrorMessage('ContentDocumentLink record Id', 'null'));
     }
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * When null Id is passed, QueryException is thrown.
+    * TEST NOT IMPLEMENTED.
+    * REQUIRES 'Query all files' permission.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @istest static void getContentDocumentLink_NullId_QueryException() {
-        String nullString = null;
-        boolean doesThrowExc = false;
-
-        Test.startTest();
-        try {
-            ContentDocumentLinkCrud.getContentDocumentLink(ContentDocumentLinkCrud.Selectors.ID, nullString);
-        } catch (QueryException qe) {
-            doesThrowExc = true;
-        }
-        Test.stopTest();
-
-        boolean expected = true;
-        System.Assert(doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
-    }
+    
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * When invalid Id is passed, QueryException is thrown.
+    * TEST NOT IMPLEMENTED.
+    * REQUIRES 'Query all files' permission.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @istest static void getContentDocumentLink_InvalidId_QueryException() {
-        boolean doesThrowExc = false;
-
-        Test.startTest();
-        try {
-            ContentDocumentLinkCrud.getContentDocumentLink(ContentDocumentLinkCrud.Selectors.ID, 'invalidId');
-        } catch (QueryException qe) {
-            doesThrowExc = true;
-        }
-        Test.stopTest();
-
-        boolean expected = true;
-        System.Assert(doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
-    }
+    
 }

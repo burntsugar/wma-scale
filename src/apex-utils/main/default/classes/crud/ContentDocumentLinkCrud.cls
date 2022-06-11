@@ -3,7 +3,8 @@ public class ContentDocumentLinkCrud {
     private final static String CONTENTDOCUMENTLINK_NAME = 'ContentDocumentLink';
 
     public enum Selectors {
-        ID
+        ID,
+        LINKEDENTITYID
     }
 
     /**
@@ -43,6 +44,7 @@ public class ContentDocumentLinkCrud {
         /**
      * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * Retrieve ContentDocumentLink records.
+    * REQUIRES 'Query all files' permission.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     * @param    fieldName    Selectors. Field name selector.
     * @param    fieldValue    String. Field value.
@@ -51,8 +53,7 @@ public class ContentDocumentLinkCrud {
     */
     public static List<ContentDocumentLink> getContentDocumentLink(Selectors fieldName, String fieldValue) {
         String sObjectName = CONTENTDOCUMENTLINK_NAME;
-        // String fields = 'Id, ContentDocumentId, LinkedEntityId, ShareType';
-        String fields = 'Id';
+        String fields = 'Id, ContentDocumentId, LinkedEntityId, ShareType';
         String whereCriteria = makeExpression(fieldName, fieldValue);
         List<ContentDocumentLink> results = DBCrud.doSelect(sObjectName, fields, whereCriteria, null);
 
@@ -74,6 +75,9 @@ public class ContentDocumentLinkCrud {
             when ID {
                 slctor = 'Id';
             }
+            when LINKEDENTITYID {
+                slctor = 'LinkedEntityId';
+            }
         }
         return slctor;
     }
@@ -82,6 +86,9 @@ public class ContentDocumentLinkCrud {
         String expression;
         switch on selector {
             when ID {
+                expression = getSelector(selector) + '=' + '\'' + value + '\'';
+            }
+            when LINKEDENTITYID {
                 expression = getSelector(selector) + '=' + '\'' + value + '\'';
             }
         }
