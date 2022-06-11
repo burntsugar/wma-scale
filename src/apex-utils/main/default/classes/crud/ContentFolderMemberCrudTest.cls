@@ -7,11 +7,11 @@
     static void makeData(){
         ContentWorkspace testWorkspace = new ContentWorkspace(Name=SETUP_WORKSPACE_NAME, DeveloperName=SETUP_WORKSPACE_DEVELOPER_NAME);
         insert testWorkspace;
-    } 
+    }
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When a null object is passed, a NullPointerException is thrown.
+    * When valid parameters are passed, record is updated.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
     @isTest static void updateContentFolderMember_ValidParams_success() {
@@ -21,14 +21,11 @@
         ContentFolder folder = CrudTestingUtils.makeContentFolder(cw.Id, workspaceFolder.Id);
 
         Test.startTest();
-        ContentFolderMemberCrud.updateContentFolderMember(workspaceFolder.Id, folder.Id);  
-
-        List<ContentFolderMember> results = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: folder.Id];
-
+        ContentFolderMemberCrud.updateContentFolderMember(workspaceFolder.Id, folder.Id);
+        List<ContentFolderMember> results = [Select Id from ContentFolderMember where ParentContentFolderId =: folder.Id];
         Test.stopTest();
 
         Integer expectedSize = 1;
-
         System.Assert(results.size() == expectedSize, TestLog.makeTestErrorMessage(expectedSize, results.size()));
     }
 }
