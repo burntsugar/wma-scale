@@ -77,7 +77,7 @@
         ContentDocumentLink contentDocumentLink = CrudTestingUtils.setupForInsertContentDocumentLink(SETUP_WORKSPACE_NAME);
 
         Test.startTest();
-        ContentDocumentLink actualContentDocumentLink = ContentDocumentLinkCrud.insertContentDocumentLink(contentDocumentLink.ContentDocumentId, contentDocumentLink.LinkedEntityId, contentDocumentLink.ShareType);
+        ContentDocumentLink actualContentDocumentLink = ContentDocumentLinkCrud.insertContentDocumentLink(contentDocumentLink.ContentDocumentId, contentDocumentLink.LinkedEntityId, ContentDocumentLinkCrud.ShareTypes.I);
         Test.stopTest();
 
         System.Assert(actualContentDocumentLink.Id != null, TestLog.makeTestErrorMessage('ContentDocumentLink record Id', 'null'));

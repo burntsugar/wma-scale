@@ -109,4 +109,22 @@
         Integer expectedSizeOfResult = 1;
         System.Assert(result.size() == expectedSizeOfResult, TestLog.makeTestErrorMessage(expectedSizeOfResult, result.size()));
     }
+
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * Record is updated.
+    * ────────────────────────────────────────────────────────────────────────────────────────────────
+    */
+    @isTest static void doUpdate_ValidObjectRecord_RecordUpdated() {
+        System.assert(false, 'Not implemented');
+    }
+
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * Records are updated.
+    * ────────────────────────────────────────────────────────────────────────────────────────────────
+    */
+    @isTest static void doUpdate_ValidObjectRecordList_RecordUpdated() {
+        System.assert(false, 'Not implemented');
+    }
 }

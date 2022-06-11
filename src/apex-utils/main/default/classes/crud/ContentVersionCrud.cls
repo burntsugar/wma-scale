@@ -1,10 +1,16 @@
 public class ContentVersionCrud {
-
+    
     private final static String CONTENTVERSION_NAME = 'ContentVersion';
 
     public enum Selectors {
         ID,
         TITLE
+    }
+
+    public enum ContentLocations {
+        S,
+        E,
+        L
     }
 
      /**
@@ -26,16 +32,16 @@ public class ContentVersionCrud {
     * The record's ContentLocation defaults to S (Salesforce) unless specified by the object attribute.  
     * See https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_contentversion.htm
     * ────────────────────────────────────────────────────────────────────────────────────────────────
-    * @param    contentLocation    String. Origin of the document. 'S' (Salesforce) default, 'E' (External) or 'L' (Social network).
+    * @param    contentLocation    ContentLocations enum. Origin of the document. 'S' (Salesforce) default, 'E' (External) or 'L' (Social network).
     * @param    title    String. Title of the document.
     * @param    pathOnClient    String. The complete path of the document including the file extension.
     * @param    versionData    Blob. Content or body.
     * @return    ContentVersion sObject record.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static ContentVersion insertContentVersion(String contentLocation, String title, String pathOnClient, Blob versionData){
+    public static ContentVersion insertContentVersion(ContentLocations contentLocation, String title, String pathOnClient, Blob versionData){
         ContentVersion cv = new ContentVersion();
-        cv.ContentLocation = contentLocation; 
+        cv.ContentLocation = getContentLocation(contentLocation); 
         cv.Title = title; 
         cv.PathOnClient = pathOnClient;
         cv.VersionData = versionData;
@@ -80,9 +86,6 @@ public class ContentVersionCrud {
             when TITLE {
                 slctor = 'Title';
             }
-            when else {
-                slctor = null;
-            }
         }
         return slctor;
     }
@@ -90,13 +93,34 @@ public class ContentVersionCrud {
     private static String makeExpression(Selectors selector, String value){
         String expression;
         switch on selector {
-            when ID {
-                expression = getSelector(selector) + '=' + '\'' + value + '\'';
-            }
-            when TITLE{
+            when ID, TITLE {
                 expression = getSelector(selector) + '=' + '\'' + value + '\'';
             }
         }
         return expression;
+    }
+
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * Get string value for a given contentLocation.
+    * ────────────────────────────────────────────────────────────────────────────────────────────────
+    * @param    contentLocation    ContentLocations enum. Field name selector.
+    * @return    String value for contentLocation.
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┘
+    */
+    public static String getContentLocation(ContentLocations contentLocation) {
+        String cntLocation;
+        switch on contentLocation{
+            when S {
+                cntLocation = 'S';
+            }
+            when E {
+                cntLocation = 'E';
+            }
+            when L {
+                cntLocation = 'L';
+            }
+        }
+        return cntLocation;
     }
 }

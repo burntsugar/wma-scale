@@ -77,9 +77,6 @@ public class ContentWorkSpaceCrud {
             when DEVELOPERNAME {
                 slctor = 'DeveloperName';
             }
-            when else {
-                slctor = null;
-            }
         }
         return slctor;
     }
@@ -87,13 +84,7 @@ public class ContentWorkSpaceCrud {
     private static String makeExpression(Selectors selector, String value){
         String expression;
         switch on selector {
-            when ID {
-                expression = getSelector(selector) + '=' + '\'' + value + '\'';
-            }
-            when NAME{
-                expression = getSelector(selector) + '=' + '\'' + value + '\'';
-            }
-            when DEVELOPERNAME{
+            when ID, NAME, DEVELOPERNAME {
                 expression = getSelector(selector) + '=' + '\'' + value + '\'';
             }
         }

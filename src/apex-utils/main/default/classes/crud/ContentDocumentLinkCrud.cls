@@ -7,6 +7,12 @@ public class ContentDocumentLinkCrud {
         LINKEDENTITYID
     }
 
+    public enum ShareTypes {
+        V,
+        C,
+        I
+    }
+
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * Creates a ContentDocumentLink record.
@@ -30,19 +36,19 @@ public class ContentDocumentLinkCrud {
     * library. V (Viewer permission), C (Collaborator permission), I (Inferred Permission).
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static ContentDocumentLink insertContentDocumentLink(String contentDocumentId, String linkedEntityId, String shareType){
+    public static ContentDocumentLink insertContentDocumentLink(String contentDocumentId, String linkedEntityId, ShareTypes shareType){
         ContentDocumentLink cdl = new ContentDocumentLink();
         cdl.ContentDocumentId = contentDocumentId;
         cdl.LinkedEntityId = linkedEntityId; 
-        cdl.ShareType = shareType; 
+        cdl.ShareType = getShareTypeValue(shareType); 
 
         DBCrud.doInsert(cdl);
 
         return cdl;
     }
 
-        /**
-     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * Retrieve ContentDocumentLink records.
     * REQUIRES 'Query all files' permission.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
@@ -60,12 +66,11 @@ public class ContentDocumentLinkCrud {
         return results;
     }
 
-
     /**
      * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * Get string value for a given selector.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
-    * @param    selector    Selectors. Field name selector.
+    * @param    selector    Selectors enum. Field name selector.
     * @return    String value for selector.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
@@ -85,14 +90,27 @@ public class ContentDocumentLinkCrud {
     private static String makeExpression(Selectors selector, String value){
         String expression;
         switch on selector {
-            when ID {
-                expression = getSelector(selector) + '=' + '\'' + value + '\'';
-            }
-            when LINKEDENTITYID {
+            when ID, LINKEDENTITYID {
                 expression = getSelector(selector) + '=' + '\'' + value + '\'';
             }
         }
         return expression;
+    }
+
+    private static String getShareTypeValue(ShareTypes shareType) {
+        String shType;
+        Switch on shareType {
+            When V {
+                shType = 'V';
+            }
+            When C {
+                shType = 'C';
+            }
+            When I {
+                shType = 'I';
+            }
+        }
+        return shType;
     }
     
 }

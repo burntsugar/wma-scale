@@ -77,7 +77,7 @@
 
         Test.startTest();
         try {
-            ContentVersionCrud.insertContentVersion(nullString, nullString, nullString, nullBlob);
+            ContentVersionCrud.insertContentVersion(ContentVersionCrud.ContentLocations.S, nullString, nullString, nullBlob);
         } catch (DMLException dmle) {
             doesThrowExc = true;
         }
@@ -95,7 +95,7 @@
     @isTest static void insertContentVersion_ValidParams_RecordCreated(){
 
         Test.startTest();
-        ContentVersion cv =  ContentVersionCrud.insertContentVersion('S', 'Test CV', 'Test CV.csv', Blob.valueOf('content'));
+        ContentVersion cv =  ContentVersionCrud.insertContentVersion(ContentVersionCrud.ContentLocations.S, 'Test CV', 'Test CV.csv', Blob.valueOf('content'));
         Test.stopTest();
         
         System.Assert(cv.Id != null, TestLog.makeTestErrorMessage('ContentVersion record Id', 'null'));

@@ -43,11 +43,6 @@ public class DBCrud {
     * @param    additionalCriteria    String. Additional ORDERBY, LIMIT criteria. 
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    // public static List<sObject> doSelect(String sObjectName, String fields, String whereCriteria, String additionalCriteria) {
-    //     String strSOQL = 'SELECT ' + fields + ' FROM ' + sObjectName + ' WHERE ' + whereCriteria + ' ' + additionalCriteria;
-    //     return doSelect(strSOQL);
-    // }
-
     public static List<sObject> doSelect(String sObjectName, String fields, String whereCriteria, String additionalCriteria) {
         String strSOQL = 'SELECT ' + fields + ' FROM ' + sObjectName;
         if ( !String.isBlank(whereCriteria) ) strSOQL += ' WHERE ' + whereCriteria;

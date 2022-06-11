@@ -75,10 +75,7 @@ public class ContentFolderCrud {
     private static String makeExpression(Selectors selector, String value){
         String expression;
         switch on selector {
-            when ID {
-                expression = getSelector(selector) + '=' + '\'' + value + '\'';
-            }
-            when NAME{
+            when ID, NAME {
                 expression = getSelector(selector) + '=' + '\'' + value + '\'';
             }
         }
