@@ -86,7 +86,7 @@
         insert cv;
 
         Test.startTest();
-        List<ContentVersion> actualCvs = ContentVersionCrud.getContentVersion(ContentVersionCrud.selectors.ID, cv.Id);
+        List<ContentVersion> actualCvs = ContentVersionCrud.getContentVersion(ContentVersionFieldSelectors.ID, cv.Id);
         Test.stopTest();
 
         Integer expectedSize = 1;
@@ -109,7 +109,7 @@
         insert cv;
 
         Test.startTest();
-        List<ContentVersion> results = ContentVersionCrud.getContentVersion(ContentVersionCrud.selectors.TITLE, cv.Title);
+        List<ContentVersion> results = ContentVersionCrud.getContentVersion(ContentVersionFieldSelectors.TITLE, cv.Title);
         Test.stopTest();
 
         ContentVersion actualContentVersion = null;
@@ -135,7 +135,7 @@
 
         Test.startTest();
         try {
-            ContentVersionCrud.getContentVersion(ContentVersionCrud.selectors.ID, nullId);
+            ContentVersionCrud.getContentVersion(ContentVersionFieldSelectors.ID, nullId);
         } catch (QueryException qe) {
             doesThrowExc = true;
         }
@@ -156,7 +156,7 @@
 
         Test.startTest();
         try {
-            ContentVersionCrud.getContentVersion(ContentVersionCrud.selectors.ID, 'invalidId');
+            ContentVersionCrud.getContentVersion(ContentVersionFieldSelectors.ID, 'invalidId');
         } catch (QueryException qe) {
             doesThrowExc = true;
         }

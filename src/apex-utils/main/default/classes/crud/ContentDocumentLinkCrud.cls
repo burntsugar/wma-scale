@@ -1,11 +1,11 @@
-public without sharing class ContentDocumentLinkCrud {
+public without sharing class ContentDocumentLinkCrud implements IContentDocumentLinkCrud{
     
     private final static String CONTENTDOCUMENTLINK_NAME = 'ContentDocumentLink';
 
-    public enum Selectors {
-        ID,
-        LINKEDENTITYID
-    }
+    // public enum Selectors {
+    //     ID,
+    //     LINKEDENTITYID
+    // }
 
     public enum ShareTypes {
         V,
@@ -36,7 +36,15 @@ public without sharing class ContentDocumentLinkCrud {
     * @return    List<ContentVersion> matching records.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static List<ContentDocumentLink> getContentDocumentLink(Selectors fieldName, String fieldValue) {
+    // public static List<ContentDocumentLink> getContentDocumentLink(Selectors fieldName, String fieldValue) {
+    //     String sObjectName = CONTENTDOCUMENTLINK_NAME;
+    //     String fields = 'Id, ContentDocumentId, LinkedEntityId, ShareType';
+    //     String whereCriteria = makeExpression(fieldName, fieldValue);
+    //     List<ContentDocumentLink> results = DBCrud.doSelect(sObjectName, fields, whereCriteria, null);
+
+    //     return results;
+    // }
+    public static List<ContentDocumentLink> getContentDocumentLink(ContentDocumentLinkFieldSelectors fieldName, String fieldValue) {
         String sObjectName = CONTENTDOCUMENTLINK_NAME;
         String fields = 'Id, ContentDocumentId, LinkedEntityId, ShareType';
         String whereCriteria = makeExpression(fieldName, fieldValue);
@@ -53,7 +61,20 @@ public without sharing class ContentDocumentLinkCrud {
     * @return    String value for selector.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static String getSelector(Selectors selector) {
+    // private static String getSelector(Selectors selector) {
+    //     String slctor;
+    //     switch on selector {
+    //         when ID {
+    //             slctor = 'Id';
+    //         }
+    //         when LINKEDENTITYID {
+    //             slctor = 'LinkedEntityId';
+    //         }
+    //     }
+    //     return slctor;
+    // }
+
+    public static String getSelector(ContentDocumentLinkFieldSelectors selector) {
         String slctor;
         switch on selector {
             when ID {
@@ -66,7 +87,17 @@ public without sharing class ContentDocumentLinkCrud {
         return slctor;
     }
 
-    private static String makeExpression(Selectors selector, String value){
+    // private static String makeExpression(Selectors selector, String value){
+    //     String expression;
+    //     switch on selector {
+    //         when ID, LINKEDENTITYID {
+    //             expression = getSelector(selector) + '=' + '\'' + value + '\'';
+    //         }
+    //     }
+    //     return expression;
+    // }
+
+    private static String makeExpression(ContentDocumentLinkFieldSelectors selector, String value){
         String expression;
         switch on selector {
             when ID, LINKEDENTITYID {
@@ -75,6 +106,22 @@ public without sharing class ContentDocumentLinkCrud {
         }
         return expression;
     }
+
+    // private static String getShareTypeValue(ShareTypes shareType) {
+    //     String shType;
+    //     Switch on shareType {
+    //         When V {
+    //             shType = 'V';
+    //         }
+    //         When C {
+    //             shType = 'C';
+    //         }
+    //         When I {
+    //             shType = 'I';
+    //         }
+    //     }
+    //     return shType;
+    // }
 
     private static String getShareTypeValue(ShareTypes shareType) {
         String shType;

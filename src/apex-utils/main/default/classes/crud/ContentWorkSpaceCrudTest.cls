@@ -85,7 +85,7 @@
         insert cw;
 
         Test.startTest();
-        List<ContentWorkspace> results = ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceCrud.selectors.ID, cw.Id);
+        List<ContentWorkspace> results = ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceFieldSelectors.ID, cw.Id);
         Test.stopTest();
 
         Integer expectedSize = 1;
@@ -107,7 +107,7 @@
         insert cw;
 
         Test.startTest();
-        List<ContentWorkspace> results = ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceCrud.selectors.NAME, cw.Name);
+        List<ContentWorkspace> results = ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceFieldSelectors.NAME, cw.Name);
         Test.stopTest();
 
         ContentWorkspace actualCw = null;
@@ -132,7 +132,7 @@
 
         Test.startTest();
         try {
-            ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceCrud.selectors.ID, nullId);
+            ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceFieldSelectors.ID, nullId);
         } catch (QueryException qe) {
             doesThrowExc = true;
         }
@@ -153,7 +153,7 @@
 
         Test.startTest();
         try {
-            ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceCrud.selectors.ID, 'invalid');
+            ContentWorkSpaceCrud.getContentWorkspace(ContentWorkSpaceFieldSelectors.ID, 'invalid');
         } catch (QueryException qe) {
             doesThrowExc = true;
         }

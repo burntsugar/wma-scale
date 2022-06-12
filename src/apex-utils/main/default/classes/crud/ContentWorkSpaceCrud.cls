@@ -1,12 +1,12 @@
-public without sharing class ContentWorkSpaceCrud {
+public without sharing class ContentWorkSpaceCrud implements IContentWorkSpaceCrud{
 
     private final static String CONTENTWORKSPACE_NAME = 'ContentWorkspace';
 
-    public enum Selectors {
-        ID,
-        NAME,
-        DEVELOPERNAME
-    }
+    // public enum Selectors {
+    //     ID,
+    //     NAME,
+    //     DEVELOPERNAME
+    // }
 
     /**
      * ───────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -31,7 +31,7 @@ public without sharing class ContentWorkSpaceCrud {
     * @return    List<ContentVersion> matching records.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static List<ContentWorkspace> getContentWorkspace(Selectors fieldName, String fieldValue) {
+    public static List<ContentWorkspace> getContentWorkspace(ContentWorkSpaceFieldSelectors fieldName, String fieldValue) {
         String sObjectName = CONTENTWORKSPACE_NAME;
         String fields = 'Id, Name, Developername';
         String whereCriteria = makeExpression(fieldName, fieldValue);
@@ -48,7 +48,7 @@ public without sharing class ContentWorkSpaceCrud {
     * @return    String value for selector.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static String getSelector(Selectors selector) {
+    public static String getSelector(ContentWorkSpaceFieldSelectors selector) {
         String slctor;
         switch on selector {
             when ID {
@@ -64,7 +64,7 @@ public without sharing class ContentWorkSpaceCrud {
         return slctor;
     }
 
-    private static String makeExpression(Selectors selector, String value){
+    private static String makeExpression(ContentWorkSpaceFieldSelectors selector, String value){
         String expression;
         switch on selector {
             when ID, NAME, DEVELOPERNAME {

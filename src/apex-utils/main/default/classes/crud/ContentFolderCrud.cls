@@ -1,11 +1,11 @@
-public without sharing class ContentFolderCrud {
+public without sharing class ContentFolderCrud implements IContentFolderCrud{
     
     private final static String CONTENTFOLDER_NAME = 'ContentFolder';
 
-    public enum Selectors {
-        ID,
-        NAME
-    }
+    // public enum Selectors {
+    //     ID,
+    //     NAME
+    // }
 
     /**
      * ───────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -29,7 +29,7 @@ public without sharing class ContentFolderCrud {
     * @return    List<ContentVersion> matching records.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static List<ContentFolder> getContentFolder(Selectors fieldName, String fieldValue) {
+    public static List<ContentFolder> getContentFolder(ContentFolderFieldSelectors fieldName, String fieldValue) {
         String sObjectName = CONTENTFOLDER_NAME;
         String fields = 'Id, Name';
         String whereCriteria = makeExpression(fieldName, fieldValue);
@@ -46,7 +46,7 @@ public without sharing class ContentFolderCrud {
     * @return    String value for selector.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static String getSelector(Selectors selector) {
+    public static String getSelector(ContentFolderFieldSelectors selector) {
         String slctor;
         switch on selector {
             when ID {
@@ -59,7 +59,7 @@ public without sharing class ContentFolderCrud {
         return slctor;
     }
 
-    private static String makeExpression(Selectors selector, String value){
+    private static String makeExpression(ContentFolderFieldSelectors selector, String value){
         String expression;
         switch on selector {
             when ID, NAME {

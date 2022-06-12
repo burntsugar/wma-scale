@@ -86,7 +86,11 @@
         insert contentDocumentLink;
 
         Test.startTest();
-        List<ContentDocumentLink> results =  ContentDocumentLinkCrud.getContentDocumentLink(ContentDocumentLinkCrud.Selectors.ID, contentDocumentLink.Id);
+
+        // List<ContentDocumentLink> results =  ContentDocumentLinkCrud.getContentDocumentLink(ContentDocumentLinkCrud.Selectors.ID, contentDocumentLink.Id);
+
+        List<ContentDocumentLink> results =  ContentDocumentLinkCrud.getContentDocumentLink(ContentDocumentLinkFieldSelectors.ID, contentDocumentLink.Id);
+
         Test.stopTest();
 
         ContentDocumentLink actualCdl = null;

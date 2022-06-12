@@ -89,7 +89,7 @@
         insert contentFolder;
 
         Test.startTest();
-        List<ContentFolder> results = ContentFolderCrud.getContentFolder(ContentFolderCrud.Selectors.ID, contentFolder.Id);
+        List<ContentFolder> results = ContentFolderCrud.getContentFolder(ContentFolderFieldSelectors.ID, contentFolder.Id);
         Test.stopTest();
 
         Integer expectedSize = 1;
@@ -111,7 +111,7 @@
         insert contentFolder;
 
         Test.startTest();
-        List<ContentFolder> results = ContentFolderCrud.getContentFolder(ContentFolderCrud.Selectors.Name, contentFolder.Name);
+        List<ContentFolder> results = ContentFolderCrud.getContentFolder(ContentFolderFieldSelectors.Name, contentFolder.Name);
         Test.stopTest();
 
         ContentFolder actual = null;
@@ -137,7 +137,7 @@
 
         Test.startTest();
         try {
-            ContentFolderCrud.getContentFolder(ContentFolderCrud.Selectors.Id, nullString);
+            ContentFolderCrud.getContentFolder(ContentFolderFieldSelectors.Id, nullString);
         } catch (QueryException qe) {
             doesThrowExc = true;
         }
@@ -157,7 +157,7 @@
 
         Test.startTest();
         try {
-            ContentFolderCrud.getContentFolder(ContentFolderCrud.Selectors.Id, 'invalidId');
+            ContentFolderCrud.getContentFolder(ContentFolderFieldSelectors.Id, 'invalidId');
         } catch (QueryException qe) {
             doesThrowExc = true;
         }

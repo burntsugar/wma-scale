@@ -1,11 +1,11 @@
-public without sharing class ContentVersionCrud {
+public without sharing class ContentVersionCrud implements IContentVersionCrud{
     
     private final static String CONTENTVERSION_NAME = 'ContentVersion';
 
-    public enum Selectors {
-        ID,
-        TITLE
-    }
+    // public enum Selectors {
+    //     ID,
+    //     TITLE
+    // }
 
     public enum ContentLocations {
         S,
@@ -40,7 +40,7 @@ public without sharing class ContentVersionCrud {
     * @return    List<ContentVersion> matching records.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static List<ContentVersion> getContentVersion(Selectors fieldName, String fieldValue) {
+    public static List<ContentVersion> getContentVersion(ContentVersionFieldSelectors fieldName, String fieldValue) {
         String sObjectName = CONTENTVERSION_NAME;
         String fields = 'Id, Title, ContentDocumentId, PathOnClient, ContentLocation';
         String whereCriteria = makeExpression(fieldName, fieldValue);
@@ -57,7 +57,7 @@ public without sharing class ContentVersionCrud {
     * @return    String value for selector.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static String getSelector(Selectors selector) {
+    public static String getSelector(ContentVersionFieldSelectors selector) {
         String slctor;
         switch on selector {
             when ID {
@@ -70,7 +70,7 @@ public without sharing class ContentVersionCrud {
         return slctor;
     }
 
-    private static String makeExpression(Selectors selector, String value){
+    private static String makeExpression(ContentVersionFieldSelectors selector, String value){
         String expression;
         switch on selector {
             when ID, TITLE {
