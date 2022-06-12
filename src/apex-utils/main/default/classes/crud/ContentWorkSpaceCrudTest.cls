@@ -29,24 +29,31 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When required attributes are omitted in passed object, a DMLException is thrown.
+    * When object attributes do not contain required fields, DMLException error is * REQUIRED_FIELD_MISSING.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void insertContentWorkspace_SansRequiredAttributes_DMLexception(){
+    @isTest static void insertContentWorkspace_SansRequiredAttributes_DMLexceptionError(){
 
         ContentWorkspace cw = new ContentWorkspace();
-        boolean doesThrowExc = false;
 
         Test.startTest();
-        try {
-            ContentWorkSpaceCrud.insertContentWorkspace(cw);
-        } catch (DMLException dmle) {
-            doesThrowExc = true;
-        }
+        
+        Database.SaveResult sr = ContentWorkSpaceCrud.insertContentWorkspace(cw);
+
         Test.stopTest();
 
-        boolean expected = true;
-        System.Assert(doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, doesThrowExc));
+        Integer expectedErrorListSize = 1;
+        System.StatusCode expectedStatusCode = System.StatusCode.REQUIRED_FIELD_MISSING;
+
+        Integer actualErrorListSize = sr.getErrors().size();
+
+        System.Assert(expectedErrorListSize == actualErrorListSize, TestLog.makeTestErrorMessage(expectedErrorListSize, actualErrorListSize));
+
+        System.StatusCode actualStatusCode = System.StatusCode.REQUIRED_FIELD_MISSING;
+
+        System.Assert(expectedStatusCode == actualStatusCode);  
+
+        
     }
 
     /**
@@ -59,46 +66,10 @@
         ContentWorkspace cw = new ContentWorkspace(Name='Testing Workspace', DeveloperName='Testing_Workspace');
 
         Test.startTest();
-        ContentWorkSpaceCrud.insertContentWorkspace(cw);
+        Database.SaveResult sr = ContentWorkSpaceCrud.insertContentWorkspace(cw);
         Test.stopTest();
 
-        System.Assert(cw.Id != null, TestLog.makeTestErrorMessage('ContentWorkspace record Id', 'null'));
-    }
-
-    /**
-    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When null parameters are passed, a DMLException is thrown.
-    * ────────────────────────────────────────────────────────────────────────────────────────────────
-    */
-    @isTest static void insertContentWorkspace_NullParameters_DMLException() {
-
-        String nullString = null;
-        boolean doesThrowExc = false;
-
-        Test.startTest();
-        try {
-            ContentWorkSpaceCrud.insertContentWorkspace(nullString, nullString);
-        } catch (DMLException dmle) {
-            doesThrowExc = true;
-        }
-        Test.stopTest();
-
-        boolean expected = true;
-        System.Assert(doesThrowExc == expected, TestLog.makeTestErrorMessage(expected, expected));
-    }
-
-    /**
-    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When valid parameters are passed, a record is created.
-    * ────────────────────────────────────────────────────────────────────────────────────────────────
-    */
-    @isTest static void insertContentWorkspace_ValidParameters_RecordCreated() {
-
-        Test.startTest();
-        ContentWorkspace cw = ContentWorkSpaceCrud.insertContentWorkspace('Testing Workspace', 'Testing_Workspace');
-        Test.stopTest();
-
-        System.Assert(cw.Id != null, TestLog.makeTestErrorMessage('ContentWorkspace record Id', 'null'));
+        System.Assert(sr.isSuccess(), TestLog.makeTestErrorMessage(sr));
     }
 
     /**

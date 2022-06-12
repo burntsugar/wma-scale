@@ -1,4 +1,4 @@
-public class StringUtils {
+public without sharing class StringUtils {
 
     public static boolean stringIsNull(String s) {
         if(s==null)return true;

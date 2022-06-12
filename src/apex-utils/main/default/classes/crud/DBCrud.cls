@@ -1,22 +1,23 @@
-public class DBCrud {
+public without sharing class DBCrud {
 
      /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * Creates a sObject record.
+    * Allows partial insert to succeed. Errors returned in SaveResult.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     * @param    record    sObject instance from which to create a record.
     * @return   Database.SaveResult
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
     public static Database.SaveResult doInsert(SObject record) {
-        Database.SaveResult sr = Database.insert(record);
+        Database.SaveResult sr = Database.insert(record, false);
         return sr;
     }
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * Creates sObject records from a list.
-    * Allows partial insert to succeed.
+    * Allows partial insert to succeed. Errors returned in SaveResult.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     * @param    records    List<SObject> containing instances from which to create records.
     * @return   Database.SaveResult[]
@@ -30,7 +31,7 @@ public class DBCrud {
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * Updates a sObject record.
-    * Allows partial update to succeed.
+    * Allows partial update to succeed. Errors returned in SaveResult.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     * @param    record    sObject instance from which to update a record.
     * @return   Database.SaveResult
@@ -44,7 +45,7 @@ public class DBCrud {
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * Updates a list of sObject record.
-    * Allows partial update to succeed.
+    * Allows partial update to succeed. Errors returned in SaveResult.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     * @param    records    List<sObject> instance records to update.
     * @return   Database.SaveResult[]

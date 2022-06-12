@@ -1,4 +1,4 @@
-public class ContentDocumentLinkCrud {
+public without sharing class ContentDocumentLinkCrud {
     
     private final static String CONTENTDOCUMENTLINK_NAME = 'ContentDocumentLink';
 
@@ -18,33 +18,12 @@ public class ContentDocumentLinkCrud {
     * Creates a ContentDocumentLink record.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     * @param    contentFolder    ContentFolder instance from which to create the record.
+    * @return Database.Saveresult
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static void insertContentDocumentLink(ContentDocumentLink contentDocumentLink){
-        DBCrud.doInsert(contentDocumentLink);
-    }
-
-    /**
-    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * Creates a ContentDocumentLink record.
-    *
-    * See https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_contentdocumentlink.htm
-    * ────────────────────────────────────────────────────────────────────────────────────────────────
-    * @param    contentDocumentId    String. contentDocumentId belonging to the related document - such as a ContentVersion.
-    * @param    linkedEntityId    String. Id of the linked record - such as a ContentWorkspace.
-    * @param    shareType    String. The permission granted to the user of the shared file in a 
-    * library. V (Viewer permission), C (Collaborator permission), I (Inferred Permission).
-    * ───────────────────────────────────────────────────────────────────────────────────────────────┘
-    */
-    public static ContentDocumentLink insertContentDocumentLink(String contentDocumentId, String linkedEntityId, ShareTypes shareType){
-        ContentDocumentLink cdl = new ContentDocumentLink();
-        cdl.ContentDocumentId = contentDocumentId;
-        cdl.LinkedEntityId = linkedEntityId; 
-        cdl.ShareType = getShareTypeValue(shareType); 
-
-        DBCrud.doInsert(cdl);
-
-        return cdl;
+    public static Database.Saveresult insertContentDocumentLink(ContentDocumentLink contentDocumentLink){
+        Database.Saveresult sr = DBCrud.doInsert(contentDocumentLink);
+        return sr;
     }
 
     /**
@@ -67,7 +46,7 @@ public class ContentDocumentLinkCrud {
     }
 
     /**
-     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
     * Get string value for a given selector.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     * @param    selector    Selectors enum. Field name selector.
@@ -114,3 +93,26 @@ public class ContentDocumentLinkCrud {
     }
     
 }
+
+    // /**
+    // * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    // * Creates a ContentDocumentLink record.
+    // *
+    // * See https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_contentdocumentlink.htm
+    // * ────────────────────────────────────────────────────────────────────────────────────────────────
+    // * @param    contentDocumentId    String. contentDocumentId belonging to the related document - such as a ContentVersion.
+    // * @param    linkedEntityId    String. Id of the linked record - such as a ContentWorkspace.
+    // * @param    shareType    String. The permission granted to the user of the shared file in a 
+    // * library. V (Viewer permission), C (Collaborator permission), I (Inferred Permission).
+    // * ───────────────────────────────────────────────────────────────────────────────────────────────┘
+    // */
+    // public static ContentDocumentLink insertContentDocumentLink(String contentDocumentId, String linkedEntityId, ShareTypes shareType){
+    //     ContentDocumentLink cdl = new ContentDocumentLink();
+    //     cdl.ContentDocumentId = contentDocumentId;
+    //     cdl.LinkedEntityId = linkedEntityId; 
+    //     cdl.ShareType = getShareTypeValue(shareType); 
+
+    //     DBCrud.doInsert(cdl);
+
+    //     return cdl;
+    // }

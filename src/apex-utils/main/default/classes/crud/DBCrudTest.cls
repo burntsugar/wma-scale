@@ -12,7 +12,7 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When a null object is passed, a NullPointerException is thrown.
+    * When object is null, a NullPointerException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
     @isTest static void doInsert_NullObject_NullPointerException(){
@@ -37,10 +37,35 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When a valid object is passed, a record is created.
+    * When object attribute for required field is blank, DMLException error is REQUIRED_FIELD_MISSING.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void doInsert_ValidObject_RecordId(){
+    @isTest static void doInsert_BlankRequiredField_DMLExceptionError(){
+
+        Account account = new Account();
+
+        Test.startTest();
+
+        Database.SaveResult sr = DBCrud.doInsert(account);
+
+        Test.stopTest();
+
+        Integer expectedErrorListSize = 1;
+        System.StatusCode expectedStatusCode = System.StatusCode.REQUIRED_FIELD_MISSING;
+
+        Integer actualErrorListSize = sr.getErrors().size();
+        System.StatusCode actualStatusCode = sr.getErrors().get(0).getStatusCode();
+
+        System.assert( expectedErrorListSize == actualErrorListSize, TestLog.makeTestErrorMessage('error list size', expectedErrorListSize, actualErrorListSize) );
+        System.assert( expectedStatusCode == actualStatusCode, TestLog.makeTestErrorMessage(sr) );
+    }
+
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * When object is valid, a record is created.
+    * ────────────────────────────────────────────────────────────────────────────────────────────────
+    */
+    @isTest static void doInsert_ValidObject_RecordCreated(){
         Account account = new Account(Name='Test Account');
 
         Test.startTest();
@@ -54,7 +79,7 @@
 
     /**
      * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-     * When null object list is passed, NullPointerException is thrown.
+     * When object list is null, NullPointerException is thrown.
      * ────────────────────────────────────────────────────────────────────────────────────────────────
      */
     @isTest static void doInsert_NullList_NullPointerException() {
@@ -79,7 +104,7 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When null object in list is passed, ListException is thrown.
+    * When object in list is null, ListException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
     @isTest static void doInsert_NullObjectInList_ListException() {
@@ -106,11 +131,11 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When required value is blank in object in list, SaveResult contains DMLException error code 
-    * System.StatusCode.REQUIRED_FIELD_MISSING.
+    * When object in list has blank attribute for required value, DMLException error is 
+    * REQUIRED_FIELD_MISSING.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void doInsert_NullRequiredAttributeInObjectInList_DMLException() {
+    @isTest static void doInsert_BlankRequiredAttributeInObjectInList_DMLExceptionError() {
 
         String nullString = null;
         List<Account> accountList = new List<Account>();
@@ -134,7 +159,7 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When valid object list is passed, Record is updated.
+    * When list contains valid objects, Record is updated.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
     @isTest static void doInsert_ValidObjectRecordList_RecordsCreated() {
@@ -162,10 +187,10 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * For records, when null parts are passed, QueryException is thrown.
+    * When parameters are blank, QueryException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void doSelect_NullParts_QueryException() {
+    @isTest static void doSelect_BlankParams_QueryException() {
 
         String sObjectName = null;
         String fields = null;
@@ -186,19 +211,20 @@
         System.assert(doesThrow, TestLog.makeTestErrorMessage(expectedType));
     }
 
-
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * For a matching record, when WHERE criteria is passed, the matching record is retrieved.
+    * When WHERE criteria is passed, the matching record is retrieved.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void doSelect_WhereCriteria_1MatchingRecord() {
+    @isTest static void doSelect_WhereCriteria_MatchingRecord() {
         String sObjectName = 'Account';
         String fields = 'Id, Name, Description, NumberOfEmployees';
         String whereCriteria = 'Name=\'' + ACCOUNT_NAME + '\' AND NumberOfEmployees=' + ACCOUNT_NUMBER_OF_EMPLOYEES;
 
         Test.startTest();
+
         List<Account> result = DBCrud.doSelect(sObjectName, fields, whereCriteria, null);
+
         Test.stopTest();
 
         Integer expectedSizeOfResult = 1;
@@ -209,7 +235,6 @@
         String actualAccountName = result.get(0).Name;
         Integer actualNumberOfEmployees = result.get(0).NumberOfEmployees;
 
-
         System.Assert(expectedSizeOfResult == actualSizeOfResult, TestLog.makeTestErrorMessage(expectedSizeOfResult, actualSizeOfResult));
         System.Assert(expectedAccountName == actualAccountName, TestLog.makeTestErrorMessage(expectedAccountName, actualAccountName));
         System.Assert(expectedNumberOfEmployees == actualNumberOfEmployees, TestLog.makeTestErrorMessage(expectedNumberOfEmployees, actualNumberOfEmployees));
@@ -217,16 +242,18 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * For records, when LIMIT criteria is passed, 1 record is retrieved.
+    * When LIMIT criteria is passed, limited number of records are retrieved.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void doSelect_Limit_1() {
+    @isTest static void doSelect_LimitCriteria_LimitedRecords() {
         String sObjectName = 'Account';
         String fields = 'Id, Name, Description';
         String additionalCriteria = 'LIMIT 1';
 
         Test.startTest();
+
         List<Account> result = DBCrud.doSelect(sObjectName, fields, null, additionalCriteria);
+
         Test.stopTest();
 
         Integer expectedSizeOfResult = 1;
@@ -235,10 +262,10 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When valid object is passed, Record is updated.
+    * When object is valid, Record is updated.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void doUpdate_ValidObjectRecord_RecordUpdated() {
+    @isTest static void doUpdate_ValidObject_RecordUpdated() {
         String accountName = 'Dhamitha Ramachandran';
         Account account = new Account(Name=accountName);
         insert account;
@@ -257,10 +284,10 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When null object is passed, NullPointerException is thrown.
+    * When object is null, NullPointerException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void doUpdate_NullObjectRecord_NullPointerException() {
+    @isTest static void doUpdate_NullObject_NullPointerException() {
         Account account;
         boolean doesThrow = false;
 
@@ -280,10 +307,10 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When required field is blank, DMLException is thrown.
+    * When object attribute for required field is blank, DMLException error is REQUIRED_FIELD_MISSING
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
-    @isTest static void doUpdate_RequiredFieldBlank_DMLException() {
+    @isTest static void doUpdate_RequiredFieldBlank_DMLExceptionError() {
         String nullString = null;
         Account account = new Account(Name='Dhamitha Ramachandran');
         insert(account);
@@ -296,12 +323,19 @@
         
         Test.stopTest();
 
-        System.assert(sr.isSuccess() == false);
+        Integer expectedErrorListSize = 1;
+        System.StatusCode expectedStatusCode = System.StatusCode.REQUIRED_FIELD_MISSING;
+
+        Integer actualErrorListSize = sr.getErrors().size();
+        System.StatusCode actualStatusCode = sr.getErrors().get(0).getStatusCode();
+
+        System.assert( expectedErrorListSize == actualErrorListSize, TestLog.makeTestErrorMessage('error list size', expectedErrorListSize, actualErrorListSize) );
+        System.assert( expectedStatusCode == actualStatusCode, TestLog.makeTestErrorMessage(sr) );
     }
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When null object list is passed, NullPointerException is thrown.
+    * When object list is null, NullPointerException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
     @isTest static void doUpdate_NullList_NullPointerException() {
@@ -325,7 +359,7 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When null object in list is passed, ListException is thrown.
+    * When object in list is null, ListException is thrown.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
     @isTest static void doUpdate_NullObjectInList_ListException() {
@@ -353,7 +387,8 @@
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When required value is null in object in list, DMLException is thrown.
+    * When object in list has blank attributes for required fields, DMLException error is 
+    * REQUIRED_FIELD_MISSING.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
     @isTest static void doUpdate_NullRequiredAttributeInObjectInList_DMLException() {
@@ -381,10 +416,9 @@
         System.assert( expectedStatusCode == actualStatusCode, TestLog.makeTestErrorMessage(sr) );
     }
 
-
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
-    * When valid object list is passed, Record is updated.
+    * When objects in list are valid, Record is updated.
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     */
     @isTest static void doUpdate_ValidObjectRecordList_RecordsUpdated() {

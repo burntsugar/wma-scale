@@ -1,4 +1,4 @@
-public class ContentFolderMemberCrud {
+public without sharing class ContentFolderMemberCrud {
 
     /**
     * ───────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -10,16 +10,18 @@ public class ContentFolderMemberCrud {
     * ────────────────────────────────────────────────────────────────────────────────────────────────
     * @param    parentContentFolderId    String. Id of the source parent folder - such as a ContentWorkspace ContentFolder.
     * @param    contentFolderId    String. Id of the destination ContentFolder.
+    * @return Database.SaveResult[]
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public static void updateContentFolderMember(String parentContentFolderId, String contentFolderId){
+    public static Database.SaveResult[] updateContentFolderMember(String parentContentFolderId, String contentFolderId){
         List<ContentFolderMember> results = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: parentContentFolderId];
 
         for (ContentFolderMember c : results) {
             c.ParentContentFolderId = contentFolderId;
         }
 
-        DBCrud.doUpdate(results);
+        Database.SaveResult[] sr = DBCrud.doUpdate(results);
+        return sr;
         
     }
 }

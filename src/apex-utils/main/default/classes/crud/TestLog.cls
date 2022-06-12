@@ -20,11 +20,13 @@
         return makeTestErrorMessage(String.valueOf(expected + ' ' + descriptor), String.valueOf(actual)+ ' ' + descriptor);
     } 
 
+    public static String makeTestErrorMessage(String descriptor, Integer expected, Integer actual, Database.SaveResult sr){ 
+        return makeTestErrorMessage(String.valueOf(expected + ' ' + descriptor), String.valueOf(actual)+ ' ' + descriptor + ' ' + makeTestErrorMessage(sr));
+    }
+
     public static String makeTestErrorMessage(String expected, String actual){ 
         return 'Expected ' + expected + ' but got ' + actual;
     }  
-
-
 
     public static String makeTestErrorMessage(String expected){ 
         return 'Expected ' + expected;
