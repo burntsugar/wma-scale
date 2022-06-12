@@ -1,8 +1,8 @@
 public class ContentException extends Exception {
 
     public enum errorMsg {
+        PARAMETERS_MSG_CONTENTVERSION, // yes
         BLOB_SIZE_MSG_CONTENTVERSION,
-        PARAMETERS_MSG_CONTENTVERSION,
         EX_MSG_CONTENTVERSION,
         EX_MSG_CONTENTWORKSPACE,
         EX_MSG_CONTENTFOLDER,
@@ -25,11 +25,11 @@ public class ContentException extends Exception {
     public static String getErrorMessage(errorMsg em) {
         String errMsg;
         switch on em {
-            when BLOB_SIZE_MSG_CONTENTVERSION {
-                errMsg = 'ContentVersion blob size exceeded.';
-            }
             when PARAMETERS_MSG_CONTENTVERSION {
                 errMsg = 'ContentVersion parameters cannot be blank';
+            } //yes
+            when BLOB_SIZE_MSG_CONTENTVERSION {
+                errMsg = 'ContentVersion blob size exceeded.';
             }
             when EX_MSG_CONTENTVERSION {
                 errMsg = 'An Error occured during ContentVersion operation.';

@@ -11,6 +11,8 @@ sfdx force:apex:execute -u wmadh -f "src/apex-utils/main/default/classes/KickOff
 
 sfdx force:limits:api:display -u wmadh
 
+sfdx force:apex:test:run -u wmadh -s "crud" -c -v --json -r human
+
 
 KickOff k = new KickOff();
 ObjectInfoWrapper s = k.Go('WMA_Facility__c');

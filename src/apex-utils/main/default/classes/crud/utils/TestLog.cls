@@ -41,10 +41,10 @@
     } 
 
     public static String makeTestErrorMessage(Database.SaveResult sr){ 
-        return 'Got ' + makeQRErrors(sr);
+        return 'Got ' + makeSRErrors(sr);
     }  
 
-    private static String makeQRErrors(Database.SaveResult sr) {
+    private static String makeSRErrors(Database.SaveResult sr) {
         String ers;
         ers += 'The following errors occurred: ';   
         Integer count = 1;
