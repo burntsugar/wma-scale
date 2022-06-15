@@ -2,6 +2,7 @@ public class ContentException extends Exception {
 
     public enum errorMsg {
         PARAMETERS_MSG_CONTENTVERSION, // yes
+        NULL_MSG_CONTENTWORKSPACE, // yes
         BLOB_SIZE_MSG_CONTENTVERSION,
         EX_MSG_CONTENTVERSION,
         EX_MSG_CONTENTWORKSPACE,
@@ -13,7 +14,6 @@ public class ContentException extends Exception {
         DML_EX_MSG_CONTENTFOLDER,
         DML_EX_MSG_CONTENTDOCUMENTLINK,
         DML_EX_MSG_CONTENTFOLDERMEMBER,
-        NULL_MSG_CONTENTWORKSPACE,
         NULL_MSG_CONTENTFOLDER,
         NULL_MSG_CONTENTDOCUMENTLINK,
         NULL_MSG_CONTENTFOLDERMEMBER,
@@ -28,6 +28,9 @@ public class ContentException extends Exception {
             when PARAMETERS_MSG_CONTENTVERSION {
                 errMsg = 'ContentVersion parameters cannot be blank';
             } //yes
+            when NULL_MSG_CONTENTWORKSPACE {
+                errMsg = 'ContentWorkspace does not exist.';
+            } // yes
             when BLOB_SIZE_MSG_CONTENTVERSION {
                 errMsg = 'ContentVersion blob size exceeded.';
             }
@@ -61,9 +64,6 @@ public class ContentException extends Exception {
             when DML_EX_MSG_CONTENTFOLDERMEMBER {
                 errMsg = 'An Error occured during ContentFolderMember DML operation.';
             }
-            when NULL_MSG_CONTENTWORKSPACE {
-                errMsg = 'ContentWorkspace does not exist.';
-            }
             when NULL_MSG_CONTENTFOLDER {
                 errMsg = 'ContentFolder does not exist.';
             }
@@ -82,5 +82,17 @@ public class ContentException extends Exception {
         }
 
         return errMsg;
+    }
+
+    public static String makeSRErrors(Database.SaveResult sr) {
+        String ers;
+        ers += 'The following errors occurred: ';   
+        Integer count = 1;
+        for (Database.Error er : sr.getErrors()) {         
+            ers += count + ': ' + er.getStatusCode() + ': ' + er.getMessage();
+            ers += ' - fields that affected this error: ' + er.getFields();
+            count++;
+        }
+        return ers;
     }
 }

@@ -5,7 +5,7 @@ public virtual class ContentVersionCreation {
 
     private IContentVersionCrud crud;
 
-    public void initCrud(){
+    protected void initCrud(){
         if (crud == null){
             ContentVersionCrud c = new ContentVersionCrud();
             crud = c;
@@ -20,9 +20,9 @@ public virtual class ContentVersionCreation {
         initCrud();
     }
 
-    public virtual ContentVersion create(String contentFolderName, String contentVersionTitle, String content) {
+    public virtual ContentVersion create(String contentVersionTitle, String content) {
 
-        List<String> stringParams = new List<String>{contentFolderName, contentVersionTitle, content};
+        List<String> stringParams = new List<String>{contentVersionTitle, content};
 
         if(!isValidParams(stringParams)){
             throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.PARAMETERS_MSG_CONTENTVERSION));
@@ -32,37 +32,37 @@ public virtual class ContentVersionCreation {
 
         String pathOnClient = makePathOnClient(title);
 
-        ContentVersion contentVersion = makeContentVersion(pathOnClient, title, content);
+        ContentVersion contentVersion = makeContentVersion(pathOnClient, title, content, ContentVersionContentLocations.S);
 
         saveContentVersion(contentVersion);
 
         return contentVersion;
     }
 
-    public virtual boolean isValidParams(List<String> params) {
+    protected virtual boolean isValidParams(List<String> params) {
         if (StringUtils.stringIsBlank(params)) {
             return false;
         }
         return true;
     }
 
-    public virtual String makeDocumentTitle(String title){
+    protected virtual String makeDocumentTitle(String title){
         String timestamp = Datetime.now().format(DATE_FORMAT);
         String documentTitle = title + '-' + timeStamp;
 
         return documentTitle;
     }
 
-    public virtual String makePathOnClient(String documentTitle){
+    protected virtual String makePathOnClient(String documentTitle){
         String pathOnClient = documentTitle + FILE_EXTENSION;
 
         return pathOnClient;
     }
 
-    public virtual ContentVersion makeContentVersion(String pathOnClient, String documentTitle, String content) {
+    protected ContentVersion makeContentVersion(String pathOnClient, String documentTitle, String content, ContentVersionContentLocations contentLocation) {
 
         ContentVersion cv = new ContentVersion();
-        cv.ContentLocation = getEnumValueFor(ContentVersionContentLocations.S); 
+        cv.ContentLocation = getEnumValueForContentLocations(contentLocation); 
         cv.Title = documentTitle; 
         cv.PathOnClient = pathOnClient;
         cv.VersionData = Blob.valueOf(content);
@@ -70,24 +70,12 @@ public virtual class ContentVersionCreation {
         return cv;
     }
 
-    public void saveContentVersion(ContentVersion contentVersion) {
+    protected void saveContentVersion(ContentVersion contentVersion) {
         Database.SaveResult sr = crud.insertContentVersion(contentVersion);
 
         if (!sr.isSuccess()) {
-            throw new ContentException(makeSRErrors(sr));
+            throw new ContentException(ContentException.makeSRErrors(sr));
         }
-    }
-
-    private String makeSRErrors(Database.SaveResult sr) {
-        String ers;
-        ers += 'The following errors occurred: ';   
-        Integer count = 1;
-        for (Database.Error er : sr.getErrors()) {         
-            ers += count + ': ' + er.getStatusCode() + ': ' + er.getMessage();
-            ers += ' - Account fields that affected this error: ' + er.getFields();
-            count++;
-        }
-        return ers;
     }
 
     /**
@@ -98,7 +86,7 @@ public virtual class ContentVersionCreation {
     * @return    String value for contentLocation.
     * ───────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public String getEnumValueFor(ContentVersionContentLocations contentLocation) {
+    public String getEnumValueForContentLocations(ContentVersionContentLocations contentLocation) {
         String cntLocation;
         switch on contentLocation{
             when S {
