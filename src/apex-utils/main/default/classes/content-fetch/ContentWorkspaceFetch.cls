@@ -17,6 +17,13 @@ public virtual class ContentWorkspaceFetch {
         initCrud();
     }
 
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * Retrieve a ContentWorkspace.
+    * @param contentWorkspaceName String. Name of ContentWorkspace.
+    * @return ContentWorkspace instance.
+    * ────────────────────────────────────────────────────────────────────────────────────────────────
+    */
     public virtual ContentWorkspace fetch(String contentWorkspaceName) {
         
         List<ContentWorkspace> results = crud.getContentWorkSpace(ContentWorkSpaceFieldSelectors.Name,contentWorkspaceName);

@@ -19,6 +19,14 @@ public virtual class ContentWorkspaceCreation {
         initCrud();
     }
 
+        /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * Create a ContentWorkspace record.
+    * @param TODO.
+    * @param TODO.
+    * @return ContentWorkspace instance.
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+    */
     public virtual ContentWorkspace create() {
         return null;
     }

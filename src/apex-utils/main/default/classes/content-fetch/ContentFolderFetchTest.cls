@@ -1,6 +1,6 @@
-@isTest public class ContentWorkspaceFetchTest {
+@isTest public class ContentFolderFetchTest {
 
-    private static String SETUP_WORKSPACE_NAME = 'Fabulous Workspace';
+    private static String SETUP_WORKSPACE_NAME = 'ScaryShark Workspace';
 
     @testSetup static void createData() {
         ContentWorkspace cw = new ContentWorkspace(Name=SETUP_WORKSPACE_NAME);
@@ -18,8 +18,8 @@
 
         Test.startTest();
         try {
-            ContentWorkspaceFetch cwfetch = new ContentWorkspaceFetch();
-            ContentWorkspace cw = cwfetch.fetch('Not exist');
+            ContentFolderFetch cffetch = new ContentFolderFetch();
+            ContentFolder cf = cffetch.fetch('Not exist');
         } catch (ContentException ce) {
             doesThrow = true;
         }
@@ -39,8 +39,8 @@
 
         Test.startTest();
         try {
-            ContentWorkspaceFetch cwfetch = new ContentWorkspaceFetch();
-            ContentWorkspace cw = cwfetch.fetch('');
+            ContentFolderFetch cffetch = new ContentFolderFetch();
+            ContentFolder cf = cffetch.fetch('');
         } catch (ContentException ce) {
             doesThrow = true;
         }
@@ -56,15 +56,22 @@
     */
     @isTest static void fetch_ValidParam_RecordRetrieved() {
 
+        String cfName = 'Folder of d00m';
+
+        ContentFolder cf = new ContentFolder(Name=cfName);
+
+        Database.insert(cf);
+
         Test.startTest();
         
-        ContentWorkspaceFetch cwfetch = new ContentWorkspaceFetch();
-        ContentWorkspace cw = cwfetch.fetch(SETUP_WORKSPACE_NAME);
+        ContentFolderFetch cffetch = new ContentFolderFetch();
+        ContentFolder actualCf = cffetch.fetch(cfName);
         
         Test.stopTest();
 
-        String expectedName = SETUP_WORKSPACE_NAME;
-        String actualName = cw.Name;
+        String expectedName = cfName;
+        String actualName = actualCf.Name;
         System.Assert(actualName == expectedName, TestLog.makeTestErrorMessage(expectedName,actualName));
     }
+    
 }

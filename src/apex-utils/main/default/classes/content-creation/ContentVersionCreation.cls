@@ -20,6 +20,14 @@ public virtual class ContentVersionCreation {
         initCrud();
     }
 
+    /**
+    * ───────────────────────────────────────────────────────────────────────────────────────────────┐
+    * Create a ContentVersion record.
+    * @param contentVersionTitle String. Title of the documemnt.
+    * @param content String. Content for blob.
+    * @return ContentVersion instance.
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+    */
     public virtual ContentVersion create(String contentVersionTitle, String content) {
 
         List<String> stringParams = new List<String>{contentVersionTitle, content};
