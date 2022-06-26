@@ -2,8 +2,14 @@ public class ContentException extends Exception {
 
     public enum errorMsg {
         PARAMETERS_MSG_CONTENTVERSION, // yes
+        PARAMETERS_MSG_CONTENTWORKSPACE, // yes
         NULL_MSG_CONTENTWORKSPACE, // yes
         NULL_MSG_CONTENTFOLDER, // yes
+        QUERY_PARAMETERS_BLANK_MSG, //yes
+        QUERY_EX_MSG_INVALID_PARAMETERS, // yes
+        QUERY_EX_MSG_CONTENTVERSION,
+        QUERY_EX_MSG_CONTENTWORKSPACE,
+        NULL_MSG_CONTENTDOCUMENTLINK,
         BLOB_SIZE_MSG_CONTENTVERSION,
         EX_MSG_CONTENTVERSION,
         EX_MSG_CONTENTWORKSPACE,
@@ -15,7 +21,6 @@ public class ContentException extends Exception {
         DML_EX_MSG_CONTENTFOLDER,
         DML_EX_MSG_CONTENTDOCUMENTLINK,
         DML_EX_MSG_CONTENTFOLDERMEMBER,
-        NULL_MSG_CONTENTDOCUMENTLINK,
         NULL_MSG_CONTENTFOLDERMEMBER,
         DML_DUPLICATE_MSG_CONTENTWORKSPACE
     }
@@ -25,8 +30,14 @@ public class ContentException extends Exception {
     public static String getErrorMessage(errorMsg em) {
         String errMsg;
         switch on em {
+            when QUERY_PARAMETERS_BLANK_MSG {
+                errMsg = 'Parameters cannot be blank';
+            } //yes
             when PARAMETERS_MSG_CONTENTVERSION {
                 errMsg = 'ContentVersion parameters cannot be blank';
+            } //yes
+            when PARAMETERS_MSG_CONTENTWORKSPACE {
+                errMsg = 'ContentWorkspace parameters cannot be blank';
             } //yes
             when NULL_MSG_CONTENTWORKSPACE {
                 errMsg = 'ContentWorkspace does not exist.';
@@ -34,6 +45,18 @@ public class ContentException extends Exception {
             when NULL_MSG_CONTENTFOLDER {
                 errMsg = 'ContentFolder does not exist.';
             } // yes
+            when QUERY_EX_MSG_INVALID_PARAMETERS {
+                errMsg = 'Query objects do not exist';
+            } // yes
+            when QUERY_EX_MSG_CONTENTVERSION {
+                errMsg = 'ContentVersion does not exist.';
+            } 
+            when QUERY_EX_MSG_CONTENTWORKSPACE {
+                errMsg = 'ContentWorkspace does not exist.';
+            } 
+            when NULL_MSG_CONTENTDOCUMENTLINK {
+                errMsg = 'ContentDocumentLink could not be created - non existent ContentVersion.';
+            }
             when BLOB_SIZE_MSG_CONTENTVERSION {
                 errMsg = 'ContentVersion blob size exceeded.';
             }
@@ -66,9 +89,6 @@ public class ContentException extends Exception {
             }
             when DML_EX_MSG_CONTENTFOLDERMEMBER {
                 errMsg = 'An Error occured during ContentFolderMember DML operation.';
-            }
-            when NULL_MSG_CONTENTDOCUMENTLINK {
-                errMsg = 'ContentDocumentLink could not be created - non existent ContentVersion.';
             }
             when NULL_MSG_CONTENTFOLDERMEMBER {
                 errMsg = 'ContentFolderMember could not be created.';

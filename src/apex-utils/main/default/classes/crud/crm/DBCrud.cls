@@ -70,12 +70,18 @@ public without sharing class DBCrud {
         String strSOQL = 'SELECT ' + fields + ' FROM ' + sObjectName;
         if ( !String.isBlank(whereCriteria) ) strSOQL += ' WHERE ' + whereCriteria;
         if ( !String.isBlank(additionalCriteria) ) strSOQL += ' ' + additionalCriteria;
+        System.debug('BLAH::: ' + strSOQL);
         return doSelect(strSOQL);
     }
 
     private static List<sObject> doSelect(String soqlQuery) {
         List<sObject> results = Database.Query(soqlQuery);
         return results;
+    }
+
+    public static Id doSelectContentDocumentId(Id contentVersionId) {
+        Id conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersionId].ContentDocumentId;
+        return conDoc;
     }
 }
 
