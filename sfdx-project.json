@@ -41,6 +41,16 @@
             "versionNumber": "1.0.0.0"
         },
         {
+            "path": "./src/apex-utils/main/default/classes/fin",
+            "package": "apex-utils",
+            "versionNumber": "1.0.0.0"
+        },
+        {
+            "path": "./src/apex-utils/main/default/classes/crud",
+            "package": "apex-utils",
+            "versionNumber": "1.0.0.0"
+        },
+        {
             "path": "./src-env-specific-alias-post",
             "package": "src-env-specific-alias-post",
             "versionNumber": "1.0.0.0",
