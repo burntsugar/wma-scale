@@ -1,4 +1,4 @@
-public with sharing class CallSalesforceAPI {
+public class CallSalesforceAPI {
 
     public static String call(String baseURL, String sql) {
        

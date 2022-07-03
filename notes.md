@@ -1,6 +1,9 @@
 
 KickOff k = new KickOff();
-k.extractObjectInfoToCSV('WMA_Facility__c','Fields for Record Type', 'WMA', 'my-queries', 'general');
+k.extractObjectInfoToCSV();
+
+KickOff k = new KickOff();
+k.extractObjectInfoToCSV('WMA_Facility__c','01I5j000000BHZl', 'Fields for Record Type', 'WMA', 'my-queries', 'general');
 
 public void extractObjectInfoToCSV(String objectAPIName, String documentTitle, String envName, String workspaceLibraryName, String environmentContentFolderName){
 

@@ -1,4 +1,4 @@
-public with sharing class CSVRows implements ICSVRows {
+public class CSVRows {
     
     public List<String> cSVRows;
 

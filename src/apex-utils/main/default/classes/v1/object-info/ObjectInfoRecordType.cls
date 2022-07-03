@@ -1,4 +1,4 @@
-public class ObjectInfoRecordType implements IObjectInfoRecordType {
+public class ObjectInfoRecordType {
     
     private String objectAPIName;
     private String recordTypeDeveloperName;

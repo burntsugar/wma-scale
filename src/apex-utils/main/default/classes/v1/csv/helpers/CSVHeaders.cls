@@ -1,4 +1,4 @@
-public with sharing class CSVHeaders implements ICSVHeaders {
+public class CSVHeaders {
     
     private List<String> cSVHeaders;
 

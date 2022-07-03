@@ -5,8 +5,6 @@ public class EasyOutput {
 
     public void saveFile(String workspaceLibraryName, String environmentContentFolderName, String documentTitle, String contentData) {
 
-        //envContentFolderName = envName + '-report-csv';
-
         String libWorkspaceName = workspaceLibraryName;
         String envContentFolderName = environmentContentFolderName;
     

@@ -1,4 +1,4 @@
-public with sharing class ObjectInfoField {
+public class ObjectInfoField {
 
     private String fieldAPIName;
     private String label;
