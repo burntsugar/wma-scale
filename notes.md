@@ -1,4 +1,10 @@
 
+KickOff k = new KickOff();
+k.extractObjectInfoToCSV('WMA_Facility__c','Fields for Record Type', 'WMA', 'my-queries', 'general');
+
+public void extractObjectInfoToCSV(String objectAPIName, String documentTitle, String envName, String workspaceLibraryName, String environmentContentFolderName){
+
+
 sfdx force:mdapi:retrieve -k manifest/package.xml -u wmadh -r retrievedapex -w 10
 
 sfdx force:mdapi:convert -r "retrievedapex/unpackaged 3" -d "src/apex-utils"
@@ -30,6 +36,10 @@ KickOff k = new KickOff();
 k.extractObjectInfoToCSV('WMA_Facility__c');
 
 GetInfo.getObjectInfo('WMA_Facility__c');
+
+
+KickOff k = new KickOff();
+k.GetLastModifedAttr();
 
 
 Type customType = Type.forName('WMA_Facility__c');

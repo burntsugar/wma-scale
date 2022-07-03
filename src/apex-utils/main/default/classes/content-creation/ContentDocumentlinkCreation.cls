@@ -44,7 +44,13 @@ public virtual class ContentDocumentlinkCreation {
         // ContentFolderMember cfm = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: libraryContentFolder.Id];
         // cfm.ParentContentFolderId = folder.Id;
         // update cfm;
-        ///
+
+       // envContentFolderName = envName + '-report-csv';
+
+        // ContentFolderMember cfm = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: contentWorkSpace.Id];
+        // cfm.ParentContentFolderId = folder.Id;
+        // update cfm;
+        
 
     }
 }

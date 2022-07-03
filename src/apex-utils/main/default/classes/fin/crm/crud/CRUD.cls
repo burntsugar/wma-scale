@@ -8,6 +8,11 @@ public class CRUD implements ICrud {
         return record;
     }
 
+    // private void doInsert(SObject record) {
+    //     insert(record);
+    //     return record;
+    // }
+
     private SObject doUpdate(SObject record) {
         update(record);
         return record;
@@ -119,6 +124,132 @@ public class CRUD implements ICrud {
         return null;
     }
 }
+
+// public class CRUD implements ICrud {
+
+//     private static final String CONTENT_LOCATION = 'S';
+//     private static final String SHARE_TYPE = 'I';
+
+//     private SObject doInsert(SObject record) {
+//         insert(record);
+//         return record;
+//     }
+
+//     private SObject doUpdate(SObject record) {
+//         update(record);
+//         return record;
+//     }
+
+//     public ContentVersion getContentVersion(String contentVersionId){
+//         List<ContentVersion> result = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersionId];
+
+//         if (result.size()>0){
+//             return result.get(0);
+//         }
+//         return null;
+//     }
+
+//     public ContentWorkspace getContentWorkSpace(String contentWorkSpaceName){
+//         List<ContentWorkspace> result = [Select Id from ContentWorkspace where Name =: contentWorkSpaceName];
+
+//         if (result.size()>0){
+//             return result.get(0);
+//         }
+//         return null;
+//     }
+
+//     public ContentFolder getContentFolder(String contentFolderName){
+//         List<ContentFolder> result = [Select Id from ContentFolder where Name =: contentFolderName];
+
+//         if (result.size()>0){
+//             return result.get(0);
+//         }
+//         return null;
+//     }
+
+//     public ContentVersion saveContentVersion(String pathOnClient, String documentTitle, String content){
+//         ContentVersion cv = new ContentVersion();
+//         cv.ContentLocation = CONTENT_LOCATION; 
+//         cv.Title = documentTitle; 
+//         cv.PathOnClient = pathOnClient;
+//         cv.VersionData = Blob.valueOf(content);
+
+//         this.doInsert(cv);
+
+//         return cv;
+//     }
+
+//     // public ContentWorkSpace saveContentWorkspace(String name, String developerName){
+//     //     ContentWorkspace contentWorkSpace = new ContentWorkspace();
+//     //     contentWorkSpace.Name = name;
+//     //     contentWorkSpace.DeveloperName = developerName;
+        
+//     //     this.doInsert(contentWorkSpace);
+
+//     //     return contentWorkSpace;
+//     // }
+
+//     public ContentWorkSpace saveContentWorkspace(String name, String developerName){
+//         ContentWorkspace contentWorkSpace = new ContentWorkspace();
+//         contentWorkSpace.Name = name;
+//         contentWorkSpace.DeveloperName = developerName;
+        
+//         try {
+//             this.doInsert(contentWorkSpace);
+//         } catch (DmlException dmle) {
+//             throw new ContentException(ContentException.getErrorMessage(ContentException.errorMsg.DML_DUPLICATE_MSG_CONTENTWORKSPACE));
+//         }
+
+//         return contentWorkSpace;
+//     }
+
+//     public ContentFolder saveContentFolder(String contentFolderName, String parentContentFolderId){
+//         ContentFolder contentFolder = new ContentFolder(Name=contentFolderName);
+//         contentFolder.ParentContentFolderId = parentContentFolderId;
+
+//         doInsert(contentFolder);
+
+//         return contentFolder;
+//     }
+
+//     private String getContentDocumentId(String contentVersionId){
+//         Id conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersionId].ContentDocumentId;
+
+//         return conDoc;
+//     }
+
+//     public ContentDocumentLink saveContentDocumentLink(ContentVersion contentVersion, ContentWorkSpace contentWorkSpace) {
+//         //Id conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:contentVersion.Id].ContentDocumentId;
+        
+//         Id conDoc = getContentDocumentId(contentVersion.Id);
+
+//         if (conDoc==null) return null;
+
+//         ContentDocumentLink contentDocumentLink = new ContentDocumentLink();
+//         contentDocumentLink.ContentDocumentId = conDoc;
+//         contentDocumentLink.LinkedEntityId = contentWorkSpace.Id; 
+//         contentDocumentLink.ShareType = SHARE_TYPE; 
+
+//         doInsert(contentDocumentLink);
+
+//         return contentDocumentLink;
+//     }
+
+//     public ContentFolderMember saveContentFolderMember(String parentContentFolderId, String contentFolderId){
+//         List<ContentFolderMember> result = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: parentContentFolderId];
+        
+//         if (result.size()>0){
+//             result.get(0).ParentContentFolderId = contentFolderId;
+//             doUpdate(result.get(0));
+//             return result.get(0);
+//         }
+//         return null;
+//     }
+// }
+
+///////////
+
+///////////
 
 // public ContentFolderMember getContentFolderMember(String parentContentFolderId){
 //     ContentFolderMember cfm = [Select Id, ChildRecordId, ParentContentFolderId from ContentFolderMember where ParentContentFolderId =: parentContentFolderId];

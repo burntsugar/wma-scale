@@ -1,4 +1,4 @@
-public virtual class ContentVersionCreation {
+public virtual class ContentVersionCreation {//implements IContentVersionCreation{
 
     private final String FILE_EXTENSION = '.csv';
     private final String DATE_FORMAT = 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'';
